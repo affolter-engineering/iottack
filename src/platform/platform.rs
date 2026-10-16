@@ -44,10 +44,10 @@ impl Plugin for PlatformDetails {
             Severity::Info,
             "Host environment",
             format!(
-                "Framework: iottack {fw_version}\n\
-                 OS: {distro}\n\
-                 Kernel: {kernel}\n\
-                 Arch: {arch}\n\
+                "iottack release: {fw_version}\n  \
+                 OS: {distro}\n  \
+                 Kernel: {kernel}\n  \
+                 Arch: {arch}\n  \
                  Time: {timestamp}"
             ),
         ));

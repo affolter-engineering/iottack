@@ -1,6 +1,6 @@
 [package]
 name = "iottack"
-version = "0.0.1"
+version = "0.2.6"
 edition = "2021"
 authors = ["Fabian Affolter <fabian@affolter-engineering.ch>"]
 description = "IoT protocol pentesting framework"
@@ -18,7 +18,7 @@ path = "src/bin/main.rs"
 [dependencies]
 anyhow = "1"
 thiserror = "2"
-clap = { version = "3", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tracing = "0.1"

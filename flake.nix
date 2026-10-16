@@ -27,12 +27,12 @@
         # `nix build` - produce the binary
         packages.default = pkgs.rustPlatform.buildRustPackage {
           pname = "iottack";
-          version = "0.0.1";
+          version = "0.2.6";
           src = ./.;
           cargoLock.lockFile = ./Cargo.lock;
           nativeBuildInputs = with pkgs; [ gcc ];
           meta = with pkgs.lib; {
-            description = "IoT protocol pentesting framework";
+            description = "IoT protocol testing framework";
             license = licenses.mit;
             platforms = platforms.linux ++ platforms.darwin;
           };
@@ -41,7 +41,7 @@
         # `nix flake check` - build and run cargo test
         checks.default = pkgs.rustPlatform.buildRustPackage {
           pname = "iottack";
-          version = "0.0.1";
+          version = "0.2.6";
           src = ./.;
           cargoLock.lockFile = ./Cargo.lock;
           nativeBuildInputs = with pkgs; [ gcc ];

@@ -94,19 +94,21 @@ fn build_cli(registry: &PluginRegistry) -> Command {
         for plugin_name in plugin_names {
             let plugin = registry.get(plugin_name).unwrap();
             let meta = plugin.meta();
-            let subname: &'static str = Box::leak(
-                plugin_name
-                    .splitn(2, '/')
-                    .nth(1)
-                    .unwrap()
-                    .to_string()
-                    .into_boxed_str(),
-            );
-            let mut sub = Command::new(subname).about(meta.summary);
-            for a in meta.cli_args {
-                sub = sub.arg(clap_arg(a));
+            let subname = plugin_name.splitn(2, '/').nth(1).unwrap();
+            if subname == group.as_str() {
+                // Plugin name matches group. Expose args directly on the group command
+                // so the user types `iottack <group>` instead of `iottack <group> <group>`.
+                for a in meta.cli_args {
+                    group_cmd = group_cmd.arg(clap_arg(a));
+                }
+            } else {
+                let subname_s: &'static str = Box::leak(subname.to_string().into_boxed_str());
+                let mut sub = Command::new(subname_s).about(meta.summary);
+                for a in meta.cli_args {
+                    sub = sub.arg(clap_arg(a));
+                }
+                group_cmd = group_cmd.subcommand(sub);
             }
-            group_cmd = group_cmd.subcommand(sub);
         }
         app = app.subcommand(group_cmd);
     }
@@ -135,7 +137,15 @@ fn route(matches: &ArgMatches, registry: &PluginRegistry) -> Option<(String, Plu
             continue;
         };
         if let Some(gm) = matches.subcommand_matches(group) {
-            if let Some(sm) = gm.subcommand_matches(subname) {
+            if subname == group {
+                // Direct group command (no nested subcommand); only match when the user
+                // didn't pick a subcommand of this group.
+                if gm.subcommand_name().is_none() {
+                    let plugin = registry.get(name).unwrap();
+                    let cfg = config_from_matches(plugin.meta().cli_args, gm);
+                    return Some((name.to_string(), cfg));
+                }
+            } else if let Some(sm) = gm.subcommand_matches(subname) {
                 let plugin = registry.get(name).unwrap();
                 let cfg = config_from_matches(plugin.meta().cli_args, sm);
                 return Some((name.to_string(), cfg));

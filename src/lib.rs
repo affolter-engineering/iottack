@@ -1,5 +1,5 @@
 pub mod core;
-pub mod host;
+pub mod platform;
 pub mod protocols;
 
 pub use core::{

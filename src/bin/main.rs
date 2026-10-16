@@ -164,7 +164,7 @@ fn format_text(result: &PluginResult) -> String {
     let elapsed_str = if elapsed >= 1_000 {
         format!("{:.2} s", elapsed as f64 / 1_000.0)
     } else {
-        format!("{elapsed}ms")
+        format!("{elapsed} ms")
     };
     let status_str = match &result.status {
         PluginStatus::Pass => "pass",
@@ -207,7 +207,7 @@ fn print_result(result: &PluginResult) {
     let elapsed_str = if elapsed >= 1_000 {
         format!("{:.2} s", elapsed as f64 / 1_000.0)
     } else {
-        format!("{elapsed}ms")
+        format!("{elapsed} ms")
     };
     let status_str = match &result.status {
         PluginStatus::Pass => "\x1b[32mpass\x1b[0m",

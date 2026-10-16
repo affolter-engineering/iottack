@@ -13,7 +13,7 @@ pub struct PlatformDetails;
 impl Plugin for PlatformDetails {
     fn meta(&self) -> PluginMeta {
         plugin_meta!(
-            summary: "Report host environment",
+            summary: "Report details about the host/platform environment",
             description: "Collects OS/kernel/architecture details",
             needs_root: false,
         )

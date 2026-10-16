@@ -19,7 +19,7 @@ With Nix:
 
 ```sh
 nix build
-nix run . -- disclose
+nix run . -- platform
 ```
 
 ## Usage

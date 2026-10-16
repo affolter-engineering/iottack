@@ -3,7 +3,7 @@ name = "iottack"
 version = "0.2.6"
 edition = "2024"
 authors = ["Fabian Affolter <fabian@affolter-engineering.ch>"]
-description = "IoT protocol pentesting framework"
+description = "IoT protocol testing framework"
 license = "MIT"
 repository = "https://github.com/affolter-engineering/iottack"
 

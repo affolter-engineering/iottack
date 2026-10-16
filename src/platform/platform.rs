@@ -1,3 +1,4 @@
+use super::sysfs::{effective_uid, kernel_attr, os_release_field};
 use crate::{
     core::{Plugin, PluginConfig, PluginFinding, PluginMeta, PluginResult, PluginStatus, Severity},
     plugin_meta,
@@ -6,11 +7,9 @@ use anyhow::Result;
 use chrono::Utc;
 
 /// Collect and report details about the host environment: OS, kernel,
-/// architecture, privilege level, attached USB/serial devices and the
-/// presence of known IoT hardware.
+/// architecture, privilege level, and whether the process runs as root.
 pub struct PlatformDetails;
 
-/// Implementation of the PlatformDetails plugin.
 impl Plugin for PlatformDetails {
     fn meta(&self) -> PluginMeta {
         plugin_meta!(
@@ -20,12 +19,10 @@ impl Plugin for PlatformDetails {
         )
     }
 
-    /// Initialize the platform details plugin.
     fn initialize(&mut self, _config: &PluginConfig) -> Result<()> {
         Ok(())
     }
 
-    /// Execute the platform details process and report findings.
     fn execute(&mut self) -> Result<PluginResult> {
         let mut result = PluginResult::new(self.meta().name);
 
@@ -79,5 +76,5 @@ impl Plugin for PlatformDetails {
 }
 
 inventory::submit! {
-    crate::PluginFactory(|| Box::new(HostDisclosure) as Box<dyn crate::Plugin>)
+    crate::PluginFactory(|| Box::new(PlatformDetails) as Box<dyn crate::Plugin>)
 }

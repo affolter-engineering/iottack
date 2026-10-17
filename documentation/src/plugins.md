@@ -6,7 +6,8 @@ a severity level and optional evidence string.
 
 | Plugin | Command | Summary |
 |--------|---------|---------|
-| [platform](./plugins/platform.md) | `iottack platform` | Host environment report |
+| [platform](./plugins/platform/platform.md) | `iottack platform` | Host environment report |
+| [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services |
 | [uart - baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Identify active UART baud rate |
 | [uart - port-scan](./plugins/uart/port-scan.md) | `iottack uart port-scan` | List serial ports on the host |
 | [uart - shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect shell/login prompts on UART |

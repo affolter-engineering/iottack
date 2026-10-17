@@ -9,4 +9,5 @@
   - [uart - fuzz](./plugins/uart/fuzz.md)
   - [uart - port-scan](./plugins/uart/port-scan.md)
   - [uart - shell-detect](./plugins/uart/shell-detect.md)
+  - [uart - terminal](./plugins/uart/terminal.md)
 - [Development](./development.md)

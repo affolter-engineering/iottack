@@ -23,18 +23,47 @@ impl OwnedFuzzPayload {
     }
 }
 
-/// Generate one payload per (character, length) combination.
+/// Generate every combination of `charset` bytes up to `max_length` characters.
 ///
-/// Iterates length from 1 to `max_length`; for each length emits every byte in
-/// `charset`. For charset `"ab"` and max_length `3` this yields:
-/// `'a'x1`, `'b'x1`, `'a'x2`, `'b'x2`, `'a'x3`, `'b'x3`.
+/// Uses a Cartesian-product approach: for each length L from 1 to `max_length`
+/// every possible string of exactly L bytes drawn from `charset` is emitted.
+/// For charset `"ab"` and max_length `2` this yields:
+/// `a`, `b`, `aa`, `ab`, `ba`, `bb`.
+///
+/// Total payloads = |charset|^1 + |charset|^2 + … + |charset|^max_length.
+/// Keep `max_length` small for large charsets to avoid generating millions of payloads.
 pub fn charset_payloads(charset: &str, max_length: usize) -> Vec<OwnedFuzzPayload> {
-    let mut out = Vec::new();
-    for length in 1..=max_length {
-        for byte in charset.bytes() {
-            out.push(OwnedFuzzPayload::repeated(byte, length));
-        }
+    let bytes: Vec<u8> = charset.bytes().collect();
+    if bytes.is_empty() || max_length == 0 {
+        return Vec::new();
     }
+
+    let mut out = Vec::new();
+    // `current` holds all strings of the current length being generated.
+    let mut current: Vec<Vec<u8>> = bytes.iter().map(|&b| vec![b]).collect();
+
+    for _ in 0..max_length {
+        for combo in &current {
+            let label: String = combo
+                .iter()
+                .flat_map(|b| b.escape_ascii())
+                .map(char::from)
+                .collect();
+            out.push(OwnedFuzzPayload { label, data: combo.clone() });
+        }
+        // Extend every current string with every byte to build the next length.
+        current = current
+            .iter()
+            .flat_map(|combo| {
+                bytes.iter().map(move |&b| {
+                    let mut next = combo.clone();
+                    next.push(b);
+                    next
+                })
+            })
+            .collect();
+    }
+
     out
 }
 

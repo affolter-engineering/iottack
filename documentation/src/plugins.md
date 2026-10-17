@@ -6,11 +6,11 @@ a severity level and optional evidence string.
 
 | Plugin | Command | Summary |
 |--------|---------|---------|
-| [platform](./plugins/platform/platform.md) | `iottack platform` | Host environment report |
-| [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services |
-| [uart - baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Identify active UART baud rate |
-| [uart - port-scan](./plugins/uart/port-scan.md) | `iottack uart port-scan` | List serial ports on the host |
-| [uart - shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect shell/login prompts on UART |
+| [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
+| [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
+| [uart - baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |
+| [uart - port-scan](./plugins/uart/port-scan.md) | `iottack uart port-scan` | Discover serial ports available on this host |
+| [uart - shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
 
 ## Global options
 

@@ -85,6 +85,7 @@ pub struct PluginResult {
     pub findings: Vec<PluginFinding>,
     pub started_at: DateTime<Utc>,
     pub finished_at: DateTime<Utc>,
+    pub silent: bool,
 }
 
 /// Implement methods for `PluginResult` to manage findings and test status.
@@ -96,7 +97,12 @@ impl PluginResult {
             findings: Vec::new(),
             started_at: Utc::now(),
             finished_at: Utc::now(),
+            silent: false,
         }
+    }
+
+    pub fn set_silent(&mut self) {
+        self.silent = true;
     }
 
     pub fn add(&mut self, finding: PluginFinding) {

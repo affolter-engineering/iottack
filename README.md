@@ -8,10 +8,9 @@ products and infrastructures. Plugins provide support for:
 | `platform/platform` | `iottack platform` | Host environment, USB devices and specialized hardware |
 | `network/mdns-scan` | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | `uart/baud-scan` | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |
+| `uart/fuzz` | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |
 | `uart/port-scan` | `iottack uart port-scan` | Discover serial ports available on this host |
 | `uart/shell-detect` | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
-
-
 
 ## Build
 

@@ -1,4 +1,5 @@
 pub mod core;
+pub mod fuzzing;
 pub mod platform;
 pub mod protocols;
 

@@ -17,7 +17,7 @@ pub struct CliArg {
     /// Default value string. `None` means the arg is required.
     /// Ignored for flag args (implicitly `false` when absent).
     pub default: Option<&'static str>,
-    /// If `true`, this is a boolean flag — presence sets the config key to `"true"`.
+    /// If `true`, this is a boolean flag - presence sets the config key to `"true"`.
     pub is_flag: bool,
 }
 
@@ -86,7 +86,7 @@ macro_rules! plugin_meta {
 
 /// Metadata for a plugin. Returned by [`Plugin::meta`].
 ///
-/// Construct with the [`plugin_meta!`] macro — never set `name` or `category`
+/// Construct with the [`plugin_meta!`] macro - never set `name` or `category`
 /// by hand.
 pub struct PluginMeta {
     /// Derived from the plugin's module path via [`plugin_name_from_module`].
@@ -100,7 +100,7 @@ pub struct PluginMeta {
     /// Set to `true` if the plugin requires root / administrator privileges.
     pub needs_root: bool,
     /// CLI arguments this plugin accepts. Used by `main.rs` to build subcommands
-    /// dynamically — plugins do not need to touch `main.rs`.
+    /// dynamically - plugins do not need to touch `main.rs`.
     pub cli_args: &'static [CliArg],
 }
 

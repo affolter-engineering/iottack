@@ -219,6 +219,7 @@ fn print_result(result: &PluginResult) {
     println!("Plugin name:    {}", result.plugin);
     println!("Execution time: {elapsed_str}");
     println!("Status:         {status_str}");
+    println!("Date:           {}", result.started_at.format("%Y-%m-%d %H:%M:%S UTC"));
     println!();
     if result.findings.is_empty() {
         println!("  No findings.");

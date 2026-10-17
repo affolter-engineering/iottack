@@ -7,7 +7,7 @@ type Factory = Box<dyn Fn() -> Box<dyn Plugin> + Send + Sync>;
 /// A zero-argument factory function for a plugin.
 ///
 /// Submit one of these per plugin with `inventory::submit!` and `PluginRegistry::new()`
-/// will pick them all up automatically — no changes to `main.rs` required.
+/// will pick them all up automatically - no changes to `main.rs` required.
 pub struct PluginFactory(pub fn() -> Box<dyn Plugin>);
 inventory::collect!(PluginFactory);
 

@@ -33,7 +33,6 @@ impl Plugin for PlatformDetails {
         let os_codename = os_release_field("VERSION_CODENAME").unwrap_or_default();
         let kernel = kernel_attr("osrelease").unwrap_or_else(|| "Unknown".into());
         let arch = std::env::consts::ARCH;
-        let timestamp = Utc::now().format("%Y-%m-%d %H:%M:%S UTC").to_string();
 
         let distro = if os_codename.is_empty() {
             format!("{os_name} {os_version}")
@@ -48,8 +47,7 @@ impl Plugin for PlatformDetails {
                 "iottack release: {fw_version}\n  \
                  OS: {distro}\n  \
                  Kernel: {kernel}\n  \
-                 Arch: {arch}\n  \
-                 Time: {timestamp}"
+                 Architecture: {arch}"
             ),
         ));
 

@@ -1,4 +1,5 @@
-use super::sysfs::{effective_uid, kernel_attr, os_release_field};
+use super::sysfs::{effective_uid, enumerate_usb_tty_devices, kernel_attr, os_release_field};
+use crate::protocols::uart::port_scan::discover_ports;
 use crate::{
     core::{Plugin, PluginConfig, PluginFinding, PluginMeta, PluginResult, PluginStatus, Severity},
     plugin_meta,
@@ -68,6 +69,51 @@ impl Plugin for PlatformDetails {
                 "Some serial ports or USB devices may require elevated privileges. \
                  Run with sudo if access is denied.",
             ));
+        }
+
+        let serial_ports = discover_ports();
+        if serial_ports.is_empty() {
+            result.add(PluginFinding::new(
+                Severity::Info,
+                "No serial ports found",
+                "No /dev/tty{USB,ACM,AMA, etc.} character devices detected.",
+            ));
+        } else {
+            let port_list: Vec<String> = serial_ports
+                .iter()
+                .map(|p| p.display().to_string())
+                .collect();
+            result.add(PluginFinding::new(
+                Severity::Info,
+                format!("Serial ports available ({})", port_list.len()),
+                port_list.join("  |  "),
+            ));
+        }
+
+        let usb_devices = enumerate_usb_tty_devices();
+        if usb_devices.is_empty() {
+            result.add(PluginFinding::new(
+                Severity::Info,
+                "No USB-serial devices detected",
+                "No USB devices with an associated TTY node were found in sysfs.",
+            ));
+        } else {
+            for dev in &usb_devices {
+                result.add(
+                    PluginFinding::new(
+                        Severity::Info,
+                        format!("USB-serial device: {}", dev.tty_node),
+                        format!(
+                            "{} | {} ({}) | sysfs: {}",
+                            dev.id,
+                            dev.product,
+                            dev.manufacturer,
+                            dev.sysfs_path.display()
+                        ),
+                    )
+                    .with_evidence(dev.tty_node.clone()),
+                );
+            }
         }
 
         result.finish(PluginStatus::Pass);

@@ -11,6 +11,7 @@ a severity level and optional evidence string.
 | [network - telnet](./plugins/network/telnet.md) | `iottack telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
 | [uart - baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |
 | [uart - port-scan](./plugins/uart/port-scan.md) | `iottack uart port-scan` | Discover serial ports available on this host |
+| [uart - fuzz](./plugins/uart/fuzz.md) | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |
 | [uart - shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
 
 ## Global options

@@ -15,7 +15,7 @@ fn clap_arg(a: &CliArg) -> Arg {
         arg = arg.value_name(a.value_name);
         match a.default {
             Some(d) => arg = arg.default_value(d),
-            None => arg = arg.required(true),
+            None => arg = arg.required(false),
         }
     }
     arg
@@ -249,8 +249,14 @@ fn save_result(result: &PluginResult, path: &str, format: &str) -> anyhow::Resul
     Ok(())
 }
 
-/// Entry point for the iottack CLI application.
-fn main() -> anyhow::Result<()> {
+fn main() {
+    if let Err(e) = run() {
+        eprintln!("Error: {e}");
+        std::process::exit(1);
+    }
+}
+
+fn run() -> anyhow::Result<()> {
     let registry = PluginRegistry::new();
     let matches = build_cli(&registry).get_matches();
 

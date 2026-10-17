@@ -1,5 +1,6 @@
 pub mod baud_scan;
 pub mod config;
+pub mod fuzz;
 pub mod port_scan;
 pub mod session;
 pub mod shell_detect;

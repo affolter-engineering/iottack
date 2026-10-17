@@ -6,6 +6,7 @@
   - [network - mdns-scan](./plugins/network/mdns-scan.md)
   - [network - telnet](./plugins/network/telnet.md)
   - [uart - baud-scan](./plugins/uart/baud-scan.md)
+  - [uart - fuzz](./plugins/uart/fuzz.md)
   - [uart - port-scan](./plugins/uart/port-scan.md)
   - [uart - shell-detect](./plugins/uart/shell-detect.md)
 - [Development](./development.md)

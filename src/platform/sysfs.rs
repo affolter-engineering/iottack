@@ -24,8 +24,26 @@ fn read_attr(base: &Path, attr: &str) -> Option<String> {
         .map(|s| s.trim().to_string())
 }
 
-/// Build a map of tty_name -> resolved sysfs path by following
-/// `/sys/class/tty/<name>/device` symlinks.
+/// Walk up `path` to find the nearest USB device directory.
+///
+/// `/sys/class/tty/<tty>/device` resolves to a USB interface (e.g.
+/// `.../7-1.4.3:1.0`) or a sub-node below it (e.g. `.../7-1.4.3:1.0-port0`).
+/// USB interface names contain a colon (`:`); the parent device does not.
+/// We walk up until we reach a path component that has no colon and starts
+/// with a digit (USB topology names like `7-1.4.3`).
+fn usb_device_of(path: &Path) -> Option<PathBuf> {
+    for ancestor in path.ancestors() {
+        if let Some(name) = ancestor.file_name() {
+            let n = name.to_string_lossy();
+            if !n.contains(':') && n.starts_with(|c: char| c.is_ascii_digit()) {
+                return Some(ancestor.to_path_buf());
+            }
+        }
+    }
+    None
+}
+
+/// Build a map of tty_name -> owning USB device sysfs path.
 fn tty_usb_map() -> HashMap<String, PathBuf> {
     let mut map = HashMap::new();
     let tty_class = Path::new("/sys/class/tty");
@@ -35,16 +53,16 @@ fn tty_usb_map() -> HashMap<String, PathBuf> {
     for entry in rd.filter_map(|e| e.ok()) {
         let link = entry.path().join("device");
         if let Ok(target) = fs::canonicalize(&link) {
-            let name = entry.file_name().to_string_lossy().into_owned();
-            map.insert(name, target);
+            if let Some(dev) = usb_device_of(&target) {
+                let name = entry.file_name().to_string_lossy().into_owned();
+                map.insert(name, dev);
+            }
         }
     }
     map
 }
 
-/// Enumerate USB devices attached to the host via `/sys/bus/usb/devices/`.
-/// Returns only devices that have a TTY node associated with them.
-pub fn enumerate_usb_tty_devices() -> Vec<UsbDevice> {
+fn usb_devices_inner(tty_only: bool) -> Vec<UsbDevice> {
     let mut devices = Vec::new();
     let tty_map = tty_usb_map();
     let usb_root = Path::new("/sys/bus/usb/devices");
@@ -62,31 +80,34 @@ pub fn enumerate_usb_tty_devices() -> Vec<UsbDevice> {
         }
 
         let dev_path = entry.path();
-        let Some(vendor_id) = read_attr(&dev_path, "idVendor") else {
-            continue;
-        };
-        let Some(product_id) = read_attr(&dev_path, "idProduct") else {
-            continue;
-        };
-
+        let Some(vendor_id) = read_attr(&dev_path, "idVendor") else { continue; };
+        let Some(product_id) = read_attr(&dev_path, "idProduct") else { continue; };
         let product = read_attr(&dev_path, "product").unwrap_or_else(|| "Unknown".into());
-
-        // Skip root hubs that slipped through.
-        if product.to_lowercase().contains("root hub") {
-            continue;
-        }
-
+        if product.to_lowercase().contains("root hub") { continue; }
         let manufacturer = read_attr(&dev_path, "manufacturer").unwrap_or_else(|| "Unknown".into());
+        let Ok(resolved) = fs::canonicalize(&dev_path) else { continue; };
 
-        // Resolve the sysfs path so we can match it against TTY symlink targets.
-        let Ok(resolved) = fs::canonicalize(&dev_path) else {
-            continue;
-        };
+        let mut ttys: Vec<String> = tty_map
+            .iter()
+            .filter(|(_, dev_path)| **dev_path == resolved)
+            .map(|(tty_name, _)| format!("/dev/{tty_name}"))
+            .collect();
+        ttys.sort();
 
-        for (tty_name, tty_target) in &tty_map {
-            if tty_target.starts_with(&resolved) {
+        if ttys.is_empty() {
+            if !tty_only {
                 devices.push(UsbDevice {
-                    tty_node: format!("/dev/{tty_name}"),
+                    tty_node: String::new(),
+                    id: format!("{vendor_id}:{product_id}"),
+                    manufacturer,
+                    product,
+                    sysfs_path: resolved,
+                });
+            }
+        } else {
+            for tty in ttys {
+                devices.push(UsbDevice {
+                    tty_node: tty,
                     id: format!("{vendor_id}:{product_id}"),
                     manufacturer: manufacturer.clone(),
                     product: product.clone(),
@@ -98,6 +119,17 @@ pub fn enumerate_usb_tty_devices() -> Vec<UsbDevice> {
 
     devices.sort_by(|a, b| a.tty_node.cmp(&b.tty_node));
     devices
+}
+
+/// Enumerate USB devices that have an associated TTY character device node.
+pub fn enumerate_usb_tty_devices() -> Vec<UsbDevice> {
+    usb_devices_inner(true)
+}
+
+/// Enumerate all USB devices, including those without a TTY node.
+/// Devices without a TTY node have an empty `tty_node` field.
+pub fn enumerate_all_usb_devices() -> Vec<UsbDevice> {
+    usb_devices_inner(false)
 }
 
 /// Return true if a USB device with `vendor_id:product_id` is currently

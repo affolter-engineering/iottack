@@ -1,4 +1,5 @@
-use super::sysfs::{effective_uid, enumerate_usb_tty_devices, kernel_attr, os_release_field};
+use super::hardware::match_known_tool;
+use super::sysfs::{effective_uid, enumerate_all_usb_devices, enumerate_usb_tty_devices, kernel_attr, os_release_field};
 use crate::protocols::uart::port_scan::discover_ports;
 use crate::{
     core::{Plugin, PluginConfig, PluginFinding, PluginMeta, PluginResult, PluginStatus, Severity},
@@ -84,7 +85,7 @@ impl Plugin for PlatformDetails {
             result.add(PluginFinding::new(
                 Severity::Info,
                 format!("Serial ports available ({})", port_list.len()),
-                port_list.join("  |  "),
+                port_list.join(" \n  "),
             ));
         }
 
@@ -97,12 +98,17 @@ impl Plugin for PlatformDetails {
             ));
         } else {
             for dev in &usb_devices {
+                let (vid, pid) = dev.id.split_once(':').unwrap_or(("", ""));
+                let title = match match_known_tool(vid, pid) {
+                    Some(label) => format!("USB-serial device: {} - {}", label, dev.tty_node),
+                    None        => format!("USB-serial device: {}", dev.tty_node),
+                };
                 result.add(
                     PluginFinding::new(
                         Severity::Info,
-                        format!("USB-serial device: {}", dev.tty_node),
+                        title,
                         format!(
-                            "{} | {} ({}) | sysfs: {}",
+                            "ID: {} \n  Product: {} \n  Manufacturer: {} \n  sysfs: {}",
                             dev.id,
                             dev.product,
                             dev.manufacturer,
@@ -112,6 +118,24 @@ impl Plugin for PlatformDetails {
                     .with_evidence(dev.tty_node.clone()),
                 );
             }
+        }
+
+        // Known hardware without a TTY node (e.g., HackRF, GreatFET).
+        let non_tty_tools: Vec<_> = enumerate_all_usb_devices()
+            .into_iter()
+            .filter(|d| d.tty_node.is_empty())
+            .filter_map(|d| {
+                let (vid, pid) = d.id.split_once(':')?;
+                let label = match_known_tool(vid, pid)?;
+                Some((d, label))
+            })
+            .collect();
+        for (dev, label) in &non_tty_tools {
+            result.add(PluginFinding::new(
+                Severity::Info,
+                format!("Known hardware detected: {label}"),
+                format!("ID: {} \n  Product: {} \n  Manufacturer: {}", dev.id, dev.product, dev.manufacturer),
+            ));
         }
 
         result.finish(PluginStatus::Pass);

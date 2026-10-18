@@ -280,7 +280,9 @@ fn run() -> anyhow::Result<()> {
         .unwrap_or("text");
 
     let emit = |result: PluginResult| -> anyhow::Result<()> {
-        print_result(&result);
+        if !result.silent {
+            print_result(&result);
+        }
         if let Some(path) = output {
             save_result(&result, path, format)?;
         }

@@ -12,6 +12,7 @@ products and infrastructures. Plugins provide support for:
 | `uart/fuzz` | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |
 | `uart/port-scan` | `iottack uart port-scan` | Discover serial ports available on this host |
 | `uart/shell-detect` | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
+| `uart/terminal` | `iottack uart terminal` | Open an interactive terminal session over a UART interface |
 
 ## Build
 

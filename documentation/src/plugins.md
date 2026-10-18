@@ -7,6 +7,7 @@ a severity level and optional evidence string.
 | Plugin | Command | Summary |
 |--------|---------|---------|
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
+| [http - banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
 | [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network - telnet](./plugins/network/telnet.md) | `iottack telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
 | [uart - baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |

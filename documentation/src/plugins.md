@@ -7,6 +7,7 @@ a severity level and optional evidence string.
 | Plugin | Command | Summary |
 |--------|---------|---------|
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
+| [amqp - scan](./plugins/amqp/amqp-scan.md) | `iottack amqp scan` | Detect an AMQP broker and test for default credentials |
 | [http - banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
 | [mqtt](./plugins/mqtt.md) | - | Work with MQTT |
 | [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |

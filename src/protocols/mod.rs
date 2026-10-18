@@ -1,3 +1,4 @@
+pub mod amqp;
 pub mod http;
 pub mod network;
 pub mod telnet;

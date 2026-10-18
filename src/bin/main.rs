@@ -187,7 +187,8 @@ fn format_text(result: &PluginResult) -> String {
         out.push_str("  No findings.\n");
     } else {
         for f in &result.findings {
-            out.push_str(&format!("{}\n", f.title));
+            let sev = f.severity.to_string().to_uppercase();
+            out.push_str(&format!("[{sev}] {}\n", f.title));
             out.push_str(&format!("  {}\n", f.description));
             if let Some(ev) = &f.evidence {
                 out.push_str(&format!("  Evidence: {ev:?}\n"));
@@ -228,7 +229,15 @@ fn print_result(result: &PluginResult) {
         println!("  No findings.");
     } else {
         for f in &result.findings {
-            println!("{}", f.title);
+            use iottack::Severity;
+            let sev_label = match f.severity {
+                Severity::Info => "\x1b[36m[INFO]\x1b[0m",
+                Severity::Low => "\x1b[32m[LOW]\x1b[0m",
+                Severity::Medium => "\x1b[33m[MEDIUM]\x1b[0m",
+                Severity::High => "\x1b[31m[HIGH]\x1b[0m",
+                Severity::Critical => "\x1b[35m[CRITICAL]\x1b[0m",
+            };
+            println!("{sev_label} {}", f.title);
             println!("  {}", f.description);
             if let Some(ev) = &f.evidence {
                 println!("  Evidence: {ev:?}");

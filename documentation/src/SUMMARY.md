@@ -9,4 +9,7 @@
   - [uart - fuzz](./plugins/uart/fuzz.md)
   - [uart - port-scan](./plugins/uart/port-scan.md)
   - [uart - shell-detect](./plugins/uart/shell-detect.md)
+- [Target devices](./misc/target-devices.md)
+  - [WEMOS LOLIN S2 Mini](./misc/wemos-2s-mini.md)
+  - [Seeed Studio XIAO RP2040](./misc/xiao-rp2040.md)
 - [Development](./development.md)

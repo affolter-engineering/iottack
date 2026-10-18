@@ -4,6 +4,7 @@
 - [Plugins](./plugins.md)
   - [platform](./plugins/platform/platform.md)
   - [http - banner](./plugins/http/http-banner.md)
+  - [mqtt](./plugins/mqtt.md)
   - [network - mdns-scan](./plugins/network/mdns-scan.md)
   - [network - telnet](./plugins/network/telnet.md)
   - [network - tcp-banner](./plugins/network/tcp-banner.md)

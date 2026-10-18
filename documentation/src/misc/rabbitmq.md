@@ -13,7 +13,7 @@ file:
   };
 ```
 
-For more options, check []().
+For more options, check the [options](https://search.nixos.org/options?channel=unstable&query=services.rabbitmq&type=options).
 
 After `sudo nixos-rebuild switch`, the server is available.
 

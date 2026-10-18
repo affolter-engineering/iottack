@@ -8,6 +8,7 @@ a severity level and optional evidence string.
 |--------|---------|---------|
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
 | [http - banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
+| [mqtt](./plugins/mqtt.md) | - | Work with MQTT |
 | [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network - telnet](./plugins/network/telnet.md) | `iottack telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
 | [network - tcp-banner](./plugins/network/tcp-banner.md) | `iottack network tcp-banner` | Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext services |

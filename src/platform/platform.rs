@@ -5,7 +5,6 @@ use crate::{
     plugin_meta,
 };
 use anyhow::Result;
-use chrono::Utc;
 
 /// Collect and report details about the host environment: OS, kernel,
 /// architecture, privilege level, and whether the process runs as root.

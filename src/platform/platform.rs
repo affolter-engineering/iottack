@@ -5,12 +5,12 @@ use crate::{
     plugin_meta,
 };
 use anyhow::Result;
-use chrono::Utc;
 
 /// Collect and report details about the host environment: OS, kernel,
 /// architecture, privilege level, and whether the process runs as root.
 pub struct PlatformDetails;
 
+/// Plugin that collects and reports details about the host environment.
 impl Plugin for PlatformDetails {
     fn meta(&self) -> PluginMeta {
         plugin_meta!(
@@ -20,10 +20,12 @@ impl Plugin for PlatformDetails {
         )
     }
 
+    /// Initialize the plugin. No configuration is required for this plugin.
     fn initialize(&mut self, _config: &PluginConfig) -> Result<()> {
         Ok(())
     }
 
+    /// Execute the plugin. Collect and report host environment details.
     fn execute(&mut self) -> Result<PluginResult> {
         let mut result = PluginResult::new(self.meta().name);
 

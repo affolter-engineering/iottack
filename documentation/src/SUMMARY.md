@@ -5,6 +5,7 @@
   - [platform](./plugins/platform/platform.md)
   - [amqp - scan](./plugins/amqp/amqp-scan.md)
   - [http - banner](./plugins/http/http-banner.md)
+  - [http - sse](./plugins/http/http-sse.md)
   - [mqtt](./plugins/mqtt.md)
   - [network - mdns-scan](./plugins/network/mdns-scan.md)
   - [network - telnet](./plugins/network/telnet.md)

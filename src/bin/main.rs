@@ -258,6 +258,7 @@ fn save_result(result: &PluginResult, path: &str, format: &str) -> anyhow::Resul
     Ok(())
 }
 
+/// Entry point for the application. Initializes and runs the main logic.
 fn main() {
     if let Err(e) = run() {
         eprintln!("Error: {e}");
@@ -265,6 +266,7 @@ fn main() {
     }
 }
 
+/// Runs the main application logic, including CLI parsing, plugin execution, and result handling.
 fn run() -> anyhow::Result<()> {
     let registry = PluginRegistry::new();
     let matches = build_cli(&registry).get_matches();
@@ -325,4 +327,154 @@ fn run() -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use iottack::{CliArg, PluginFinding, PluginResult, PluginStatus, Severity};
+
+    fn pass_result(name: &str) -> PluginResult {
+        let mut r = PluginResult::new(name);
+        r.finish(PluginStatus::Pass);
+        r
+    }
+
+    #[test]
+    fn format_text_contains_plugin_name() {
+        let out = format_text(&pass_result("http/banner"));
+        assert!(out.contains("http/banner"));
+    }
+
+    #[test]
+    fn format_text_no_findings_message() {
+        let out = format_text(&pass_result("test/plugin"));
+        assert!(out.contains("No findings"));
+    }
+
+    #[test]
+    fn format_text_status_appears() {
+        let mut r = PluginResult::new("test/plugin");
+        r.finish(PluginStatus::Fail);
+        assert!(format_text(&r).contains("fail"));
+
+        let mut r = PluginResult::new("test/plugin");
+        r.finish(PluginStatus::Pass);
+        assert!(format_text(&r).contains("pass"));
+    }
+
+    #[test]
+    fn format_text_finding_title_severity_description() {
+        let mut r = PluginResult::new("test/plugin");
+        r.add(PluginFinding::new(Severity::High, "Open port", "Port 80 is open"));
+        r.finish(PluginStatus::Fail);
+        let out = format_text(&r);
+        assert!(out.contains("Open port"));
+        assert!(out.contains("HIGH"));
+        assert!(out.contains("Port 80 is open"));
+    }
+
+    #[test]
+    fn format_text_evidence_included() {
+        let mut r = PluginResult::new("test/plugin");
+        r.add(
+            PluginFinding::new(Severity::Medium, "Title", "Desc")
+                .with_evidence("raw evidence"),
+        );
+        r.finish(PluginStatus::Pass);
+        assert!(format_text(&r).contains("raw evidence"));
+    }
+
+    #[test]
+    fn format_text_elapsed_milliseconds() {
+        // A freshly finished result has near-zero elapsed time → "ms".
+        assert!(format_text(&pass_result("test/plugin")).contains("ms"));
+    }
+
+    #[test]
+    fn format_text_elapsed_seconds() {
+        let mut r = PluginResult::new("test/plugin");
+        r.finish(PluginStatus::Pass);
+        // Override finished_at after finish() so the elapsed branch for >= 1 s is hit.
+        r.finished_at = r.started_at + chrono::Duration::milliseconds(2500);
+        let out = format_text(&r);
+        assert!(out.contains(" s"));
+        assert!(!out.contains("ms"));
+    }
+
+    #[test]
+    fn config_from_matches_value_arg() {
+        let args: &[CliArg] = &[CliArg {
+            name: "host",
+            short: Some('H'),
+            help: "host",
+            value_name: "HOST",
+            default: None,
+            is_flag: false,
+        }];
+        let mut cmd = clap::Command::new("t");
+        for a in args {
+            cmd = cmd.arg(clap_arg(a));
+        }
+        let m = cmd.try_get_matches_from(["t", "--host", "192.168.1.1"]).unwrap();
+        let cfg = config_from_matches(args, &m);
+        assert_eq!(cfg.get("host"), Some("192.168.1.1"));
+    }
+
+    #[test]
+    fn config_from_matches_flag_arg_present() {
+        let args: &[CliArg] = &[CliArg {
+            name: "silent",
+            short: None,
+            help: "silent",
+            value_name: "",
+            default: None,
+            is_flag: true,
+        }];
+        let mut cmd = clap::Command::new("t");
+        for a in args {
+            cmd = cmd.arg(clap_arg(a));
+        }
+        let m = cmd.try_get_matches_from(["t", "--silent"]).unwrap();
+        let cfg = config_from_matches(args, &m);
+        assert_eq!(cfg.get("silent"), Some("true"));
+    }
+
+    #[test]
+    fn config_from_matches_flag_arg_absent() {
+        let args: &[CliArg] = &[CliArg {
+            name: "silent",
+            short: None,
+            help: "silent",
+            value_name: "",
+            default: None,
+            is_flag: true,
+        }];
+        let mut cmd = clap::Command::new("t");
+        for a in args {
+            cmd = cmd.arg(clap_arg(a));
+        }
+        let m = cmd.try_get_matches_from(["t"]).unwrap();
+        let cfg = config_from_matches(args, &m);
+        assert_eq!(cfg.get("silent"), Some("false"));
+    }
+
+    #[test]
+    fn config_from_matches_default_value_applied() {
+        let args: &[CliArg] = &[CliArg {
+            name: "port",
+            short: Some('p'),
+            help: "port",
+            value_name: "PORT",
+            default: Some("80"),
+            is_flag: false,
+        }];
+        let mut cmd = clap::Command::new("t");
+        for a in args {
+            cmd = cmd.arg(clap_arg(a));
+        }
+        let m = cmd.try_get_matches_from(["t"]).unwrap();
+        let cfg = config_from_matches(args, &m);
+        assert_eq!(cfg.get("port"), Some("80"));
+    }
 }

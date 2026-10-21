@@ -25,6 +25,7 @@ pub struct CliArg {
 pub fn category_from_module(module: &str) -> Category {
     let stripped = module
         .strip_prefix("iottack::protocols::")
+        .or_else(|| module.strip_prefix("iottack::hardware::"))
         .or_else(|| module.strip_prefix("iottack::"))
         .unwrap_or(module);
 
@@ -43,6 +44,7 @@ pub fn category_from_module(module: &str) -> Category {
 pub fn plugin_name_from_module(module: &str) -> String {
     module
         .strip_prefix("iottack::protocols::")
+        .or_else(|| module.strip_prefix("iottack::hardware::"))
         .or_else(|| module.strip_prefix("iottack::"))
         .unwrap_or(module)
         .replace("::", "/")
@@ -149,6 +151,11 @@ mod tests {
     fn plugin_name_strips_protocols_prefix_and_maps_separators() {
         assert_eq!(plugin_name_from_module("iottack::protocols::http::banner"), "http/banner");
         assert_eq!(plugin_name_from_module("iottack::protocols::network::tcp_banner"), "network/tcp-banner");
+    }
+
+    #[test]
+    fn plugin_name_strips_hardware_prefix() {
+        assert_eq!(plugin_name_from_module("iottack::hardware::ghostesp::device"), "ghostesp/device");
     }
 
     #[test]

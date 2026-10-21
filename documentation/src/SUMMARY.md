@@ -15,6 +15,8 @@
   - [uart - port-scan](./plugins/uart/port-scan.md)
   - [uart - shell-detect](./plugins/uart/shell-detect.md)
   - [uart - terminal](./plugins/uart/terminal.md)
+  - [hardware](./plugins/hardware/intro-hardware.md)
+    - [hardware - ghostesp/device](./plugins/hardware/ghostesp.md)
 - [Target devices/services](./misc/target-devices.md)
   - [ESPHome](./misc/wemos-2s-mini.md)
   - [CircuitPython](./misc/xiao-rp2040.md)

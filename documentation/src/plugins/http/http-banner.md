@@ -1,19 +1,9 @@
-# http-banner
-
-Grab the HTTP banner and check response headers from a web server.
-
-## Usage
-
-```sh
-iottack http http-banner --host <HOST> [OPTIONS]
-```
-
-## Description
+# http banner
 
 Sends a `GET` request to the target and inspects the response for security
 issues, version disclosure, and missing hardening headers.
 
-### Checks performed
+## Checks performed
 
 | Check | Finding | Severity |
 |-------|---------|----------|
@@ -31,7 +21,13 @@ issues, version disclosure, and missing hardening headers.
 | Default installation page in body | Server not customised | Medium |
 | Cookie missing `Secure` or `HttpOnly` flag | Insecure cookie | Medium |
 
-## Options
+## Usage
+
+```sh
+iottack http http-banner --host <HOST> [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

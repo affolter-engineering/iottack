@@ -1,22 +1,12 @@
-# uart - port-scan
-
-Discover serial ports available on this host.
-
-## Usage
-
-```sh
-iottack uart port-scan [OPTIONS]
-```
-
-## Description
+# uart port-scan
 
 Scans `/dev/` for character devices whose names match known UART naming patterns:
 
 | Prefix | Interface |
 |--------|-----------|
-| `ttyUSB*` | USB-to-serial (FTDI, CH340, CP210x, …) |
+| `ttyUSB*` | USB-to-serial (FTDI, CH340, CP210x, ...) |
 | `ttyACM*` | USB CDC ACM (Arduino, modems) |
-| `ttyAMA*` | ARM PL011 UART (Raspberry Pi, …) |
+| `ttyAMA*` | ARM PL011 UART (Raspberry Pi, ...) |
 | `ttymxc*` | NXP i.MX SoC UART |
 | `ttyO*` | TI OMAP UART |
 | `ttyMSM*` | Qualcomm UART |
@@ -26,7 +16,13 @@ Scans `/dev/` for character devices whose names match known UART naming patterns
 Pass `--verify` to attempt opening each discovered port at 9600 baud, confirming
 whether it is accessible without elevated privileges.
 
-## Options
+## Usage
+
+```sh
+iottack uart port-scan [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

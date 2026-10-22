@@ -1,15 +1,5 @@
 # platform
 
-Report details about the host and platform environment.
-
-## Usage
-
-```sh
-iottack platform [OPTIONS]
-```
-
-## Description
-
 Collects and reports information about the host running `iottack`:
 
 - Framework version
@@ -19,8 +9,14 @@ Collects and reports information about the host running `iottack`:
 - Effective user ID - flags whether the process has root privileges
 - Available serial ports (`/dev/ttyUSB*`, `/dev/ttyACM*`, etc.)
 - USB-serial devices enumerated via sysfs, including vendor/product details
+- 
+## Usage
 
-## Options
+```sh
+iottack platform [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

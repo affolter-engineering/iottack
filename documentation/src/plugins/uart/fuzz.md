@@ -1,4 +1,4 @@
-# uart - fuzz
+# uart fuzz
 
 Sends a sequence of payloads through a serial port and inspects each response
 for patterns that indicate crashes, errors, shell exposure, or any user-defined

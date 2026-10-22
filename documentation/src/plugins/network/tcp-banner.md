@@ -1,14 +1,4 @@
-# tcp-banner
-
-Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext or unauthenticated services.
-
-## Usage
-
-```sh
-iottack network tcp-banner --host <HOST> --port <PORT> [OPTIONS]
-```
-
-## Description
+# tcp banner
 
 Opens a TCP connection to the target and reads the first bytes the service sends
 on connection (the banner). If the service sends nothing, a set of protocol-specific
@@ -17,7 +7,7 @@ probes is tried in sequence until one matches.
 The banner is compared against known signatures to identify the service. Cleartext
 and unauthenticated protocols are flagged with an elevated severity.
 
-### Identified protocols
+## Identified protocols
 
 | Protocol | Detection method | Severity |
 |----------|-----------------|----------|
@@ -36,7 +26,7 @@ and unauthenticated protocols are flagged with an elevated severity.
 Unrecognized banners that contain version strings are reported as **Medium**
 (information disclosure); all other unknown services are **Info**.
 
-### Severity mapping
+## Severity mapping
 
 | Finding | Severity |
 |---------|----------|
@@ -48,7 +38,13 @@ Unrecognized banners that contain version strings are reported as **Medium**
 | Unknown service, no version info | Info |
 | No banner received | Info |
 
-## Options
+## Usage
+
+```sh
+iottack network tcp-banner --host <HOST> --port <PORT> [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

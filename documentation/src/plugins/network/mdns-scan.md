@@ -1,17 +1,7 @@
-# network - mdns-scan
-
-Discover mDNS/DNS-SD services on the local network.
-
-## Usage
-
-```sh
-iottack network mdns-scan [OPTIONS]
-```
-
-## Description
+# network mdns-scan
 
 Browses the local network for mDNS/DNS-SD service announcements and reports
-resolved instances with hostname, IP address, port, and TXT records.
+resolved instances with hostname, IP address, port and TXT records.
 
 All service types are queried in parallel. Each query sends a probe every
 second until the timeout expires. Insecure protocols are flagged at higher
@@ -30,7 +20,13 @@ severity:
 | `_matter._tcp.local` | Matter | Info |
 | `_googlecast._tcp.local` | Chromecast | Info |
 
-## Options
+## Usage
+
+```sh
+iottack network mdns-scan [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

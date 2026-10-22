@@ -1,15 +1,5 @@
 # http-sse
 
-Consume Server-Sent Events (SSE / EventSource) from a device endpoint.
-
-## Usage
-
-```sh
-iottack http http-sse --host <HOST> [OPTIONS]
-```
-
-## Description
-
 Connects to an HTTP EventSource endpoint and keeps the connection open for a
 configurable duration, collecting Server-Sent Events as they arrive.
 The plugin analyses the stream for security issues including open access,
@@ -21,7 +11,7 @@ protocol is commonly used by IoT firmware to push sensor readings, device
 state, and log messages to browser-based dashboards over a persistent HTTP
 connection.
 
-### Checks performed
+## Checks performed
 
 | Check | Finding | Severity |
 |-------|---------|----------|
@@ -41,7 +31,13 @@ connection.
 Sensitive keywords checked in event payloads: `password`, `token`, `secret`,
 `key`, `auth`, `credential`, `private`, `serial`.
 
-## Options
+## Usage
+
+```sh
+iottack http http-sse --host <HOST> [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

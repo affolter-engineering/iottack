@@ -1,15 +1,5 @@
 # uart - fuzz
 
-Send malformed and custom payloads to a UART interface and report anomalous responses.
-
-## Usage
-
-```sh
-iottack uart fuzz --port <PATH> [OPTIONS]
-```
-
-## Description
-
 Sends a sequence of payloads through a serial port and inspects each response
 for patterns that indicate crashes, errors, shell exposure, or any user-defined
 string. The built-in payload set covers common vulnerability classes (null
@@ -17,14 +7,14 @@ bytes, long strings, format strings, shell metacharacters, boundary values,
 control characters). When `--charset` or `--wordlist` is supplied the built-in
 set is replaced so only the specified payloads are sent.
 
-### Status
+## Status
 
 | Result | Meaning |
 |--------|---------|
 | `pass` | At least one payload produced an interesting response (Medium severity) |
 | `fail` | A High/Critical pattern matched (crash, shell prompt) **or** no response matched at all |
 
-### Severity classification
+## Severity classification
 
 | Severity | Matched patterns |
 |----------|-----------------|
@@ -32,7 +22,12 @@ set is replaced so only the specified payloads are sent.
 | High | `root@`, `# `, `$ `, `login:`, `password:` |
 | Medium | Everything else (`error`, `invalid`, user `--pattern` strings) |
 
-## Options
+## Usage
+
+```sh
+iottack uart fuzz --port <PATH> [OPTIONS]
+```
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

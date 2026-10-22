@@ -6,7 +6,7 @@ number, connection ID, driver name, and the complete channel list.
 
 ## Requirements
 
-Same as [`logic-analyser capture`](./logic-analyser.md#requirements) — the
+Same as [`logic-analyser capture`](./logic-analyser.md#requirements). The
 `libsigrok` system library must be installed and the user must have access to
 USB/serial devices.
 
@@ -20,7 +20,7 @@ and returns one `Info` finding per discovered device. Each finding includes:
 - Driver short name and long name
 - Number of channels and their names (disabled channels are marked)
 
-No hardware interaction beyond device scanning takes place; the device is not
+No hardware interaction beyond device scanning takes place. The device is not
 opened and no samples are captured.
 
 ## Usage

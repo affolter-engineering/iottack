@@ -3,6 +3,7 @@ pub mod hardware;
 pub mod fuzzing;
 pub mod platform;
 pub mod protocols;
+pub mod vulns;
 
 pub use core::{
     Category, CliArg, FrameworkError, Plugin, PluginConfig, PluginFactory, PluginFinding,

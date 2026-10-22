@@ -1,4 +1,4 @@
-# vulns bluefi CVE-2025-27840 (BlueFi)
+# vulns bluefi
 
 **CVE-2025-27840** affects ESP32 Bluetooth firmware. When an ESP32 is
 connected via USB in HCI (Host Controller Interface) mode, the full HCI
@@ -42,7 +42,7 @@ For vendor commands (OGF 0x3F): `opcode = 0xFC00 | OCF`
 iottack vulns bluefi --port /dev/ttyUSB1 [OPTIONS]
 ```
 
-## Options
+### Options
 
 | Flag | Short | Default | Description |
 |---|---|---|---|

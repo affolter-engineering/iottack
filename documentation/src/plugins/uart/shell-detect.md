@@ -1,14 +1,4 @@
-# uart - shell-detect
-
-Detect an interactive shell or login prompt on a UART interface.
-
-## Usage
-
-```sh
-iottack uart shell-detect --port <PATH> [OPTIONS]
-```
-
-## Description
+# uart shell-detect
 
 Connects at the configured baud rate, sends newlines to wake the device, and
 inspects the response for shell and login prompt patterns. Makes multiple
@@ -24,11 +14,17 @@ Findings are classified as follows:
 | Boot messages | Info | Boot-time keywords detected |
 | No response | - | No output after all attempts |
 
-## Options
+## Usage
+
+```sh
+iottack uart shell-detect --port <PATH> [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
-| `--port <PATH>` | `-p` | *(required)* | Serial port device, e.g. `/dev/ttyUSB0` |
+| `--port <PATH>` | `-p` | *(required)* | Serial port device, e.g., `/dev/ttyUSB0` |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Baud rate to connect at |
 | `--attempts <N>` | - | `3` | Number of stimulus attempts |
 | `--timeout-ms <MS>` | - | `500` | Read timeout per attempt in milliseconds |

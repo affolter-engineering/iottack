@@ -1,4 +1,4 @@
-# http-sse
+# http sse
 
 Connects to an HTTP EventSource endpoint and keeps the connection open for a
 configurable duration, collecting Server-Sent Events as they arrive.

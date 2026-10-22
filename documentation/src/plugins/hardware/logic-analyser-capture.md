@@ -9,7 +9,6 @@ been disabled before shipping.
 
 A [sigrok](https://sigrok.org/)-supported logic analyzer connected to the host.
 
-
 Common supported devices include:
 
 - **Demo driver** (`demo`): simulated device, no hardware needed; useful for
@@ -95,7 +94,7 @@ iottack logic-analyser capture --driver fx2lafw --samplerate 4000000 --dump-file
 iottack logic-analyser capture --driver fx2lafw --samples 5000 -v
 ```
 
-## Options
+### Options
 
 | Flag | Short | Default | Description |
 | ---- | ----- | ------- | ----------- |

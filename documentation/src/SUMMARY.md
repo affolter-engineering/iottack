@@ -19,6 +19,8 @@
     - [ghostesp device](./plugins/hardware/ghostesp.md)
     - [ghostesp bledetect](./plugins/hardware/ghostesp-bledetect.md)
     - [ghostesp blescan](./plugins/hardware/ghostesp-blescan.md)
+    - [logic-analyser device](./plugins/hardware/logic-analyser-device.md)
+    - [logic-analyser capture](./plugins/hardware/logic-analyser-capture.md)
   - [Vulnerabilities](./plugins/vulnerabilitites/intro.md)
     - [bluefi](./plugins/vulnerabilitites/bluefi.md)
 - [Target devices/services](./misc/target-devices.md)

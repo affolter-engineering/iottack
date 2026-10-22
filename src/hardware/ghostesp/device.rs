@@ -163,7 +163,7 @@ impl Plugin for DevicePlugin {
                 CliArg {
                     name: "port",
                     short: Some('p'),
-                    help: "Serial port the GhostESP device is connected to (e.g. /dev/ttyUSB0).",
+                    help: "Serial port the GhostESP device is connected to (e.g., /dev/ttyUSB0).",
                     value_name: "PORT",
                     default: None,
                     is_flag: false,

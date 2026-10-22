@@ -19,6 +19,8 @@
     - [ghostesp device](./plugins/hardware/ghostesp.md)
     - [ghostesp bledetect](./plugins/hardware/ghostesp-bledetect.md)
     - [ghostesp blescan](./plugins/hardware/ghostesp-blescan.md)
+    - [logic-analyser device](./plugins/hardware/logic-analyser-device.md)
+    - [logic-analyser capture](./plugins/hardware/logic-analyser-capture.md)
 - [Target devices/services](./misc/target-devices.md)
   - [ESPHome](./misc/wemos-2s-mini.md)
   - [CircuitPython](./misc/xiao-rp2040.md)

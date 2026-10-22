@@ -1,14 +1,4 @@
-# uart - terminal
-
-Open an interactive terminal session over a UART interface.
-
-## Usage
-
-```sh
-iottack uart terminal --port <PATH> [OPTIONS]
-```
-
-## Description
+# uart terminal
 
 Connects to the serial port and bridges your terminal to the device: everything
 you type is forwarded byte-for-byte to the device, and everything the device
@@ -20,7 +10,13 @@ device is reset or unplugged mid-session.
 No findings are reported — this plugin is an interactive utility, not an
 automated check.
 
-## Options
+## Usage
+
+```sh
+iottack uart terminal --port <PATH> [OPTIONS]
+```
+
+### Options
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|

@@ -18,6 +18,7 @@ a severity level and optional evidence string.
 | [uart - fuzz](./plugins/uart/fuzz.md) | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |
 | [uart - shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
 | [uart - terminal](./plugins/uart/terminal.md) | `iottack uart terminal` | Open an interactive terminal session over a UART interface |
+| [vulns - bluefi](./plugins/vulnerabilitites/bluefi.md) | `ìottack vuln bluefi` | Check ESP for CVE-2025-27840 |
 
 ## Global options
 

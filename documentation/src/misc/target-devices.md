@@ -7,5 +7,5 @@ plugins behave against an actual piece of hardware or an actual service.
 | Device | Firmware | Notes |
 |--------|----------|-------|
 | [Generic IoT device](./generic-iot.md) | ESPHome | Wi-Fi target for the network plugins |
-| [Seeed Studio XIAO RP2040](./uart.md) | CircuitPython | Serial target for the UART plugins |
+| [UART device](./uart.md) | CircuitPython | Serial target for the UART plugins |
 | [AMQP server](./amqp.md) | - | Local RabbitMQ server |

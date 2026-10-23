@@ -1,6 +1,6 @@
-# WEMOS LOLIN S2 Mini (ESPHome)
+# Generic IoT Test Target (ESPHome)
 
-The [WEMOS LOLIN S2 Mini](https://www.wemos.cc/en/latest/s2/s2_mini.html) is used as a
+A [WEMOS LOLIN S2 Mini](https://www.wemos.cc/en/latest/s2/s2_mini.html) is used as a
 target or dummy device to demonstrate how the `iottack` plugins behave against a real
 piece of IoT hardware. Any other ESP32-S2 based board can be substituted.
 

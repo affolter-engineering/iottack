@@ -8,6 +8,8 @@ a severity level and optional evidence string.
 |--------|---------|---------|
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
 | [amqp - scan](./plugins/amqp/amqp-scan.md) | `iottack amqp scan` | Detect an AMQP broker and test for default credentials |
+| [ble - adapter](./plugins/ble/ble-adapter.md) | `iottack ble adapter` | List Bluetooth adapters and report their power and discoverability state |
+| [ble - scan](./plugins/ble/ble-scan.md) | `iottack ble scan` | Discover nearby Bluetooth Low Energy devices and report their properties |
 | [http - banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
 | [mqtt](./plugins/mqtt.md) | - | Work with MQTT |
 | [network - mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |

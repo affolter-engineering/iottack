@@ -19,29 +19,31 @@ impl FuzzTransport for UartTransport<'_> {
 }
 
 pub struct UartFuzzer {
-    config:     UartConfig,
-    session:    Option<UartSession>,
-    iterations: u32,
-    charset:    Option<String>,
-    length:     usize,
-    wordlist:   Option<String>,
-    delay_ms:   u64,
-    suffix:     String,
-    patterns:   Vec<String>,
+    config:        UartConfig,
+    session:       Option<UartSession>,
+    iterations:    u32,
+    charset:       Option<String>,
+    length:        usize,
+    wordlist:      Option<String>,
+    delay_ms:      u64,
+    suffix:        String,
+    patterns:      Vec<String>,
+    payload_sets:  Option<String>,
 }
 
 impl UartFuzzer {
     pub fn new() -> Self {
         Self {
-            config:     UartConfig::default(),
-            session:    None,
-            iterations: 1,
-            charset:    None,
-            length:     64,
-            wordlist:   None,
-            delay_ms:   0,
-            suffix:     String::new(),
-            patterns:   Vec::new(),
+            config:        UartConfig::default(),
+            session:       None,
+            iterations:    1,
+            charset:       None,
+            length:        64,
+            wordlist:      None,
+            delay_ms:      0,
+            suffix:        String::new(),
+            patterns:      Vec::new(),
+            payload_sets:  None,
         }
     }
 }
@@ -71,7 +73,8 @@ impl Plugin for UartFuzzer {
                 CliArg { name: "wordlist",   short: Some('w'), help: "Wordlist file (replaces built-in payloads)",           value_name: "PATH",    default: None,           is_flag: false },
                 CliArg { name: "suffix",     short: Some('s'), help: r"Bytes appended to every payload, e.g. '\r\n'",        value_name: "BYTES",   default: Some(""),       is_flag: false },
                 CliArg { name: "pattern",    short: None,      help: "Extra response pattern to flag (repeatable via key=v)", value_name: "STRING",  default: None,           is_flag: false },
-                CliArg { name: "delay_ms",   short: Some('d'), help: "Delay between payloads in milliseconds",               value_name: "MS",      default: Some("0"),      is_flag: false },
+                CliArg { name: "delay_ms",    short: Some('d'), help: "Delay between payloads in milliseconds",                                        value_name: "MS",      default: Some("0"),  is_flag: false },
+                CliArg { name: "payload-set", short: None,      help: "Named payload sets to add, comma-separated (digits,lowercase,uppercase,ascii)", value_name: "SETS",    default: None,       is_flag: false },
             ],
         )
     }
@@ -87,6 +90,7 @@ impl Plugin for UartFuzzer {
         if let Some(p) = config.get("pattern") {
             self.patterns.push(p.to_string());
         }
+        self.payload_sets = config.get("payload-set").map(|s| s.to_string());
         self.connect()
     }
 
@@ -107,6 +111,9 @@ impl Plugin for UartFuzzer {
         }
         if let Some(ref charset) = self.charset {
             engine = engine.with_charset(charset, self.length);
+        }
+        if let Some(ref sets) = self.payload_sets {
+            engine = engine.with_payload_sets(sets)?;
         }
 
         let matches = if let Some(session) = self.session_mut() {

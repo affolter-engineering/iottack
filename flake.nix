@@ -21,7 +21,7 @@
             pkg-config
             llvmPackages.libclang.lib
           ];
-          buildInputs = with pkgs; [ libsigrok libsigrokdecode glib ];
+          buildInputs = with pkgs; [ libsigrok libsigrokdecode glib dbus ];
           LD_LIBRARY_PATH = "${pkgs.libsigrok}/lib:${pkgs.libsigrokdecode}/lib:${pkgs.glib.out}/lib";
           LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
           BINDGEN_EXTRA_CLANG_ARGS = "-isystem ${pkgs.glibc.dev}/include -isystem ${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.llvmPackages.libclang.version}/include";
@@ -36,6 +36,7 @@
             libsigrok
             libsigrokdecode
             glib
+            dbus
             llvmPackages.libclang.lib
           ];
           LD_LIBRARY_PATH = "${pkgs.libsigrok}/lib:${pkgs.libsigrokdecode}/lib:${pkgs.glib.out}/lib";

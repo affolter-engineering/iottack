@@ -1,4 +1,4 @@
-use super::payloads::{charset_payloads, wordlist_payloads, FuzzPayload, OwnedFuzzPayload, INTERESTING_PATTERNS, PAYLOADS};
+use super::payloads::{charset_payloads, named_payload_set, wordlist_payloads, FuzzPayload, OwnedFuzzPayload, INTERESTING_PATTERNS, PAYLOADS};
 use crate::core::{PluginFinding, Severity};
 use anyhow::Result;
 use std::time::Duration;
@@ -31,6 +31,7 @@ pub struct FuzzEngine {
     delay:          Duration,
 }
 
+/// Parse escape sequences in a string (`\r`, `\n`, `\t`, `\0`, `\\`).
 impl FuzzEngine {
     pub fn new(iterations: u32) -> Self {
         Self {
@@ -52,7 +53,7 @@ impl FuzzEngine {
 
     /// Append `suffix` bytes to every payload before sending.
     ///
-    /// Recognises `\r`, `\n`, `\t`, `\0`, `\\` escape sequences in the string.
+    /// Recognizes `\r`, `\n`, `\t`, `\0`, `\\` escape sequences in the string.
     pub fn with_suffix(mut self, s: &str) -> Self {
         self.suffix = parse_escapes(s);
         self
@@ -94,6 +95,20 @@ impl FuzzEngine {
     pub fn with_payload(mut self, payload: OwnedFuzzPayload) -> Self {
         self.extra_payloads.push(payload);
         self
+    }
+
+    /// Add payloads from one or more named sets (comma-separated).
+    ///
+    /// Available sets: `digits`, `lowercase`, `uppercase`, `ascii`
+    /// Example: `"digits,uppercase"` adds both sets.
+    pub fn with_payload_sets(mut self, sets: &str) -> anyhow::Result<Self> {
+        for name in sets.split(',') {
+            let name = name.trim();
+            if !name.is_empty() {
+                self.extra_payloads.extend(named_payload_set(name)?);
+            }
+        }
+        Ok(self)
     }
 
     /// Run all payloads × iterations through `transport`.

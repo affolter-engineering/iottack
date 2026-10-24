@@ -18,6 +18,7 @@
   - [ble adapter](./plugins/ble/ble-adapter.md)
   - [ble scan](./plugins/ble/ble-scan.md)
   - [ble device](./plugins/ble/ble-device.md)
+  - [ble write](./plugins/ble/ble-write.md)
   - [Hardware](./plugins/hardware/intro-hardware.md)
     - [ghostesp device](./plugins/hardware/ghostesp.md)
     - [ghostesp bledetect](./plugins/hardware/ghostesp-bledetect.md)

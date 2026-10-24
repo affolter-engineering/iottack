@@ -88,6 +88,35 @@ pub fn wordlist_payloads(path: &str) -> Result<Vec<OwnedFuzzPayload>> {
     Ok(payloads)
 }
 
+fn bytes_to_payloads(bytes: &[u8]) -> Vec<OwnedFuzzPayload> {
+    bytes
+        .iter()
+        .map(|&b| OwnedFuzzPayload {
+            label: format!("'{}'", b.escape_ascii()),
+            data:  vec![b],
+        })
+        .collect()
+}
+
+/// Return the payloads for a named set (one single-byte payload per character).
+///
+/// Available names: `digits`, `lowercase`, `uppercase`, `ascii`
+/// Pass a comma-separated string to [`FuzzEngine::with_payload_sets`] to combine sets.
+pub fn named_payload_set(name: &str) -> Result<Vec<OwnedFuzzPayload>> {
+    match name.trim() {
+        "digits"    => Ok(bytes_to_payloads(b"1234567890")),
+        "lowercase" => Ok(bytes_to_payloads(b"abcdefghijklmnopqrstuvwxyz")),
+        "uppercase" => Ok(bytes_to_payloads(b"ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
+        "ascii" => {
+            let printable: Vec<u8> = (0x20u8..=0x7Eu8).collect();
+            Ok(bytes_to_payloads(&printable))
+        }
+        other => anyhow::bail!(
+            "unknown payload set '{other}'; available: digits, lowercase, uppercase, ascii"
+        ),
+    }
+}
+
 /// Default payload set covering common vulnerability classes.
 pub const PAYLOADS: &[FuzzPayload] = &[
     FuzzPayload { label: "null bytes",           data: &[0x00; 64] },

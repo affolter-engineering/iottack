@@ -5,7 +5,8 @@ for patterns that indicate crashes, errors, shell exposure, or any user-defined
 string. The built-in payload set covers common vulnerability classes (null
 bytes, long strings, format strings, shell metacharacters, boundary values,
 control characters). When `--charset` or `--wordlist` is supplied the built-in
-set is replaced so only the specified payloads are sent.
+set is replaced so only the specified payloads are sent. Named payload sets
+(`--payload-set`) always add to whatever is already configured.
 
 ## Status
 
@@ -41,6 +42,7 @@ iottack uart fuzz --port <PATH> [OPTIONS]
 | `--suffix <BYTES>` | `-s` | - | Bytes appended to every payload, e.g. `\r\n` for line-oriented shells |
 | `--pattern <STRING>` | - | - | Extra response pattern to flag as interesting |
 | `--delay-ms <MS>` | `-d` | `0` | Delay between payloads in milliseconds |
+| `--payload-set <SETS>` | - | - | Named payload sets to add, comma-separated (`digits`, `lowercase`, `uppercase`, `ascii`) |
 | `--output <FILE>` | `-o` | - | Save result to a file |
 | `--format <FORMAT>` | `-f` | `text` | `text` or `json` |
 | `--verbose` | `-v` | - | Increase log verbosity (repeat for debug/trace) |
@@ -77,6 +79,46 @@ iottack uart fuzz --port /dev/ttyUSB0 \
   --wordlist /path/to/commands.txt \
   --suffix '\r\n' \
   --delay-ms 100
+```
+
+### Named payload sets
+
+Four built-in named sets are available. Unlike `--charset` and `--wordlist`,
+named sets always **add** to the active payload list — they never replace the
+built-in set (or a wordlist/charset if one is also specified).
+
+| Set name | Contents |
+|----------|----------|
+| `digits` | `1234567890` repeated to lengths 10, 64, 256 |
+| `lowercase` | `a–z` repeated to lengths 26, 64, 256 |
+| `uppercase` | `A–Z` repeated to lengths 26, 64, 256 |
+| `ascii` | All 95 printable ASCII characters (0x20–0x7E), lengths 95, 128, 256 |
+
+Add the digits set on top of the built-in payloads:
+
+```sh
+iottack uart fuzz --port /dev/ttyUSB0 \
+  --payload-set digits \
+  --suffix '\r\n'
+```
+
+Combine several sets at once using a comma-separated list:
+
+```sh
+iottack uart fuzz --port /dev/ttyUSB0 \
+  --payload-set digits,lowercase,uppercase,ascii \
+  --suffix '\r\n' \
+  --delay-ms 50
+```
+
+Use named sets alongside a wordlist (the wordlist replaces the built-ins, the
+named sets are appended on top):
+
+```sh
+iottack uart fuzz --port /dev/ttyUSB0 \
+  --wordlist commands.txt \
+  --payload-set digits,ascii \
+  --suffix '\r\n'
 ```
 
 ## Wordlist format

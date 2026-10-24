@@ -1,4 +1,4 @@
-# Seeed Studio XIAO RP2040 (CircuitPython)
+# UART Test Target (CircuitPython)
 
 Some example in the Plugin documentation are showing how an actual approach
 could be taken to exploit a device.

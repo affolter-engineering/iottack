@@ -191,7 +191,10 @@ mod tests {
         assert_eq!(PluginStatus::Pass.to_string(), "pass");
         assert_eq!(PluginStatus::Fail.to_string(), "fail");
         assert_eq!(PluginStatus::Skipped.to_string(), "skipped");
-        assert_eq!(PluginStatus::Error("oops".into()).to_string(), "error(oops)");
+        assert_eq!(
+            PluginStatus::Error("oops".into()).to_string(),
+            "error(oops)"
+        );
     }
 
     #[test]

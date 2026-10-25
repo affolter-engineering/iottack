@@ -80,7 +80,8 @@ fn assess(name: &str, icon: &str, class: Option<u32>, uuids: &HashSet<bluer::Uui
 
     if is_linux {
         cves.extend_from_slice(&["CVE-2017-1000250", "CVE-2017-1000251"]);
-        reasons.push("Linux device (BlueZ SDP info-disclosure and L2CAP stack overflow)".to_string());
+        reasons
+            .push("Linux device (BlueZ SDP info-disclosure and L2CAP stack overflow)".to_string());
     }
 
     if !is_android && !is_linux && has_bnep {
@@ -107,7 +108,11 @@ fn assess(name: &str, icon: &str, class: Option<u32>, uuids: &HashSet<bluer::Uui
         Severity::Low
     };
 
-    Assessment { cves, reasons, severity }
+    Assessment {
+        cves,
+        reasons,
+        severity,
+    }
 }
 
 /// Plugin for detecting devices potentially vulnerable to the BlueBorne set of Bluetooth exploits.
@@ -227,7 +232,11 @@ impl BlueBornePlugin {
             self.adapter_name.clone()
         };
 
-        tracing::debug!(adapter = adapter_name, timeout = self.timeout_secs, "starting BlueBorne scan");
+        tracing::debug!(
+            adapter = adapter_name,
+            timeout = self.timeout_secs,
+            "starting BlueBorne scan"
+        );
         let adapter = match session.adapter(&adapter_name) {
             Ok(a) => a,
             Err(e) => {

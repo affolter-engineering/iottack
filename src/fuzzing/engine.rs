@@ -1,4 +1,7 @@
-use super::payloads::{charset_payloads, named_payload_set, wordlist_payloads, FuzzPayload, OwnedFuzzPayload, INTERESTING_PATTERNS, PAYLOADS};
+use super::payloads::{
+    FuzzPayload, INTERESTING_PATTERNS, OwnedFuzzPayload, PAYLOADS, charset_payloads,
+    named_payload_set, wordlist_payloads,
+};
 use crate::core::{PluginFinding, Severity};
 use anyhow::Result;
 use std::time::Duration;
@@ -13,35 +16,35 @@ pub trait FuzzTransport {
 /// One interesting response: which payload triggered it, what patterns matched,
 /// a short preview of the response, and the derived severity.
 pub struct FuzzMatch {
-    pub payload_label:    String,
+    pub payload_label: String,
     pub matched_patterns: Vec<String>,
     pub response_preview: String,
-    pub severity:         Severity,
+    pub severity: Severity,
 }
 
 /// Runs a set of payloads through a [`FuzzTransport`] and returns all
 /// responses that matched at least one interesting pattern.
 pub struct FuzzEngine {
-    payloads:       &'static [FuzzPayload],
+    payloads: &'static [FuzzPayload],
     extra_payloads: Vec<OwnedFuzzPayload>,
-    patterns:       &'static [&'static str],
+    patterns: &'static [&'static str],
     extra_patterns: Vec<String>,
-    suffix:         Vec<u8>,
-    iterations:     u32,
-    delay:          Duration,
+    suffix: Vec<u8>,
+    iterations: u32,
+    delay: Duration,
 }
 
 /// Parse escape sequences in a string (`\r`, `\n`, `\t`, `\0`, `\\`).
 impl FuzzEngine {
     pub fn new(iterations: u32) -> Self {
         Self {
-            payloads:       PAYLOADS,
+            payloads: PAYLOADS,
             extra_payloads: Vec::new(),
-            patterns:       INTERESTING_PATTERNS,
+            patterns: INTERESTING_PATTERNS,
             extra_patterns: Vec::new(),
-            suffix:         Vec::new(),
+            suffix: Vec::new(),
             iterations,
-            delay:          Duration::ZERO,
+            delay: Duration::ZERO,
         }
     }
 
@@ -61,7 +64,8 @@ impl FuzzEngine {
 
     /// Add extra response patterns to match in addition to the built-in set.
     pub fn with_extra_patterns(mut self, patterns: &[&str]) -> Self {
-        self.extra_patterns.extend(patterns.iter().map(|s| s.to_string()));
+        self.extra_patterns
+            .extend(patterns.iter().map(|s| s.to_string()));
         self
     }
 
@@ -80,7 +84,8 @@ impl FuzzEngine {
     /// Add one payload per (character, length) combination from `charset`, up to `max_length`.
     pub fn with_charset(mut self, charset: &str, max_length: usize) -> Self {
         if !charset.is_empty() && max_length > 0 {
-            self.extra_payloads.extend(charset_payloads(charset, max_length));
+            self.extra_payloads
+                .extend(charset_payloads(charset, max_length));
         }
         self
     }
@@ -134,11 +139,18 @@ impl FuzzEngine {
                     [data, self.suffix.as_slice()].concat()
                 };
 
-                let wire_str: String = wire.iter()
+                let wire_str: String = wire
+                    .iter()
                     .flat_map(|b| b.escape_ascii())
                     .map(char::from)
                     .collect();
-                tracing::debug!(iteration, label, bytes = wire.len(), payload = wire_str, "sending payload");
+                tracing::debug!(
+                    iteration,
+                    label,
+                    bytes = wire.len(),
+                    payload = wire_str,
+                    "sending payload"
+                );
 
                 let raw = transport.send_recv(&wire)?;
 
@@ -174,7 +186,7 @@ impl FuzzEngine {
                     .collect();
 
                 matches.push(FuzzMatch {
-                    payload_label:    label.to_string(),
+                    payload_label: label.to_string(),
                     matched_patterns: matched,
                     response_preview: preview,
                     severity,
@@ -209,14 +221,23 @@ impl FuzzEngine {
         if matched.iter().any(|p| {
             matches!(
                 p.as_str(),
-                "fault" | "Fault" | "panic" | "exception" | "Exception"
-                    | "stack" | "crash" | "abort" | "segfault" | "overflow"
+                "fault"
+                    | "Fault"
+                    | "panic"
+                    | "exception"
+                    | "Exception"
+                    | "stack"
+                    | "crash"
+                    | "abort"
+                    | "segfault"
+                    | "overflow"
             )
         }) {
             Severity::Critical
-        } else if matched.iter().any(|p| {
-            matches!(p.as_str(), "root@" | "# " | "$ " | "login:" | "password:")
-        }) {
+        } else if matched
+            .iter()
+            .any(|p| matches!(p.as_str(), "root@" | "# " | "$ " | "login:" | "password:"))
+        {
             Severity::High
         } else {
             Severity::Medium
@@ -231,12 +252,15 @@ pub fn parse_escapes(s: &str) -> Vec<u8> {
     while let Some(c) = chars.next() {
         if c == '\\' {
             match chars.next() {
-                Some('r')  => out.push(b'\r'),
-                Some('n')  => out.push(b'\n'),
-                Some('t')  => out.push(b'\t'),
-                Some('0')  => out.push(b'\0'),
+                Some('r') => out.push(b'\r'),
+                Some('n') => out.push(b'\n'),
+                Some('t') => out.push(b'\t'),
+                Some('0') => out.push(b'\0'),
                 Some('\\') => out.push(b'\\'),
-                Some(other) => { out.push(b'\\'); out.extend_from_slice(other.to_string().as_bytes()); }
+                Some(other) => {
+                    out.push(b'\\');
+                    out.extend_from_slice(other.to_string().as_bytes());
+                }
                 None => out.push(b'\\'),
             }
         } else {

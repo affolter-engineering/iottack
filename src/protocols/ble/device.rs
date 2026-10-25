@@ -4,7 +4,7 @@ use crate::core::{
 use crate::plugin_meta;
 use anyhow::Result;
 
-/// 
+///
 pub struct DevicePlugin {
     address: String,
     adapter_name: String,
@@ -205,7 +205,11 @@ impl DevicePlugin {
             "Address: {addr}\n  \
              Name:    {}\n  \
              Paired:  {}",
-            if display_name.is_empty() { "n/a" } else { &display_name },
+            if display_name.is_empty() {
+                "n/a"
+            } else {
+                &display_name
+            },
             if is_paired { "yes" } else { "no" },
         );
         if let Some(r) = rssi {
@@ -216,7 +220,11 @@ impl DevicePlugin {
             Severity::Info,
             format!(
                 "Connected to {}",
-                if display_name.is_empty() { addr.to_string() } else { display_name.clone() }
+                if display_name.is_empty() {
+                    addr.to_string()
+                } else {
+                    display_name.clone()
+                }
             ),
             device_desc,
         ));
@@ -266,19 +274,40 @@ impl DevicePlugin {
                 let flags = ch.flags().await.unwrap_or_default();
 
                 let mut props: Vec<&str> = Vec::new();
-                if flags.read { props.push("read") }
-                if flags.write { props.push("write") }
-                if flags.write_without_response { props.push("write-no-rsp") }
-                if flags.notify { props.push("notify") }
-                if flags.indicate { props.push("indicate") }
+                if flags.read {
+                    props.push("read")
+                }
+                if flags.write {
+                    props.push("write")
+                }
+                if flags.write_without_response {
+                    props.push("write-no-rsp")
+                }
+                if flags.notify {
+                    props.push("notify")
+                }
+                if flags.indicate {
+                    props.push("indicate")
+                }
 
                 let value_str = if flags.read {
                     match ch.read().await {
                         Ok(bytes) if bytes.is_empty() => " value=<empty>".to_string(),
                         Ok(bytes) => {
-                            let hex = bytes.iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ");
-                            let printable: String = bytes.iter()
-                                .map(|&b| if b.is_ascii_graphic() || b == b' ' { b as char } else { '.' })
+                            let hex = bytes
+                                .iter()
+                                .map(|b| format!("{b:02x}"))
+                                .collect::<Vec<_>>()
+                                .join(" ");
+                            let printable: String = bytes
+                                .iter()
+                                .map(|&b| {
+                                    if b.is_ascii_graphic() || b == b' ' {
+                                        b as char
+                                    } else {
+                                        '.'
+                                    }
+                                })
                                 .collect();
                             format!(" value={hex} ({printable})")
                         }
@@ -290,7 +319,11 @@ impl DevicePlugin {
 
                 char_lines.push(format!(
                     "  {ch_uuid} [{}]{value_str}",
-                    if props.is_empty() { "none".to_string() } else { props.join(", ") }
+                    if props.is_empty() {
+                        "none".to_string()
+                    } else {
+                        props.join(", ")
+                    }
                 ));
             }
 
@@ -299,7 +332,11 @@ impl DevicePlugin {
                 svc_desc.push_str(&char_lines.join("\n"));
             }
 
-            let severity = if is_primary { Severity::Low } else { Severity::Info };
+            let severity = if is_primary {
+                Severity::Low
+            } else {
+                Severity::Info
+            };
 
             result.add(PluginFinding::new(
                 severity,

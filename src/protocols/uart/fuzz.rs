@@ -19,31 +19,31 @@ impl FuzzTransport for UartTransport<'_> {
 }
 
 pub struct UartFuzzer {
-    config:        UartConfig,
-    session:       Option<UartSession>,
-    iterations:    u32,
-    charset:       Option<String>,
-    length:        usize,
-    wordlist:      Option<String>,
-    delay_ms:      u64,
-    suffix:        String,
-    patterns:      Vec<String>,
-    payload_sets:  Option<String>,
+    config: UartConfig,
+    session: Option<UartSession>,
+    iterations: u32,
+    charset: Option<String>,
+    length: usize,
+    wordlist: Option<String>,
+    delay_ms: u64,
+    suffix: String,
+    patterns: Vec<String>,
+    payload_sets: Option<String>,
 }
 
 impl UartFuzzer {
     pub fn new() -> Self {
         Self {
-            config:        UartConfig::default(),
-            session:       None,
-            iterations:    1,
-            charset:       None,
-            length:        64,
-            wordlist:      None,
-            delay_ms:      0,
-            suffix:        String::new(),
-            patterns:      Vec::new(),
-            payload_sets:  None,
+            config: UartConfig::default(),
+            session: None,
+            iterations: 1,
+            charset: None,
+            length: 64,
+            wordlist: None,
+            delay_ms: 0,
+            suffix: String::new(),
+            patterns: Vec::new(),
+            payload_sets: None,
         }
     }
 }
@@ -80,13 +80,13 @@ impl Plugin for UartFuzzer {
     }
 
     fn initialize(&mut self, config: &PluginConfig) -> Result<()> {
-        self.config     = UartConfig::from_plugin_config(config)?;
+        self.config = UartConfig::from_plugin_config(config)?;
         self.iterations = config.parse_or("iterations", 1u32);
-        self.charset    = config.get("charset").map(|s| s.to_string());
-        self.length     = config.parse_or("length", 64usize);
-        self.wordlist   = config.get("wordlist").map(|s| s.to_string());
-        self.suffix     = config.get("suffix").unwrap_or("").to_string();
-        self.delay_ms   = config.parse_or("delay_ms", 0u64);
+        self.charset = config.get("charset").map(|s| s.to_string());
+        self.length = config.parse_or("length", 64usize);
+        self.wordlist = config.get("wordlist").map(|s| s.to_string());
+        self.suffix = config.get("suffix").unwrap_or("").to_string();
+        self.delay_ms = config.parse_or("delay_ms", 0u64);
         if let Some(p) = config.get("pattern") {
             self.patterns.push(p.to_string());
         }
@@ -129,8 +129,7 @@ impl Plugin for UartFuzzer {
                 "No interesting responses",
                 format!(
                     "All payloads × {} iteration(s) produced no interesting output on {}.",
-                    self.iterations,
-                    self.config.port,
+                    self.iterations, self.config.port,
                 ),
             ));
             result.finish(PluginStatus::Fail);

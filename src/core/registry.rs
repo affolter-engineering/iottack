@@ -132,7 +132,11 @@ mod tests {
         }
         fn execute(&mut self) -> anyhow::Result<PluginResult> {
             let mut r = PluginResult::new("test/fail");
-            r.add(PluginFinding::new(Severity::High, "always fails", "intentional"));
+            r.add(PluginFinding::new(
+                Severity::High,
+                "always fails",
+                "intentional",
+            ));
             r.finish(PluginStatus::Fail);
             Ok(r)
         }

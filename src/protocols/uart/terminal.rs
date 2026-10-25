@@ -13,19 +13,24 @@ use std::time::Duration;
 fn is_device_reset(e: &anyhow::Error) -> bool {
     use std::io::ErrorKind::*;
     e.downcast_ref::<std::io::Error>()
-        .map(|io| matches!(io.kind(), BrokenPipe | ConnectionReset | ConnectionAborted | UnexpectedEof | NotConnected))
+        .map(|io| {
+            matches!(
+                io.kind(),
+                BrokenPipe | ConnectionReset | ConnectionAborted | UnexpectedEof | NotConnected
+            )
+        })
         .unwrap_or(false)
 }
 
 pub struct UartTerminal {
-    config:  UartConfig,
+    config: UartConfig,
     session: Option<UartSession>,
 }
 
 impl UartTerminal {
     pub fn new() -> Self {
         Self {
-            config:  UartConfig::default(),
+            config: UartConfig::default(),
             session: None,
         }
     }
@@ -145,10 +150,18 @@ impl Plugin for UartTerminal {
 }
 
 impl SerialPlugin for UartTerminal {
-    fn serial_config(&self) -> &UartConfig { &self.config }
-    fn session(&self) -> Option<&UartSession> { self.session.as_ref() }
-    fn session_mut(&mut self) -> Option<&mut UartSession> { self.session.as_mut() }
-    fn set_session(&mut self, s: Option<UartSession>) { self.session = s; }
+    fn serial_config(&self) -> &UartConfig {
+        &self.config
+    }
+    fn session(&self) -> Option<&UartSession> {
+        self.session.as_ref()
+    }
+    fn session_mut(&mut self) -> Option<&mut UartSession> {
+        self.session.as_mut()
+    }
+    fn set_session(&mut self, s: Option<UartSession>) {
+        self.session = s;
+    }
 }
 
 inventory::submit! {

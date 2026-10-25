@@ -13,8 +13,17 @@ const DEFAULT_DURATION_S: u64 = 10;
 const DEFAULT_MAX_EVENTS: usize = 100;
 
 /// Sensitive keyword list checked against event data payloads.
-const SENSITIVE_KEYWORDS: &[&str] =
-    &["password", "token", "secret", "key", "auth", "credential", "private", "username", "serial"];
+const SENSITIVE_KEYWORDS: &[&str] = &[
+    "password",
+    "token",
+    "secret",
+    "key",
+    "auth",
+    "credential",
+    "private",
+    "username",
+    "serial",
+];
 
 /// Representation of a single SSE event.
 struct SseEvent {
@@ -239,7 +248,10 @@ impl Plugin for SsePlugin {
         ));
 
         // CORS policy
-        match headers.get("access-control-allow-origin").map(String::as_str) {
+        match headers
+            .get("access-control-allow-origin")
+            .map(String::as_str)
+        {
             Some("*") => {
                 result.add(
                     PluginFinding::new(
@@ -339,8 +351,10 @@ impl Plugin for SsePlugin {
                 ),
             ));
 
-            let type_summary: Vec<String> =
-                event_counts.iter().map(|(t, c)| format!("{c}x {t}")).collect();
+            let type_summary: Vec<String> = event_counts
+                .iter()
+                .map(|(t, c)| format!("{c}x {t}"))
+                .collect();
             result.add(PluginFinding::new(
                 Severity::Info,
                 format!("Event types observed: {}", type_summary.join(", ")),

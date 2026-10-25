@@ -2,7 +2,7 @@ use crate::core::{
     CliArg, Plugin, PluginConfig, PluginFinding, PluginMeta, PluginResult, PluginStatus, Severity,
 };
 use crate::plugin_meta;
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use std::io::{Read, Write};
 use std::net::{Ipv4Addr, SocketAddr, TcpStream};
 use std::time::Duration;
@@ -206,7 +206,11 @@ fn parse_cidr(cidr: &str) -> Result<Vec<Ipv4Addr>> {
         bail!("prefix length must be 0-32, got {prefix_len}");
     }
 
-    let mask: u32 = if prefix_len == 0 { 0 } else { !0u32 << (32 - prefix_len) };
+    let mask: u32 = if prefix_len == 0 {
+        0
+    } else {
+        !0u32 << (32 - prefix_len)
+    };
     let network = u32::from(base) & mask;
     let broadcast = network | !mask;
 
@@ -483,7 +487,11 @@ impl TcpBannerGrabber {
         if found == 0 {
             result.add(PluginFinding::new(
                 Severity::Info,
-                format!("No open hosts found in {} on {} port(s)", self.net, ports.len()),
+                format!(
+                    "No open hosts found in {} on {} port(s)",
+                    self.net,
+                    ports.len()
+                ),
                 format!(
                     "Scanned {} address(es) x {} port(s). \
                      Try lowering --timeout-ms or verify the subnet.",

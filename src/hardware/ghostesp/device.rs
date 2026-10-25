@@ -84,12 +84,8 @@ fn add_chipinfo_findings(result: &mut PluginResult, output: &str) {
     }
 
     result.add(
-        PluginFinding::new(
-            Severity::Info,
-            "GhostESP chip information",
-            output,
-        )
-        .with_evidence(output.to_string()),
+        PluginFinding::new(Severity::Info, "GhostESP chip information", output)
+            .with_evidence(output.to_string()),
     );
 }
 

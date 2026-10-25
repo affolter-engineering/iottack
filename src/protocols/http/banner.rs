@@ -67,7 +67,12 @@ fn http_get(host: &str, port: u16, path: &str, timeout: Duration) -> Result<Http
     let n = std::io::Read::read(&mut reader, &mut body_bytes).unwrap_or(0);
     let body_preview = String::from_utf8_lossy(&body_bytes[..n]).to_string();
 
-    Ok(HttpResponse { status, reason, headers, body_preview })
+    Ok(HttpResponse {
+        status,
+        reason,
+        headers,
+        body_preview,
+    })
 }
 
 /// Returns true if the Server header value looks like it discloses a version number.
@@ -82,7 +87,9 @@ fn detect_default_page(body: &str) -> Option<&'static str> {
         Some("Apache2 default page")
     } else if body_lc.contains("welcome to nginx") {
         Some("nginx default page")
-    } else if body_lc.contains("iis windows server") || body_lc.contains("internet information services") {
+    } else if body_lc.contains("iis windows server")
+        || body_lc.contains("internet information services")
+    {
         Some("IIS default page")
     } else if body_lc.contains("lighttpd - it works") {
         Some("lighttpd default page")
@@ -191,7 +198,11 @@ impl Plugin for BannerPlugin {
         // Server/technology headers
         if let Some(server) = h.get("server") {
             let version_disclosure = has_version(server);
-            let sev = if version_disclosure { Severity::Medium } else { Severity::Info };
+            let sev = if version_disclosure {
+                Severity::Medium
+            } else {
+                Severity::Info
+            };
             let desc = if version_disclosure {
                 "Server header discloses software version. Consider suppressing or \
                  generalizing this header."
@@ -240,7 +251,10 @@ impl Plugin for BannerPlugin {
                 .get("location")
                 .map(|l| l.starts_with("https://"))
                 .unwrap_or(false)
-                && (resp.status == 301 || resp.status == 302 || resp.status == 307 || resp.status == 308);
+                && (resp.status == 301
+                    || resp.status == 302
+                    || resp.status == 307
+                    || resp.status == 308);
 
             if redirects_to_https {
                 result.add(PluginFinding::new(
@@ -308,7 +322,11 @@ impl Plugin for BannerPlugin {
                 .unwrap_or_else(|| "unknown".to_string());
 
             let basic_auth = auth_scheme.to_lowercase() == "basic";
-            let sev = if basic_auth { Severity::High } else { Severity::Info };
+            let sev = if basic_auth {
+                Severity::High
+            } else {
+                Severity::Info
+            };
             let desc = if basic_auth {
                 "HTTP Basic authentication transmits credentials in Base64 over cleartext \
                  HTTP. Use Digest or move to HTTPS."
@@ -317,12 +335,12 @@ impl Plugin for BannerPlugin {
                 format!("WWW-Authenticate scheme: {auth_scheme}")
             };
             result.add(
-                PluginFinding::new(sev, format!("HTTP authentication required ({auth_scheme})"), desc)
-                .with_evidence(
-                    h.get("www-authenticate")
-                        .cloned()
-                        .unwrap_or_default(),
-                ),
+                PluginFinding::new(
+                    sev,
+                    format!("HTTP authentication required ({auth_scheme})"),
+                    desc,
+                )
+                .with_evidence(h.get("www-authenticate").cloned().unwrap_or_default()),
             );
         }
 
@@ -345,8 +363,12 @@ impl Plugin for BannerPlugin {
                 let missing_httponly = !lc.contains("httponly");
                 if missing_secure || missing_httponly {
                     let mut issues = Vec::new();
-                    if missing_secure { issues.push("Secure"); }
-                    if missing_httponly { issues.push("HttpOnly"); }
+                    if missing_secure {
+                        issues.push("Secure");
+                    }
+                    if missing_httponly {
+                        issues.push("HttpOnly");
+                    }
                     result.add(
                         PluginFinding::new(
                             Severity::Medium,

@@ -126,7 +126,10 @@ impl AdapterPlugin {
             let is_pairable = adapter.is_pairable().await.unwrap_or(false);
             let class = adapter.class().await.ok();
             let modalias = adapter.modalias().await.ok().flatten().map(|m| {
-                format!("{}:v{:04X}p{:04X}d{:04X}", m.source, m.vendor, m.product, m.device)
+                format!(
+                    "{}:v{:04X}p{:04X}d{:04X}",
+                    m.source, m.vendor, m.product, m.device
+                )
             });
 
             let mut description = format!(
@@ -156,17 +159,18 @@ impl AdapterPlugin {
             let evidence = format!(
                 "adapter={name}, address={address}, alias={alias}, powered={is_powered}, \
                  discoverable={is_discoverable}, pairable={is_pairable}{}{}",
-                class.map(|c| format!(", class={c:#010x}")).unwrap_or_default(),
-                modalias.as_deref().map(|m| format!(", modalias={m}")).unwrap_or_default(),
+                class
+                    .map(|c| format!(", class={c:#010x}"))
+                    .unwrap_or_default(),
+                modalias
+                    .as_deref()
+                    .map(|m| format!(", modalias={m}"))
+                    .unwrap_or_default(),
             );
 
             result.add(
-                PluginFinding::new(
-                    severity,
-                    format!("{name} ({address})"),
-                    description,
-                )
-                .with_evidence(evidence),
+                PluginFinding::new(severity, format!("{name} ({address})"), description)
+                    .with_evidence(evidence),
             );
 
             if is_powered && is_discoverable {

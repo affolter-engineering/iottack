@@ -149,18 +149,30 @@ mod tests {
 
     #[test]
     fn plugin_name_strips_protocols_prefix_and_maps_separators() {
-        assert_eq!(plugin_name_from_module("iottack::protocols::http::banner"), "http/banner");
-        assert_eq!(plugin_name_from_module("iottack::protocols::network::tcp_banner"), "network/tcp-banner");
+        assert_eq!(
+            plugin_name_from_module("iottack::protocols::http::banner"),
+            "http/banner"
+        );
+        assert_eq!(
+            plugin_name_from_module("iottack::protocols::network::tcp_banner"),
+            "network/tcp-banner"
+        );
     }
 
     #[test]
     fn plugin_name_strips_hardware_prefix() {
-        assert_eq!(plugin_name_from_module("iottack::hardware::ghostesp::device"), "ghostesp/device");
+        assert_eq!(
+            plugin_name_from_module("iottack::hardware::ghostesp::device"),
+            "ghostesp/device"
+        );
     }
 
     #[test]
     fn plugin_name_strips_iottack_prefix_without_protocols() {
-        assert_eq!(plugin_name_from_module("iottack::platform::platform"), "platform/platform");
+        assert_eq!(
+            plugin_name_from_module("iottack::platform::platform"),
+            "platform/platform"
+        );
     }
 
     #[test]
@@ -170,13 +182,25 @@ mod tests {
 
     #[test]
     fn category_maps_known_protocol_families() {
-        assert_eq!(category_from_module("iottack::protocols::network::mdns_scan"), Category::Network);
-        assert_eq!(category_from_module("iottack::protocols::serial::uart"), Category::Physical);
+        assert_eq!(
+            category_from_module("iottack::protocols::network::mdns_scan"),
+            Category::Network
+        );
+        assert_eq!(
+            category_from_module("iottack::protocols::serial::uart"),
+            Category::Physical
+        );
     }
 
     #[test]
     fn category_defaults_to_network_for_unknown_family() {
-        assert_eq!(category_from_module("iottack::protocols::http::banner"), Category::Network);
-        assert_eq!(category_from_module("iottack::protocols::amqp::scan"), Category::Network);
+        assert_eq!(
+            category_from_module("iottack::protocols::http::banner"),
+            Category::Network
+        );
+        assert_eq!(
+            category_from_module("iottack::protocols::amqp::scan"),
+            Category::Network
+        );
     }
 }

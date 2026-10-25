@@ -164,6 +164,8 @@ See the crate documentation for details.
         .header(lib_paths.header.clone().unwrap().to_string_lossy())
         .clang_args(include_args)
         .allowlist_file(format!(".*{}.*", lib_name))
+        .allowlist_file(".*glib.*")
+        .allowlist_type("sr_channel")
         // Opaque GLib types do not have layouts available to bindgen.
         .layout_tests(false)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))

@@ -10,3 +10,4 @@ plugins behave against an actual piece of hardware or an actual service.
 | [Generic IoT device](./generic-iot.md) | ESPHome | Wi-Fi target for the network plugins |
 | [UART device](./uart.md) | CircuitPython | Serial target for the UART plugins |
 | [AMQP server](./amqp.md) | - | Local RabbitMQ server |
+| [TCP simulator](./tcp.md) | Python 3.13+ | Software-only target for all `tcp` plugins |

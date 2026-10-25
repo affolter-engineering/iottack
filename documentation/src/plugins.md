@@ -16,6 +16,8 @@ a severity level and optional evidence string.
 | [network mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network tcp-banner](./plugins/network/tcp-banner.md) | `iottack network tcp-banner` | Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext services |
 | [network telnet](./plugins/network/telnet.md) | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
+| [tcp fuzz](./plugins/tcp/fuzz.md) | `iottack tcp fuzz` | Send malformed and custom payloads to a TCP service and report anomalous responses |
+| [tcp shell-detect](./plugins/tcp/shell-detect.md) | `iottack tcp shell-detect` | Detect interactive shell or login prompt on a TCP service |
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
 | [uart baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |
 | [uart fuzz](./plugins/uart/fuzz.md) | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |

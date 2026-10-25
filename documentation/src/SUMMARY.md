@@ -10,6 +10,8 @@
   - [network mdns-scan](./plugins/network/mdns-scan.md)
   - [network telnet](./plugins/network/telnet.md)
   - [network tcp-banner](./plugins/network/tcp-banner.md)
+  - [tcp fuzz](./plugins/tcp/fuzz.md)
+  - [tcp shell-detect](./plugins/tcp/shell-detect.md)
   - [uart baud-scan](./plugins/uart/baud-scan.md)
   - [uart fuzz](./plugins/uart/fuzz.md)
   - [uart port-scan](./plugins/uart/port-scan.md)

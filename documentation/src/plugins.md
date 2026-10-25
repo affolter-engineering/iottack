@@ -14,8 +14,8 @@ a severity level and optional evidence string.
 | [http banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
 | [mqtt](./plugins/mqtt.md) | `iottack mqtt` | Work with MQTT |
 | [network mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
-| [network tcp-banner](./plugins/network/tcp-banner.md) | `iottack network tcp-banner` | Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext services |
 | [network telnet](./plugins/network/telnet.md) | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
+| [tcp banner](./plugins/tcp/banner.md) | `iottack tcp banner` | Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext services |
 | [tcp fuzz](./plugins/tcp/fuzz.md) | `iottack tcp fuzz` | Send malformed and custom payloads to a TCP service and report anomalous responses |
 | [tcp shell-detect](./plugins/tcp/shell-detect.md) | `iottack tcp shell-detect` | Detect interactive shell or login prompt on a TCP service |
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |

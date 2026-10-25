@@ -109,7 +109,12 @@ fn parse_device_line(line: &str) -> Option<BleDevice> {
         (name_part.to_string(), None)
     };
 
-    Some(BleDevice { name, variant, mac, rssi })
+    Some(BleDevice {
+        name,
+        variant,
+        mac,
+        rssi,
+    })
 }
 
 /// Determines the severity level for a detected BLE device based on its name and variant.
@@ -291,10 +296,7 @@ impl Plugin for BleDetectPlugin {
         let _ = run_cmd(&mut session, "bledetect -s", self.timeout_ms);
 
         // Parse and report each discovered device as its own finding.
-        let devices: Vec<BleDevice> = listing
-            .lines()
-            .filter_map(parse_device_line)
-            .collect();
+        let devices: Vec<BleDevice> = listing.lines().filter_map(parse_device_line).collect();
 
         if devices.is_empty() {
             result.add(PluginFinding::new(
@@ -313,13 +315,14 @@ impl Plugin for BleDetectPlugin {
                 } else {
                     format!("BLE device: {}", dev.name)
                 };
-                let mut body = format!("Type: {}\n  MAC address: {}\n  RSSI: {}", dev.name, dev.mac, dev.rssi);
+                let mut body = format!(
+                    "Type: {}\n  MAC address: {}\n  RSSI: {}",
+                    dev.name, dev.mac, dev.rssi
+                );
                 if let Some(ref v) = dev.variant {
                     body.push_str(&format!("\n  Variant: {v}"));
                 }
-                result.add(
-                    PluginFinding::new(sev, title, &body).with_evidence(body.clone()),
-                );
+                result.add(PluginFinding::new(sev, title, &body).with_evidence(body.clone()));
             }
         }
 
@@ -338,7 +341,8 @@ mod tests {
 
     #[test]
     fn parse_device_with_variant() {
-        let d = parse_device_line("  [1] Apple Watch (Watch) | D5:E4:39:C9:B3:1C | -82 dBm").unwrap();
+        let d =
+            parse_device_line("  [1] Apple Watch (Watch) | D5:E4:39:C9:B3:1C | -82 dBm").unwrap();
         assert_eq!(d.name, "Apple Watch");
         assert_eq!(d.variant.as_deref(), Some("Watch"));
         assert_eq!(d.mac, "D5:E4:39:C9:B3:1C");
@@ -356,10 +360,14 @@ mod tests {
 
     #[test]
     fn parse_device_find_my_variant() {
-        let d = parse_device_line("  [3] Google Tag (Find My) | 80:90:0D:40:BE:7E | -55 dBm").unwrap();
+        let d =
+            parse_device_line("  [3] Google Tag (Find My) | 80:90:0D:40:BE:7E | -55 dBm").unwrap();
         assert_eq!(d.name, "Google Tag");
         assert_eq!(d.variant.as_deref(), Some("Find My"));
-        assert_eq!(severity_for_device(&d.name, d.variant.as_deref()), Severity::Medium);
+        assert_eq!(
+            severity_for_device(&d.name, d.variant.as_deref()),
+            Severity::Medium
+        );
     }
 
     #[test]

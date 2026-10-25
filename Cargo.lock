@@ -1773,8 +1773,6 @@ dependencies = [
 [[package]]
 name = "libsigrok-sys"
 version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76db8a8ecda94a59da05df667b526b771013f1f592041d2f01cfdd0443727882"
 dependencies = [
  "bindgen",
  "pkg-config",

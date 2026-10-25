@@ -1,6 +1,6 @@
 pub mod core;
-pub mod hardware;
 pub mod fuzzing;
+pub mod hardware;
 pub mod platform;
 pub mod protocols;
 pub mod vulns;

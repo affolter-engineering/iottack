@@ -1,0 +1,18 @@
+[package]
+name = "libsigrok-sys"
+description = "libsigrok FFI bindings"
+keywords = ["sigrok", "sigrokdecode", "logic-analyzer", "Saleae"]
+license = "GPL-3.0-or-later"
+authors = ["Nicolas Gabriel Cotti"]
+version = "0.1.1"
+edition = "2024"
+repository = "https://github.com/ncotti/libsigrok-sys"
+
+[features]
+static = []
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.71.0"
+pkg-config = "0.3.34"

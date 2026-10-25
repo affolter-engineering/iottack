@@ -5,11 +5,31 @@ use crate::plugin_meta;
 use anyhow::Result;
 use libsigrok_sys::sigrok as sr;
 use libsigrok_sys::sigrok::{
-    GSList, sr_channel, sr_context, sr_dev_driver, sr_dev_inst,
-    sr_error_code_SR_OK,
+    GSList, sr_channel, sr_context, sr_dev_driver, sr_dev_inst, sr_error_code_SR_OK,
 };
 use std::ffi::CStr;
+use std::os::raw::{c_char, c_int, c_void};
 use std::ptr;
+
+// Bindgen emits _GSList and sr_channel as opaque types when the GLib headers are
+// not fully visible to clang (common in CI). These repr(C) mirrors match the
+// stable C struct layouts and let us read fields without relying on bindgen.
+
+/// Mirror of GLib `struct _GSList { gpointer data; GSList *next; }`.
+#[repr(C)]
+struct GSListRaw {
+    data: *mut c_void,
+    next: *mut GSListRaw,
+}
+
+/// Mirror of libsigrok `struct sr_channel { int index; int type; gboolean enabled; char *name; … }`.
+#[repr(C)]
+struct SrChannelRaw {
+    index:   c_int,
+    type_:   c_int,
+    enabled: c_int, // gboolean = gint = c_int
+    name:    *const c_char,
+}
 
 /// Device plugin for listing all sigrok-supported logic analyzers connected to the host.
 unsafe extern "C" {
@@ -60,7 +80,7 @@ unsafe fn iter_drivers(head: *mut *mut sr_dev_driver) -> Vec<*mut sr_dev_driver>
 /// Iterates over a GSList and collects the data pointers into a vector.
 unsafe fn iter_gslist<T>(list: *mut GSList) -> Vec<*mut T> {
     let mut out = Vec::new();
-    let mut node = list;
+    let mut node = list as *mut GSListRaw;
     while !node.is_null() {
         let data = unsafe { (*node).data as *mut T };
         if !data.is_null() {
@@ -161,8 +181,9 @@ impl Plugin for DevicePlugin {
                     let channels = iter_gslist::<sr_channel>(ch_list)
                         .into_iter()
                         .map(|ch| {
-                            let name = cstr_or_empty((*ch).name);
-                            let enabled = (*ch).enabled != 0;
+                            let raw = ch as *const SrChannelRaw;
+                            let name = cstr_or_empty((*raw).name);
+                            let enabled = (*raw).enabled != 0;
                             (name, enabled)
                         })
                         .collect();
@@ -174,8 +195,16 @@ impl Plugin for DevicePlugin {
                         version: cstr_or_empty(sr::sr_dev_inst_version_get(sdi)),
                         serial: cstr_or_empty(sr::sr_dev_inst_sernum_get(sdi)),
                         connid: cstr_or_empty(sr::sr_dev_inst_connid_get(sdi)),
-                        driver_name: if drv.is_null() { String::new() } else { cstr_or_empty((*drv).name) },
-                        driver_longname: if drv.is_null() { String::new() } else { cstr_or_empty((*drv).longname) },
+                        driver_name: if drv.is_null() {
+                            String::new()
+                        } else {
+                            cstr_or_empty((*drv).name)
+                        },
+                        driver_longname: if drv.is_null() {
+                            String::new()
+                        } else {
+                            cstr_or_empty((*drv).longname)
+                        },
                         channels,
                     });
                 }
@@ -200,9 +229,7 @@ impl Plugin for DevicePlugin {
         result.add(PluginFinding::new(
             Severity::Info,
             format!("{} logic analyzer(s) detected", devices.len()),
-            format!(
-                "Use 'iottack logic-analyser capture --driver <DRIVER>' to start a capture."
-            ),
+            format!("Use 'iottack logic-analyser capture --driver <DRIVER>' to start a capture."),
         ));
 
         for dev in &devices {
@@ -235,8 +262,16 @@ impl Plugin for DevicePlugin {
                 dev.vendor,
                 dev.model,
                 dev.version,
-                if dev.serial.is_empty() { "n/a" } else { &dev.serial },
-                if dev.connid.is_empty() { "n/a" } else { &dev.connid },
+                if dev.serial.is_empty() {
+                    "n/a"
+                } else {
+                    &dev.serial
+                },
+                if dev.connid.is_empty() {
+                    "n/a"
+                } else {
+                    &dev.connid
+                },
                 dev.channels.len(),
                 ch_summary,
             );
@@ -260,10 +295,7 @@ impl Plugin for DevicePlugin {
             result.add(
                 PluginFinding::new(
                     Severity::Info,
-                    format!(
-                        "{} {} (driver: {})",
-                        dev.vendor, dev.model, dev.driver_name,
-                    ),
+                    format!("{} {} (driver: {})", dev.vendor, dev.model, dev.driver_name,),
                     description,
                 )
                 .with_evidence(evidence),

@@ -10,14 +10,33 @@ use crate::plugin_meta;
 use anyhow::Result;
 use libsigrok_sys::sigrok as sr;
 use libsigrok_sys::sigrok::{
-    GVariant, GSList, gboolean, sr_channel, sr_context, sr_datafeed_logic, sr_datafeed_packet,
-    sr_dev_driver, sr_dev_inst, sr_session,
-    sr_configkey_SR_CONF_LIMIT_SAMPLES, sr_configkey_SR_CONF_SAMPLERATE,
-    sr_error_code_SR_OK, sr_packettype_SR_DF_LOGIC,
+    GSList, GVariant, gboolean, sr_channel, sr_configkey_SR_CONF_LIMIT_SAMPLES,
+    sr_configkey_SR_CONF_SAMPLERATE, sr_context, sr_datafeed_logic, sr_datafeed_packet,
+    sr_dev_driver, sr_dev_inst, sr_error_code_SR_OK, sr_packettype_SR_DF_LOGIC, sr_session,
 };
 use std::ffi::{CStr, CString};
-use std::os::raw::c_void;
+use std::os::raw::{c_char, c_int, c_void};
 use std::ptr;
+
+// Bindgen emits _GSList and sr_channel as opaque types when the GLib headers are
+// not fully visible to clang (common in CI). These repr(C) mirrors match the
+// stable C struct layouts and let us read fields without relying on bindgen.
+
+/// Mirror of GLib `struct _GSList { gpointer data; GSList *next; }`.
+#[repr(C)]
+struct GSListRaw {
+    data: *mut c_void,
+    next: *mut GSListRaw,
+}
+
+/// Mirror of libsigrok `struct sr_channel { int index; int type; gboolean enabled; char *name; … }`.
+#[repr(C)]
+struct SrChannelRaw {
+    index:   c_int,
+    type_:   c_int,
+    enabled: c_int, // gboolean = gint = c_int
+    name:    *const c_char,
+}
 
 // GLib functions not in libsigrok-sys but present in the linked libglib2.0.
 unsafe extern "C" {
@@ -71,7 +90,7 @@ unsafe fn iter_drivers(head: *mut *mut sr_dev_driver) -> Vec<*mut sr_dev_driver>
 /// Iterates over a GSList and collects the data pointers into a vector.
 unsafe fn iter_gslist<T>(list: *mut GSList) -> Vec<*mut T> {
     let mut out = Vec::new();
-    let mut node = list;
+    let mut node = list as *mut GSListRaw;
     while !node.is_null() {
         let data = unsafe { (*node).data as *mut T };
         if !data.is_null() {
@@ -283,10 +302,7 @@ impl CapturePlugin {
             result.add(
                 PluginFinding::new(
                     Severity::Info,
-                    format!(
-                        "{} {} (driver: {})",
-                        dev.vendor, dev.model, dev.driver_name,
-                    ),
+                    format!("{} {} (driver: {})", dev.vendor, dev.model, dev.driver_name,),
                     format!(
                         "Version: {}  Serial: {}  Connection: {}",
                         dev.version, dev.serial, dev.connid,
@@ -324,8 +340,7 @@ impl CapturePlugin {
             let drivers = iter_drivers(sr::sr_driver_list(ctx.0));
 
             let found = drivers.into_iter().find(|&d| {
-                !(*d).name.is_null()
-                    && CStr::from_ptr((*d).name) == driver_cname.as_c_str()
+                !(*d).name.is_null() && CStr::from_ptr((*d).name) == driver_cname.as_c_str()
             });
 
             let driver = match found {
@@ -410,12 +425,7 @@ impl CapturePlugin {
             sr::sr_session_dev_add(session, sdi);
 
             let sr_gv = g_variant_new_uint64(self.samplerate);
-            sr::sr_config_set(
-                sdi,
-                ptr::null(),
-                sr_configkey_SR_CONF_SAMPLERATE,
-                sr_gv,
-            );
+            sr::sr_config_set(sdi, ptr::null(), sr_configkey_SR_CONF_SAMPLERATE, sr_gv);
 
             let limit_gv = g_variant_new_uint64(self.samples);
             sr::sr_config_set(
@@ -481,7 +491,13 @@ impl CapturePlugin {
         } else {
             self.channels.join(", ")
         };
-        analyze_capture(&mut result, &capture_buf, actual_rate, &monitored_label, &self.channels);
+        analyze_capture(
+            &mut result,
+            &capture_buf,
+            actual_rate,
+            &monitored_label,
+            &self.channels,
+        );
         result.finish(PluginStatus::Pass);
         Ok(result)
     }
@@ -529,8 +545,8 @@ unsafe fn configure_channels(
             Err(_) => continue,
         };
         let found = all_ch.iter().find(|&&ch| unsafe {
-            !(*ch).name.is_null()
-                && CStr::from_ptr((*ch).name) == cname.as_c_str()
+            let raw = ch as *const SrChannelRaw;
+            !(*raw).name.is_null() && CStr::from_ptr((*raw).name) == cname.as_c_str()
         });
         match found {
             Some(&ch) => {
@@ -581,12 +597,22 @@ fn parse_channel_range(s: &str) -> Option<(u8, u8)> {
     let start: u8 = lhs.parse().ok()?;
     let end_str = rhs.strip_prefix('D').unwrap_or(rhs);
     let end: u8 = end_str.parse().ok()?;
-    if start <= end { Some((start, end)) } else { None }
+    if start <= end {
+        Some((start, end))
+    } else {
+        None
+    }
 }
 
 /// Determines the severity level based on the percentage of active samples.
 fn severity_for_pct(pct: usize) -> Severity {
-    if pct >= 50 { Severity::High } else if pct >= 10 { Severity::Medium } else { Severity::Low }
+    if pct >= 50 {
+        Severity::High
+    } else if pct >= 10 {
+        Severity::Medium
+    } else {
+        Severity::Low
+    }
 }
 
 /// Analyzes a logic analyzer capture buffer, reporting per-channel activity and overall statistics.
@@ -660,7 +686,11 @@ fn analyze_capture(
     result.add(
         PluginFinding::new(
             severity_for_pct(active_pct),
-            format!("Signal activity on {} channel(s): {}", ch_counts.len(), channel_list),
+            format!(
+                "Signal activity on {} channel(s): {}",
+                ch_counts.len(),
+                channel_list
+            ),
             format!(
                 "Monitored: {monitored}. {active} of {total} samples ({active_pct}%) showed \
                  at least one high channel over a {duration_us} µs window at {samplerate} Hz. \

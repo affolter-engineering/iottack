@@ -262,7 +262,10 @@ impl ScanPlugin {
             result.add(PluginFinding::new(
                 Severity::Info,
                 format!("{} BLE device(s) discovered", seen.len()),
-                format!("Scan completed on adapter {adapter_name} after {} second(s).", self.timeout_secs),
+                format!(
+                    "Scan completed on adapter {adapter_name} after {} second(s).",
+                    self.timeout_secs
+                ),
             ));
         }
 

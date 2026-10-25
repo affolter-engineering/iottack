@@ -366,7 +366,11 @@ mod tests {
     #[test]
     fn format_text_finding_title_severity_description() {
         let mut r = PluginResult::new("test/plugin");
-        r.add(PluginFinding::new(Severity::High, "Open port", "Port 80 is open"));
+        r.add(PluginFinding::new(
+            Severity::High,
+            "Open port",
+            "Port 80 is open",
+        ));
         r.finish(PluginStatus::Fail);
         let out = format_text(&r);
         assert!(out.contains("Open port"));
@@ -377,10 +381,7 @@ mod tests {
     #[test]
     fn format_text_evidence_included() {
         let mut r = PluginResult::new("test/plugin");
-        r.add(
-            PluginFinding::new(Severity::Medium, "Title", "Desc")
-                .with_evidence("raw evidence"),
-        );
+        r.add(PluginFinding::new(Severity::Medium, "Title", "Desc").with_evidence("raw evidence"));
         r.finish(PluginStatus::Pass);
         assert!(format_text(&r).contains("raw evidence"));
     }
@@ -416,7 +417,9 @@ mod tests {
         for a in args {
             cmd = cmd.arg(clap_arg(a));
         }
-        let m = cmd.try_get_matches_from(["t", "--host", "192.168.1.1"]).unwrap();
+        let m = cmd
+            .try_get_matches_from(["t", "--host", "192.168.1.1"])
+            .unwrap();
         let cfg = config_from_matches(args, &m);
         assert_eq!(cfg.get("host"), Some("192.168.1.1"));
     }

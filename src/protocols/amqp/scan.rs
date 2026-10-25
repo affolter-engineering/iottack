@@ -171,7 +171,7 @@ impl AmqpScanner {
             ),
         ));
 
-        // Cleartext transport 
+        // Cleartext transport
         if self.port == DEFAULT_PORT {
             result.add(PluginFinding::new(
                 Severity::High,

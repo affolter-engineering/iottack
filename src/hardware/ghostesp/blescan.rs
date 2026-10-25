@@ -5,8 +5,8 @@ use crate::plugin_meta;
 use crate::protocols::uart::{UartConfig, UartSession};
 use anyhow::Result;
 use std::io::Read;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
 const PROMPT: &str = "ghost>";
@@ -99,7 +99,7 @@ impl Default for BleScanPlugin {
     }
 }
 
-/// 
+///
 impl Plugin for BleScanPlugin {
     fn meta(&self) -> PluginMeta {
         plugin_meta!(
@@ -297,7 +297,11 @@ impl Plugin for BleScanPlugin {
             result.add(
                 PluginFinding::new(
                     Severity::Info,
-                    format!("{} BLE observation(s) - {} mode", observations.len(), self.mode),
+                    format!(
+                        "{} BLE observation(s) - {} mode",
+                        observations.len(),
+                        self.mode
+                    ),
                     &body,
                 )
                 .with_evidence(body),

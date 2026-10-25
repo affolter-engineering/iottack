@@ -18,8 +18,21 @@ impl FuzzTransport for BleWriteTransport {
         let payload = payload.to_vec();
         let ch = &self.characteristic;
         let no_response = self.no_response;
-        let hex: String = payload.iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ");
-        tracing::debug!(bytes = payload.len(), method = if no_response { "write-no-rsp" } else { "write-with-response" }, payload = hex, "fuzz write");
+        let hex: String = payload
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<Vec<_>>()
+            .join(" ");
+        tracing::debug!(
+            bytes = payload.len(),
+            method = if no_response {
+                "write-no-rsp"
+            } else {
+                "write-with-response"
+            },
+            payload = hex,
+            "fuzz write"
+        );
         self.handle.block_on(async move {
             if no_response {
                 ch.write_ext(
@@ -325,7 +338,11 @@ impl WritePlugin {
             match self.parse_payload() {
                 Ok(b) => b,
                 Err(e) => {
-                    result.add(PluginFinding::new(Severity::Info, "Invalid value", format!("{e}")));
+                    result.add(PluginFinding::new(
+                        Severity::Info,
+                        "Invalid value",
+                        format!("{e}"),
+                    ));
                     result.finish(PluginStatus::Fail);
                     return Ok(result);
                 }
@@ -466,7 +483,11 @@ impl WritePlugin {
             tracing::info!(address = %addr, uuid = %target_uuid, iterations = self.iterations, "starting fuzz mode");
             self.run_fuzz(&mut result, ch, addr, target_uuid).await?;
         } else {
-            let hex: String = payload.iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ");
+            let hex: String = payload
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<Vec<_>>()
+                .join(" ");
             tracing::info!(address = %addr, uuid = %target_uuid, bytes = payload.len(), payload = hex, "single write");
             self.run_single_write(&mut result, ch, addr, &payload).await;
         }
@@ -483,7 +504,11 @@ impl WritePlugin {
         payload: &[u8],
     ) {
         let ch_uuid = ch.uuid().await.unwrap_or(bluer::Uuid::default());
-        let hex_repr = payload.iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ");
+        let hex_repr = payload
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<Vec<_>>()
+            .join(" ");
 
         let write_result = if self.no_response {
             ch.write_ext(
@@ -510,7 +535,11 @@ impl WritePlugin {
                              Method:         {}\n  \
                              Bytes written:  {}\n  \
                              Payload (hex):  {hex_repr}",
-                            if self.no_response { "write-without-response" } else { "write-with-response" },
+                            if self.no_response {
+                                "write-without-response"
+                            } else {
+                                "write-with-response"
+                            },
                             payload.len(),
                         ),
                     )
@@ -571,7 +600,11 @@ impl WritePlugin {
                 engine = engine.with_payload_sets(sets)?;
             }
 
-            let mut transport = BleWriteTransport { handle, characteristic: ch, no_response };
+            let mut transport = BleWriteTransport {
+                handle,
+                characteristic: ch,
+                no_response,
+            };
             engine.run(&mut transport)
         })?;
 
@@ -592,7 +625,11 @@ impl WritePlugin {
             let has_critical = matches
                 .iter()
                 .any(|m| matches!(m.severity, Severity::Critical | Severity::High));
-            result.finish(if has_critical { PluginStatus::Fail } else { PluginStatus::Pass });
+            result.finish(if has_critical {
+                PluginStatus::Fail
+            } else {
+                PluginStatus::Pass
+            });
         }
 
         Ok(())
@@ -639,25 +676,52 @@ impl WritePlugin {
                 })
                 .collect();
             let bytes = bytes?;
-            let hex_repr: String = bytes.iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ");
+            let hex_repr: String = bytes
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<Vec<_>>()
+                .join(" ");
             tracing::info!(bytes = bytes.len(), payload = hex_repr, "payload (hex)");
             Ok(bytes)
         } else {
             let bytes = self.value.as_bytes().to_vec();
-            let hex_repr: String = bytes.iter().map(|b| format!("{b:02x}")).collect::<Vec<_>>().join(" ");
-            tracing::info!(raw = self.value, bytes = bytes.len(), payload = hex_repr, "payload");
+            let hex_repr: String = bytes
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<Vec<_>>()
+                .join(" ");
+            tracing::info!(
+                raw = self.value,
+                bytes = bytes.len(),
+                payload = hex_repr,
+                "payload"
+            );
             Ok(bytes)
         }
     }
 
     fn format_flags(&self, flags: &bluer::gatt::CharacteristicFlags) -> String {
         let mut props: Vec<&str> = Vec::new();
-        if flags.read { props.push("read") }
-        if flags.write { props.push("write") }
-        if flags.write_without_response { props.push("write-no-rsp") }
-        if flags.notify { props.push("notify") }
-        if flags.indicate { props.push("indicate") }
-        if props.is_empty() { "none".to_string() } else { props.join(", ") }
+        if flags.read {
+            props.push("read")
+        }
+        if flags.write {
+            props.push("write")
+        }
+        if flags.write_without_response {
+            props.push("write-no-rsp")
+        }
+        if flags.notify {
+            props.push("notify")
+        }
+        if flags.indicate {
+            props.push("indicate")
+        }
+        if props.is_empty() {
+            "none".to_string()
+        } else {
+            props.join(", ")
+        }
     }
 
     async fn maybe_disconnect(&self, device: &bluer::Device, was_connected: bool) {

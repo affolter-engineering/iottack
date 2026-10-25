@@ -1,4 +1,4 @@
-use super::{TcpConfig, TcpPlugin, TcpSession, DEFAULT_TIMEOUT_MS};
+use super::{DEFAULT_TIMEOUT_MS, TcpConfig, TcpPlugin, TcpSession};
 use crate::core::{
     CliArg, Plugin, PluginConfig, PluginFinding, PluginMeta, PluginResult, PluginStatus, Severity,
 };
@@ -31,8 +31,8 @@ const BOOT_PATTERNS: &[&str] = &[
 ];
 
 pub struct TcpShellDetector {
-    config:   TcpConfig,
-    session:  Option<TcpSession>,
+    config: TcpConfig,
+    session: Option<TcpSession>,
     attempts: u8,
     stimulus: String,
 }
@@ -40,15 +40,19 @@ pub struct TcpShellDetector {
 impl TcpShellDetector {
     pub fn new() -> Self {
         Self {
-            config:   TcpConfig::default(),
-            session:  None,
+            config: TcpConfig::default(),
+            session: None,
             attempts: 3,
             stimulus: "\r\n".to_string(),
         }
     }
 
     fn detect<'a>(haystack: &str, patterns: &[&'a str]) -> Vec<&'a str> {
-        patterns.iter().copied().filter(|p| haystack.contains(p)).collect()
+        patterns
+            .iter()
+            .copied()
+            .filter(|p| haystack.contains(p))
+            .collect()
     }
 }
 
@@ -114,7 +118,7 @@ impl Plugin for TcpShellDetector {
 
     /// Initialize the plugin with the given configuration.
     fn initialize(&mut self, config: &PluginConfig) -> Result<()> {
-        self.config   = TcpConfig::from_plugin_config(config)?;
+        self.config = TcpConfig::from_plugin_config(config)?;
         self.attempts = config.parse_or("attempts", 3u8);
         self.stimulus = config.get_or("stimulus", r"\r\n").to_string();
         self.connect()
@@ -160,7 +164,10 @@ impl Plugin for TcpShellDetector {
             result.add(PluginFinding::new(
                 Severity::Info,
                 "No response received",
-                format!("No output from {addr} after banner read + {} stimulus attempt(s).", self.attempts),
+                format!(
+                    "No output from {addr} after banner read + {} stimulus attempt(s).",
+                    self.attempts
+                ),
             ));
             result.finish(PluginStatus::Fail);
             return Ok(result);
@@ -172,7 +179,10 @@ impl Plugin for TcpShellDetector {
                 PluginFinding::new(
                     Severity::Info,
                     "Boot messages detected",
-                    format!("Device appears to be booting (matched: {}).", boot_hits.join(", ")),
+                    format!(
+                        "Device appears to be booting (matched: {}).",
+                        boot_hits.join(", ")
+                    ),
                 )
                 .with_evidence(all_output.chars().take(200).collect::<String>()),
             );
@@ -221,7 +231,10 @@ impl Plugin for TcpShellDetector {
                 PluginFinding::new(
                     Severity::Medium,
                     format!("Interactive prompt on {addr}"),
-                    format!("An interactive prompt was found on {addr} (matched: {}).", shell_hits.join(", ")),
+                    format!(
+                        "An interactive prompt was found on {addr} (matched: {}).",
+                        shell_hits.join(", ")
+                    ),
                 )
                 .with_evidence(all_output.chars().take(400).collect::<String>()),
             );

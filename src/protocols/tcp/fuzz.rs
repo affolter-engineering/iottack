@@ -1,4 +1,4 @@
-use super::{TcpConfig, TcpPlugin, TcpSession, DEFAULT_TIMEOUT_MS};
+use super::{DEFAULT_TIMEOUT_MS, TcpConfig, TcpPlugin, TcpSession};
 use crate::core::{
     CliArg, Plugin, PluginConfig, PluginFinding, PluginMeta, PluginResult, PluginStatus, Severity,
 };
@@ -11,10 +11,10 @@ use std::time::Duration;
 
 /// TCP transport for the fuzzing engine. Wraps a TCP session and manages connection behavior.
 struct TcpTransport<'a> {
-    session:   &'a mut TcpSession,
+    session: &'a mut TcpSession,
     /// When true, a fresh connection is opened for every payload.
     reconnect: bool,
-    config:    TcpConfig,
+    config: TcpConfig,
 }
 
 /// TCP transport implementation for the fuzzing engine. Handles sending and receiving payloads over TCP.
@@ -32,10 +32,16 @@ impl FuzzTransport for TcpTransport<'_> {
         match self.session.drain() {
             Ok(data) => Ok(data),
             // Connection reset / EOF after a payload — not unusual; return empty response.
-            Err(e) if matches!(
-                e.downcast_ref::<std::io::Error>().map(|e| e.kind()),
-                Some(ErrorKind::ConnectionReset | ErrorKind::ConnectionAborted | ErrorKind::BrokenPipe)
-            ) => {
+            Err(e)
+                if matches!(
+                    e.downcast_ref::<std::io::Error>().map(|e| e.kind()),
+                    Some(
+                        ErrorKind::ConnectionReset
+                            | ErrorKind::ConnectionAborted
+                            | ErrorKind::BrokenPipe
+                    )
+                ) =>
+            {
                 tracing::debug!("connection closed by peer after payload");
                 Ok(Vec::new())
             }
@@ -60,16 +66,16 @@ fn open_stream(config: &TcpConfig) -> Result<TcpStream> {
 
 /// Fuzzer for TCP services. Manages configuration, session state, and fuzzing parameters.
 pub struct TcpFuzzer {
-    config:       TcpConfig,
-    session:      Option<TcpSession>,
-    reconnect:    bool,
-    iterations:   u32,
-    charset:      Option<String>,
-    length:       usize,
-    wordlist:     Option<String>,
-    delay_ms:     u64,
-    suffix:       String,
-    patterns:     Vec<String>,
+    config: TcpConfig,
+    session: Option<TcpSession>,
+    reconnect: bool,
+    iterations: u32,
+    charset: Option<String>,
+    length: usize,
+    wordlist: Option<String>,
+    delay_ms: u64,
+    suffix: String,
+    patterns: Vec<String>,
     payload_sets: Option<String>,
 }
 
@@ -77,16 +83,16 @@ pub struct TcpFuzzer {
 impl TcpFuzzer {
     pub fn new() -> Self {
         Self {
-            config:       TcpConfig::default(),
-            session:      None,
-            reconnect:    false,
-            iterations:   1,
-            charset:      None,
-            length:       16,
-            wordlist:     None,
-            delay_ms:     0,
-            suffix:       String::new(),
-            patterns:     Vec::new(),
+            config: TcpConfig::default(),
+            session: None,
+            reconnect: false,
+            iterations: 1,
+            charset: None,
+            length: 16,
+            wordlist: None,
+            delay_ms: 0,
+            suffix: String::new(),
+            patterns: Vec::new(),
             payload_sets: None,
         }
     }
@@ -215,14 +221,14 @@ impl Plugin for TcpFuzzer {
 
     /// Initialize the TCP fuzzer with the provided plugin configuration. Parses all relevant arguments and establishes the initial connection.
     fn initialize(&mut self, config: &PluginConfig) -> Result<()> {
-        self.config     = TcpConfig::from_plugin_config(config)?;
-        self.reconnect  = config.get("reconnect") == Some("true");
+        self.config = TcpConfig::from_plugin_config(config)?;
+        self.reconnect = config.get("reconnect") == Some("true");
         self.iterations = config.parse_or("iterations", 1u32);
-        self.charset    = config.get("charset").map(|s| s.to_string());
-        self.length     = config.parse_or("length", 16usize);
-        self.wordlist   = config.get("wordlist").map(|s| s.to_string());
-        self.suffix     = config.get_or("suffix", "").to_string();
-        self.delay_ms   = config.parse_or("delay_ms", 0u64);
+        self.charset = config.get("charset").map(|s| s.to_string());
+        self.length = config.parse_or("length", 16usize);
+        self.wordlist = config.get("wordlist").map(|s| s.to_string());
+        self.suffix = config.get_or("suffix", "").to_string();
+        self.delay_ms = config.parse_or("delay_ms", 0u64);
         if let Some(p) = config.get("pattern") {
             self.patterns.push(p.to_string());
         }
@@ -260,10 +266,14 @@ impl Plugin for TcpFuzzer {
         }
 
         let reconnect = self.reconnect;
-        let config    = self.config.clone();
+        let config = self.config.clone();
 
         let matches = if let Some(session) = self.session_mut() {
-            let mut transport = TcpTransport { session, reconnect, config };
+            let mut transport = TcpTransport {
+                session,
+                reconnect,
+                config,
+            };
             engine.run(&mut transport)?
         } else {
             Vec::new()
@@ -286,7 +296,11 @@ impl Plugin for TcpFuzzer {
             let security_issue = matches
                 .iter()
                 .any(|m| matches!(m.severity, Severity::Critical | Severity::High));
-            result.finish(if security_issue { PluginStatus::Fail } else { PluginStatus::Pass });
+            result.finish(if security_issue {
+                PluginStatus::Fail
+            } else {
+                PluginStatus::Pass
+            });
         }
 
         Ok(result)

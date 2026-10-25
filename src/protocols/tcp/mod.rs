@@ -2,7 +2,7 @@ pub mod banner;
 pub mod fuzz;
 pub mod shell_detect;
 
-pub use config::{TcpConfig, DEFAULT_TIMEOUT_MS};
+pub use config::{DEFAULT_TIMEOUT_MS, TcpConfig};
 pub use session::TcpSession;
 
 use crate::core::{Plugin, PluginConfig};
@@ -13,16 +13,16 @@ mod config {
 
     #[derive(Clone)]
     pub struct TcpConfig {
-        pub host:       String,
-        pub port:       u16,
+        pub host: String,
+        pub port: u16,
         pub timeout_ms: u64,
     }
 
     impl Default for TcpConfig {
         fn default() -> Self {
             Self {
-                host:       String::new(),
-                port:       0,
+                host: String::new(),
+                port: 0,
                 timeout_ms: DEFAULT_TIMEOUT_MS,
             }
         }
@@ -31,8 +31,8 @@ mod config {
     impl TcpConfig {
         pub fn from_plugin_config(config: &crate::core::PluginConfig) -> anyhow::Result<Self> {
             Ok(Self {
-                host:       config.require("host")?.to_string(),
-                port:       config.parse_or("port", 0u16),
+                host: config.require("host")?.to_string(),
+                port: config.parse_or("port", 0u16),
                 timeout_ms: config.parse_or("timeout_ms", DEFAULT_TIMEOUT_MS),
             })
         }

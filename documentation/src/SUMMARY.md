@@ -34,4 +34,5 @@
   - [Generic IoT device](./misc/generic-iot.md)
   - [UART device](./misc/uart.md)
   - [AMQP server](./misc/amqp.md)
+  - [TCP simulator](./misc/tcp.md)
 - [Development](./development.md)

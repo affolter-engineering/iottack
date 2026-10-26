@@ -71,7 +71,7 @@ fn build_cli(registry: &PluginRegistry) -> Command {
                 .arg(
                     Arg::new("name")
                         .required(true)
-                        .help("Plugin name (e.g. serial/baud-scan)"),
+                        .help("Plugin name: group/subcommand or group subcommand"),
                 )
                 .arg(
                     Arg::new("args")
@@ -266,12 +266,33 @@ fn main() {
     }
 }
 
+/// Count `-v`/`-vv`/`-vvv` flags in a single token (e.g. "-vv" → 2).
+fn count_v_flags(s: &str) -> u8 {
+    if s.starts_with('-') && !s.starts_with("--") && s[1..].chars().all(|c| c == 'v') {
+        s.len() as u8 - 1
+    } else {
+        0
+    }
+}
+
 /// Runs the main application logic, including CLI parsing, plugin execution, and result handling.
 fn run() -> anyhow::Result<()> {
     let registry = PluginRegistry::new();
     let matches = build_cli(&registry).get_matches();
 
-    let level = match matches.get_count("verbose") {
+    // Count verbosity from the global flag AND from any -v/-vv/-vvv inside
+    // the `run` subcommand's trailing args (where trailing_var_arg swallows them
+    // before the global handler sees them).
+    let global_v = matches.get_count("verbose");
+    let run_v: u8 = if let Some(("run", m)) = matches.subcommand() {
+        m.get_many::<String>("args")
+            .unwrap_or_default()
+            .map(|s| count_v_flags(s))
+            .sum()
+    } else {
+        0
+    };
+    let level = match global_v + run_v {
         0 => "warn",
         1 => "info",
         2 => "debug",
@@ -309,15 +330,51 @@ fn run() -> anyhow::Result<()> {
             }
         }
         Some(("run", m)) => {
-            let name = m.get_one::<String>("name").unwrap();
-            let raw: Vec<&String> = m.get_many("args").unwrap_or_default().collect();
+            let raw_name = m.get_one::<String>("name").unwrap();
+            let mut raw: Vec<&String> = m.get_many("args").unwrap_or_default().collect();
+            // Accept "group/subcommand", "group subcommand", and bare "group"
+            // (where the plugin name equals the group, e.g. platform/platform).
+            let name = if !raw_name.contains('/') {
+                if raw
+                    .first()
+                    .is_some_and(|s| !s.contains('=') && !s.starts_with('-'))
+                {
+                    format!("{}/{}", raw_name, raw.remove(0))
+                } else {
+                    format!("{}/{}", raw_name, raw_name)
+                }
+            } else {
+                raw_name.clone()
+            };
             let mut cfg = PluginConfig::new();
-            for kv in raw {
-                if let Some((k, v)) = kv.split_once('=') {
-                    cfg.set(k.trim(), v.trim());
+            let mut i = 0;
+            while i < raw.len() {
+                let s = raw[i].as_str();
+                if count_v_flags(s) > 0 {
+                    // verbosity flag (-v, -vv, …) — counted above, skip here
+                    i += 1;
+                } else if let Some(rest) = s.strip_prefix("--") {
+                    // --key=value  or  --key value  or  --flag
+                    let key = rest.replace('-', "_");
+                    if let Some((k, v)) = key.split_once('=') {
+                        cfg.set(k, v);
+                        i += 1;
+                    } else if i + 1 < raw.len() && !raw[i + 1].starts_with('-') {
+                        cfg.set(&key, raw[i + 1].as_str());
+                        i += 2;
+                    } else {
+                        cfg.set(&key, "true");
+                        i += 1;
+                    }
+                } else if let Some((k, v)) = s.split_once('=') {
+                    // key=value  (strip any leading - from the key just in case)
+                    cfg.set(k.trim_start_matches('-'), v);
+                    i += 1;
+                } else {
+                    i += 1;
                 }
             }
-            emit(registry.run(name, &cfg)?)?;
+            emit(registry.run(&name, &cfg)?)?;
         }
         _ => {
             if let Some((plugin_name, cfg)) = route(&matches, &registry) {

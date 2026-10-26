@@ -42,4 +42,5 @@
   - [UART device](./misc/uart.md)
   - [AMQP server](./misc/amqp.md)
   - [TCP simulator](./misc/tcp.md)
+  - [Modbus simulator](./misc/modbus.md)
 - [Development](./development.md)

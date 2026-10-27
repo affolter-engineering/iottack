@@ -14,7 +14,7 @@ for Bluetooth.
 ## Plugin description
 
 Opens a serial connection to a GhostESP device, sends a newline to wake
-the interactive shell, and waits for the `ghost>` prompt. Once the prompt
+the interactive shell and waits for the `ghost>` prompt. Once the prompt
 is confirmed, the plugin runs two commands:
 
 - **`chipinfo`**: retrieves ESP32 chip identity, revision, and flash size.
@@ -40,7 +40,7 @@ iottack ghostesp device --port <PORT> [OPTIONS]
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
-| `--port <PORT>` | `-p` | *(required)* | Serial port, e.g. `/dev/ttyACM0` |
+| `--port <PORT>` | `-p` | *(required)* | Serial port, e.g., `/dev/ttyACM0` |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Serial baud rate |
 | `--timeout-ms <MS>` | `-t` | `5000` | Per-command response timeout in ms |
 | `--output <FILE>` | `-o` | - | Save result to a file |

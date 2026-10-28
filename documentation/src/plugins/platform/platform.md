@@ -9,7 +9,7 @@ Collects and reports information about the host running `iottack`:
 - Effective user ID - flags whether the process has root privileges
 - Available serial ports (`/dev/ttyUSB*`, `/dev/ttyACM*`, etc.)
 - USB-serial devices enumerated via sysfs, including vendor/product details
-- 
+
 ## Usage
 
 ```sh

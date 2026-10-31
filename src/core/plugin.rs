@@ -23,14 +23,23 @@ pub struct CliArg {
 
 /// Derives the plugin category from the module path.
 pub fn category_from_module(module: &str) -> Category {
+    // Strip iottack::platform:: only when the remainder still contains "::" —
+    // this preserves the existing platform/platform plugin while letting
+    // deeper platform sub-modules (e.g. platform::i2c::*) be treated as
+    // first-class protocol families.
+    let platform_stripped = module
+        .strip_prefix("iottack::platform::")
+        .filter(|s| s.contains("::"));
+
     let stripped = module
         .strip_prefix("iottack::protocols::")
         .or_else(|| module.strip_prefix("iottack::hardware::"))
+        .or(platform_stripped)
         .or_else(|| module.strip_prefix("iottack::"))
         .unwrap_or(module);
 
     match stripped.split("::").next().unwrap_or("") {
-        "serial" => Category::Physical,
+        "serial" | "ftdi" | "i2c" | "spi" | "jtag" | "swd" => Category::Physical,
         "network" => Category::Network,
         "radio" => Category::Radio,
         "firmware" => Category::Firmware,
@@ -42,9 +51,18 @@ pub fn category_from_module(module: &str) -> Category {
 
 /// Derives the plugin name from the module path, converting `::` to `/` and underscores to hyphens.
 pub fn plugin_name_from_module(module: &str) -> String {
+    // Strip iottack::platform:: only when the remainder still contains "::" —
+    // this preserves the existing platform/platform plugin while letting
+    // deeper platform sub-modules (e.g. platform::i2c::*) be treated as
+    // first-class protocol families.
+    let platform_stripped = module
+        .strip_prefix("iottack::platform::")
+        .filter(|s| s.contains("::"));
+
     module
         .strip_prefix("iottack::protocols::")
         .or_else(|| module.strip_prefix("iottack::hardware::"))
+        .or(platform_stripped)
         .or_else(|| module.strip_prefix("iottack::"))
         .unwrap_or(module)
         .replace("::", "/")

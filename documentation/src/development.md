@@ -13,9 +13,11 @@ step by step.
 
 ### 1. Create the module files
 
-Plugins are grouped by protocol family under `src/protocols/`. Create a
-directory for the protocol if one does not exist yet, then add the plugin
-source file and the module declaration:
+Plugins are grouped by under `src/protocols/`, `src/hardware` (if it's a physical
+device like a Logic analyzer) or `src/vulns`. Create a directory for the plugin
+if one does not exist yet, then add the plugin source file and the module declaration:
+
+The example here is for a plugin that belongs to "the protocol" group.
 
 ```sh
 src/protocols/<protocol>/

@@ -1,21 +1,9 @@
 # iottack
 
-A Rust-based framework for testing common IoT protocols and IoT implementations which are used by that hardware, those
-products and infrastructures. Plugins provide support for:
+A Rust-based framework for testing and debugging common IoT protocols and IoT implementations
+which are used by that hardware, those products and infrastructures.
 
-| Plugin | Command | Description |
-| --- | --- | --- |
-| `platform/platform` | `iottack platform` | Host environment, USB devices and specialized hardware |
-| `amqp/scan` | `iottack amqp scan` | Detect an AMQP broker and test for default credentials |
-| `http/banner` | `iottack http banner` | Grab HTTP banner and check response headers and security settings |
-| `network/mdns-scan` | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
-| `network/tcp-banner` | `iottack network tcp-banner` | Connect to a TCP service and capture the initial banner |
-| `network/telnet` | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts, and default credentials |
-| `uart/baud-scan` | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |
-| `uart/fuzz` | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |
-| `uart/port-scan` | `iottack uart port-scan` | Discover serial ports available on this host |
-| `uart/shell-detect` | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
-| `uart/terminal` | `iottack uart terminal` | Open an interactive terminal session over a UART interface |
+Check the [Plugin overview](https://affolter-engineering.github.io/iottack/plugins.html)
 
 ## Build
 

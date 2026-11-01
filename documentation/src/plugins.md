@@ -12,11 +12,17 @@ a severity level and optional evidence string.
 | [ble scan](./plugins/ble/ble-scan.md) | `iottack ble scan` | Discover nearby Bluetooth Low Energy devices and report their properties |
 | [ble write](./plugins/ble/ble-write.md) | `iottack ble write --address <ADDR> --characteristic <UUID>` | Write a value to a BLE GATT characteristic or fuzz it |
 | [http banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
+<<<<<<< Updated upstream
 | [modbus device-info](./plugins/modbus/device-info.md) | `iottack modbus device-info` | Read Modbus controller device identification (FC43 MEI) |
 | [modbus read-coils](./plugins/modbus/read-coils.md) | `iottack modbus read-coils` | Read Modbus coils or discrete inputs |
 | [modbus read-registers](./plugins/modbus/read-registers.md) | `iottack modbus read-registers` | Read Modbus holding or input registers |
 | [modbus write-coil](./plugins/modbus/write-coil.md) | `iottack modbus write-coil` | Write a single Modbus coil (FC05) |
 | [modbus write-register](./plugins/modbus/write-register.md) | `iottack modbus write-register` | Write a value to one or more Modbus holding registers |
+=======
+| [ftdi device](./plugins/hardware/ftdi-device.md) | `iottack ftdi device` | Enumerate FTDI USB adapters and report chip type, chip ID, EEPROM strings and MPSSE capability |
+| [i2c scan](./plugins/i2c/scan.md) | `iottack i2c scan` | Probe all valid 7-bit I2C addresses via an FTDI MPSSE adapter |
+| [i2c read](./plugins/i2c/read.md) | `iottack i2c read --address <HEX>` | Read bytes from an I2C device register via an FTDI MPSSE adapter |
+>>>>>>> Stashed changes
 | [mqtt](./plugins/mqtt.md) | `iottack mqtt` | Work with MQTT |
 | [network mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network telnet](./plugins/network/telnet.md) | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |

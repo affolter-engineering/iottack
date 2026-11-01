@@ -3,6 +3,7 @@ pub mod ble;
 pub mod example;
 pub mod http;
 pub mod modbus;
+pub mod i2c;
 pub mod network;
 pub mod tcp;
 pub mod telnet;

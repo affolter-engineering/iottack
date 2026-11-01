@@ -11,3 +11,5 @@ plugins behave against an actual piece of hardware or an actual service.
 | [UART device](./uart.md) | CircuitPython | Serial target for the UART plugins |
 | [AMQP server](./amqp.md) | - | Local RabbitMQ server |
 | [TCP simulator](./tcp.md) | Python 3.13+ | Software-only target for all `tcp` plugins |
+| [Modbus simulator](./modbus.md) | Python / pymodbus | Software-only target for all `modbus` plugins |
+| [BACnet/IP simulator](./bacnet.md) | Python / bacpypes3 | Software-only target for BACnet plugins |

@@ -58,4 +58,5 @@
   - [AMQP server](./misc/amqp.md)
   - [TCP simulator](./misc/tcp.md)
   - [Modbus simulator](./misc/modbus.md)
+  - [BACnet/IP simulator](./misc/bacnet.md)
 - [Development](./development.md)

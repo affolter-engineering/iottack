@@ -5,7 +5,7 @@ Each plugin runs a self-contained check and reports zero or more findings with
 a severity level and optional evidence string.
 
 | Plugin | Command | Summary |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [amqp scan](./plugins/amqp/amqp-scan.md) | `iottack amqp scan` | Detect an AMQP broker and test for default credentials |
 | [ble adapter](./plugins/ble/ble-adapter.md) | `iottack ble adapter` | List Bluetooth adapters and report their power and discoverability state |
 | [ble device](./plugins/ble/ble-device.md) | `iottack ble device --address <ADDR>` | Enumerate GATT services and characteristics of a single BLE device |
@@ -32,6 +32,8 @@ a severity level and optional evidence string.
 | [uart port-scan](./plugins/uart/port-scan.md) | `iottack uart port-scan` | Discover serial ports available on this host |
 | [uart shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
 | [uart terminal](./plugins/uart/terminal.md) | `iottack uart terminal` | Open an interactive terminal session over a UART interface |
+| [zigbee sniffer](./plugins/zigbee/sniffer.md) | `iottack zigbee sniffer` | Passively capture IEEE 802.15.4/Zigbee frames via nRF52840 dongle and report MAC-layer security weaknesses |
+| [zigbee capture](./plugins/zigbee/capture.md) | `iottack zigbee capture` | Capture raw IEEE 802.15.4 frames |
 | [vulns bluefi](./plugins/vulnerabilitites/bluefi.md) | `iottack vuln bluefi` | Check ESP for CVE-2025-27840 |
 
 ## Global options
@@ -39,7 +41,7 @@ a severity level and optional evidence string.
 Every plugin accepts these flags in addition to its own arguments:
 
 | Flag | Short | Description |
-|------|-------|-------------|
+| --- | --- | --- |
 | `--verbose` | `-v` | Increase log verbosity; repeat for more detail (`-v`, `-vv`, `-vvv`) |
 | `--output <FILE>` | `-o` | Save the result to a file |
 | `--format <FORMAT>` | `-f` | Output format for `--output`: `text` (default) or `json` |

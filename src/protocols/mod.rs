@@ -8,3 +8,4 @@ pub mod network;
 pub mod tcp;
 pub mod telnet;
 pub mod uart;
+pub mod zigbee;

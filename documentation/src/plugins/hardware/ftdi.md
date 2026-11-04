@@ -9,7 +9,7 @@ JTAG, SWD or plain UART depending on configuration.
 ## Supported chips
 
 | Chip | Channels | MPSSE channels | USB PID |
-|------|----------|----------------|---------|
+| ---- | -------- | -------------- | ------- |
 | FT232R | 1 | - | `0x6001` |
 | FT232H | 1 | 1 (A) | `0x6014` |
 | FT2232H | 2 | 2 (A, B) | `0x6010` |
@@ -82,7 +82,7 @@ Reconnect the adapter after reloading.
 ## Clock frequencies
 
 | Mode | Typical | Maximum |
-|------|---------|---------|
+| ---- | ------- | ------- |
 | I2C standard | 100 kHz | 100 kHz |
 | I2C fast | 400 kHz | 400 kHz |
 | SPI | 1 MHz | 30 MHz |

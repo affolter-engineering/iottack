@@ -22,7 +22,7 @@ correct version pinned.
 ### Station 1 - Boiler Room Controller
 
 | Object type | Instance | Name | Value | Units |
-|-------------|----------|------|-------|-------|
+| ----------- | -------- | ---- | ----- | ----- |
 | analogInput | 1 | boiler-temp | 75.3 | °C |
 | analogInput | 2 | water-pressure | 2.1 | bar |
 | analogInput | 3 | flue-gas-temp | 185.0 | °C |
@@ -36,7 +36,7 @@ correct version pinned.
 ### Station 2 - HVAC Unit
 
 | Object type | Instance | Name | Value | Units |
-|-------------|----------|------|-------|-------|
+| ----------- | -------- | ---- | ----- | ----- |
 | analogInput | 11 | supply-air-temp | 18.5 | °C |
 | analogInput | 12 | return-air-temp | 24.2 | °C |
 | analogInput | 13 | outdoor-air-temp | 9.8 | °C |
@@ -74,7 +74,7 @@ python test-targets/iottack-target-bacnet/simulator.py --host 127.0.0.1 --port 4
 ## CLI options
 
 | Option | Default | Description |
-|--------|---------|-------------|
+| ------ | ------- | ----------- |
 | `--host` | `0.0.0.0` | Bind address |
 | `--port` | `47808` | UDP port |
 | `--device` | `100` | BACnet device instance number |

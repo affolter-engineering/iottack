@@ -46,6 +46,7 @@ import asyncio
 import logging
 
 from bacpypes3.app import Application
+from bacpypes3.apdu import WhoIsRequest
 from bacpypes3.local.analog import AnalogInputObject, AnalogOutputObject
 from bacpypes3.local.binary import BinaryInputObject, BinaryOutputObject
 from bacpypes3.local.device import DeviceObject
@@ -57,6 +58,30 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 log = logging.getLogger("bacnet-simulator")
+
+
+class SimBASApplication(Application):
+    """Application with unicast I-Am so loopback clients receive the response.
+
+    The standard bacpypes3 Application broadcasts I-Am to 255.255.255.255:47808.
+    When client and simulator share a host the simulator holds port 47808 and
+    the client's random-port socket never sees that broadcast.  Sending a
+    unicast I-Am back to apdu.pduSource (the client's actual IP:port) fixes
+    this for all loopback and same-host testing scenarios.
+    """
+
+    async def do_WhoIsRequest(self, apdu: WhoIsRequest) -> None:
+        device_id = self.device_object.objectIdentifier[1]
+
+        low = apdu.deviceInstanceRangeLowLimit
+        high = apdu.deviceInstanceRangeHighLimit
+        if low is not None and device_id < low:
+            return
+        if high is not None and device_id > high:
+            return
+
+        log.info("Who-Is from %s → unicast I-Am (device %d)", apdu.pduSource, device_id)
+        await self.i_am(address=apdu.pduSource)
 
 
 def ai(instance, name, value, units="degreesCelsius", description=""):
@@ -166,7 +191,7 @@ async def main() -> None:
     )
 
     all_objects = [device, network_port] + station_1_objects + station_2_objects
-    Application.from_object_list(all_objects, address)
+    SimBASApplication.from_object_list(all_objects, address)
 
     log.info(
         "BACnet/IP simulator starting on %s  device-instance=%d", address, args.device

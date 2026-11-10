@@ -39,7 +39,7 @@ pub fn category_from_module(module: &str) -> Category {
         .unwrap_or(module);
 
     match stripped.split("::").next().unwrap_or("") {
-        "serial" | "ftdi" | "i2c" | "spi" | "jtag" | "swd" => Category::Physical,
+        "serial" | "ftdi" | "i2c" | "mcp2221" | "spi" | "jtag" | "swd" => Category::Physical,
         "network" => Category::Network,
         "radio" => Category::Radio,
         "firmware" => Category::Firmware,

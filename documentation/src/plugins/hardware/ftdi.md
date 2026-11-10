@@ -18,6 +18,19 @@ JTAG, SWD or plain UART depending on configuration.
 All chips share vendor ID `0x0403`. Only channels **A** and **B** have an MPSSE
 engine. Channels C and D on the FT4232H are UART/bit-bang only.
 
+Test your FTDI device with Python:
+
+```python
+nix-shell -p python3Packages.pyftdi
+python
+Python 3.14.7 (main, Aug  5 2026, 10:29:49) [GCC 16.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from pyftdi.ftdi import Ftdi
+>>> Ftdi.show_devices()
+Available interfaces:
+  ftdi://ftdi:232h:1:1e/1  (Single RS232-HS)
+```
+
 ## Wiring
 
 ### I2C

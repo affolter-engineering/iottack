@@ -10,4 +10,5 @@ that is used.
 | [`ghostesp`](./ghostesp.md) | GhostESP for BLE-related tasks |
 | [`logic-analyser device`](./logic-analyser-device.md) | List connected sigrok-supported logic analyzers with full details |
 | [`logic-analyser capture`](./logic-analyser-capture.md) | Capture digital samples and analyze signal activity |
+| [`mcp2221 device`](./mcp2221-device.md) | Enumerate connected MCP2221/MCP2221A adapters and report USB identity and capabilities |
 | [`nrf52840`](./nrf52840.md) | Nordic nRF52840 dongle for IEEE 802.15.4 / Zigbee passive capture |

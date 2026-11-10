@@ -18,6 +18,7 @@ a severity level and optional evidence string.
 | [modbus write-coil](./plugins/modbus/write-coil.md) | `iottack modbus write-coil` | Write a single Modbus coil (FC05) |
 | [modbus write-register](./plugins/modbus/write-register.md) | `iottack modbus write-register` | Write a value to one or more Modbus holding registers |
 | [ftdi device](./plugins/hardware/ftdi-device.md) | `iottack ftdi device` | Enumerate FTDI USB adapters and report chip type, chip ID, EEPROM strings and MPSSE capability |
+| [mcp2221 device](./plugins/hardware/mcp2221-device.md) | `iottack mcp2221 device` | Enumerate connected MCP2221/MCP2221A adapters and report USB identity and capabilities |
 | [i2c scan](./plugins/i2c/scan.md) | `iottack i2c scan` | Probe all valid 7-bit I2C addresses via an FTDI MPSSE adapter |
 | [i2c read](./plugins/i2c/read.md) | `iottack i2c read --address <HEX>` | Read bytes from an I2C device register via an FTDI MPSSE adapter |
 | [mqtt](./plugins/mqtt.md) | `iottack mqtt` | Work with MQTT |

@@ -16,7 +16,7 @@ Key Features:
 - Developer Friendly: Extensible architecture making it simple to write custom configurations
   and register new protocol test suites.
 
-Over the last 15 we contributed to various Open source projects that are the major players in
+Over the last 15 years we contributed to various Open source projects that are the major players in
 that (non)-commercial sector for IoT and home automation.
 
 - Home Assistant: Support for MQTT, serial devices, RESTful API services, GPS, mathematical helpers,

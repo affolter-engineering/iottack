@@ -1,4 +1,5 @@
 pub mod amqp;
+pub mod bacnet;
 pub mod ble;
 pub mod example;
 pub mod http;

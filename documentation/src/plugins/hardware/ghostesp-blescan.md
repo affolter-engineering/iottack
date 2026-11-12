@@ -12,7 +12,7 @@ support Bluetooth — check your board's specifications before use.
 ## Scan modes
 
 | Mode | GhostESP flag | Description |
-|------|---------------|-------------|
+| ---- | ------------- | ----------- |
 | `flipper` | `-f` | Detect Flipper Zero devices nearby |
 | `spam-detector` | `-ds` | Detect active BLE advertisement spam |
 | `airtag` | `-a` | Scan for Apple AirTags |
@@ -32,7 +32,7 @@ findings.
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | N BLE observations | Info | One or more devices detected |
 | No BLE devices detected | Info | Scan returned no output |
 | Prompt not found / port error | Info | Device absent or wrong firmware |
@@ -46,7 +46,7 @@ iottack ghostesp blescan --port <PORT> [OPTIONS]
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PORT>` | `-p` | *(required)* | Serial port, e.g. `/dev/ttyACM0` |
 | `--mode <MODE>` | `-m` | `advertiser` | Scan mode (see table above) |
 | `--filter <VALUE>` | - | - | OUI prefix or vendor name (required for `oui`/`vendor` modes) |

@@ -10,7 +10,7 @@ and characteristic. For each characteristic the following are captured:
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | Connected to device | Info | Connection established |
 | Service (primary) | Low | Each primary GATT service |
 | Service (secondary) | Info | Each secondary GATT service |
@@ -37,7 +37,7 @@ iottack ble device --address AA:BB:CC:DD:EE:FF
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--address <ADDR>` | `-d` | required | Bluetooth address of the target device |
 | `--adapter <NAME>` | `-a` | first available | Adapter to use, e.g. `hci0` |
 | `--no-disconnect` | - | off | Leave the device connected after enumeration |

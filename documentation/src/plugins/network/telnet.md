@@ -8,14 +8,14 @@ credentials and session data in cleartext.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Connection succeeded (findings may include Critical/High issues) |
 | `fail` | Telnet port not reachable |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | Critical | Unauthenticated shell prompt directly accessible **or** default credentials accepted |
 | High | Telnet service is open (cleartext protocol) |
 | Medium | Login prompt detected in banner or after stimulus |
@@ -30,7 +30,7 @@ iottack network telnet --host <HOST> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required)* | Target IP address or hostname |
 | `--port <PORT>` | `-p` | `23` | Target port |
 | `--timeout-ms <MS>` | - | `3000` | Connection and read timeout in milliseconds |
@@ -62,7 +62,7 @@ iottack network telnet --host <HOST> [OPTIONS]
 ### Default credentials tested (with `--try-creds`)
 
 | Username | Password |
-|----------|----------|
+| -------- | -------- |
 | `admin` | `admin` |
 | `admin` | *(empty)* |
 | `root` | `root` |

@@ -60,7 +60,7 @@ derives the plugin **name** and **category** from the Rust module path
 automatically.
 
 | Module path | Derived name |
-|---|---|
+| ----------- | ------------ |
 | `iottack::protocols::http::banner` | `http/banner` |
 | `iottack::protocols::network::tcp_banner` | `network/tcp-banner` |
 | `iottack::protocols::example::example` | `example/example` |
@@ -105,10 +105,10 @@ fn meta(&self) -> PluginMeta {
 `config` and store the values on `self`.
 
 | Method | When to use |
-|---|---|
+| ------ | ----------- |
 | `config.get_or(key, default)` | String value with a fallback |
-| `config.parse_or(key, default)` | Typed value (`u16`, `u64`, …) with a fallback |
-| `config.require(key)` | Value that must be present — returns `Err` if missing |
+| `config.parse_or(key, default)` | Typed value (`u16`, `u64`, ...) with a fallback |
+| `config.require(key)` | Value that must be present. Returns `Err` if missing |
 
 ```rust
 fn initialize(&mut self, config: &PluginConfig) -> Result<()> {

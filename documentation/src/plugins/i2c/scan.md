@@ -28,7 +28,7 @@ about common devices that use that address range.
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--channel <CHANNEL>` | `-c` | `A` | FTDI channel to use, must be A or B (MPSSE-capable) |
 | `--vid <HEX>` | - | `0403` | USB vendor ID in hex |
 | `--pid <HEX>` | - | auto-detect | USB product ID in hex (6001=FT232R, 6010=FT2232H, 6011=FT4232H, 6014=FT232H). Omit to probe all known PIDs |
@@ -40,7 +40,7 @@ about common devices that use that address range.
 ## Address hint table
 
 | Address range | Typical devices |
-|---------------|----------------|
+| ------------- | -------------- |
 | 0x18-0x19 | LIS3DH/LIS2DH accelerometer |
 | 0x1C-0x1D | MMA8452/FXOS8700 accelerometer |
 | 0x1E-0x1F | HMC5883L/MAG3110 magnetometer |
@@ -111,7 +111,7 @@ is that **ADBUS2 (DI/TDO) is not connected to SDA**.
 The FT232H needs *two* pins shorted to the SDA line:
 
 | FTDI pin | Signal | Notes |
-|----------|--------|-------|
+| -------- | ------ | ----- |
 | ADBUS0 (SK/TCK) | SCL | 4.7 kOhm pull-up to VCC |
 | ADBUS1 (DO/TDI) | SDA | 4.7 kOhm pull-up to VCC |
 | ADBUS2 (DI/TDO) | SDA | Same net, shorted to ADBUS1 |

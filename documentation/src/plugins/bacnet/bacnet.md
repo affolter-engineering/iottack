@@ -31,7 +31,7 @@ yet widely deployed). Any device that responds is a potential attack target.
 ### Severity mapping
 
 | Finding | Severity |
-|---------|----------|
+| ------- | -------- |
 | No BACnet devices found | Info |
 | Device responds to Who-Is; ReadProperty rejected | High |
 | Device allows unauthenticated ReadProperty | Critical |
@@ -39,7 +39,7 @@ yet widely deployed). Any device that responds is a potential attack target.
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(broadcast)* | Target host for unicast scan |
 | `--port <PORT>` | `-p` | `47808` | BACnet/IP UDP port |
 | `--timeout-ms <MS>` | - | `3000` | Who-Is discovery window in milliseconds |

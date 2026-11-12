@@ -15,7 +15,7 @@ triggers a finding that captures:
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | Device details | Medium | Device is connected or paired |
 | Device details | Info | Unknown / unrecognised device |
 | Summary count | Info | Always emitted at end of scan |
@@ -39,7 +39,7 @@ iottack ble scan
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--timeout <SECS>` | `-t` | `10` | Scan duration in seconds |
 | `--adapter <NAME>` | `-a` | first available | Adapter to use, e.g. `hci0` |
 | `--output <FILE>` | `-o` | - | Save result to a file |

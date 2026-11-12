@@ -19,7 +19,7 @@ and shell prompts. A `--wordlist` or `--charset` can replace the built-in set.
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | Write successful | Info | Single write completed |
 | Write failed | Low | Write rejected by the device |
 | Interesting response | Medium–Critical | Fuzz response matched a pattern |
@@ -45,7 +45,7 @@ iottack ble write --address <ADDR> --characteristic <UUID> --fuzz
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--address <ADDR>` | `-d` | required | Bluetooth address of the target device |
 | `--characteristic <UUID>` | `-c` | required | GATT characteristic UUID to write |
 | `--value <DATA>` | `-V` | `""` | Value to write (ignored with `--fuzz`) |
@@ -131,7 +131,7 @@ to confirm the characteristic UUID, then use `ble write` to control the LED or
 fuzz the characteristic.
 
 | Property | Value |
-|----------|-------|
+| -------- | ----- |
 | Device name | `IoTTack Target Bluetooth` |
 | Service UUID | `19b10000-e8f2-537e-4f6c-d104768a1214` |
 | Characteristic UUID | `19b10001-e8f2-537e-4f6c-d104768a1214` |
@@ -140,7 +140,7 @@ fuzz the characteristic.
 Accepted commands:
 
 | Value | Effect |
-|-------|--------|
+| ----- | ------ |
 | `R` | Set NeoPixel to red |
 | `G` | Set NeoPixel to green |
 | `B` | Set NeoPixel to blue |

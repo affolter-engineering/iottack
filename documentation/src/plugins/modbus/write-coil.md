@@ -12,14 +12,14 @@ can directly affect physical processes.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Write accepted by the device |
 | `fail` | Write rejected, invalid value, or connection failed |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | Critical | Write succeeded (unauthenticated control of a digital output) |
 | Info | Write failed, invalid value, or connection failed |
 
@@ -35,7 +35,7 @@ iottack modbus write-coil --serial <DEVICE> --value <VALUE> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required or --serial)* | Target hostname or IP for Modbus/TCP |
 | `--tcp-port <PORT>` | - | `502` | Modbus/TCP port |
 | `--serial <DEVICE>` | `-s` | *(required or --host)* | Serial device for Modbus RTU (e.g., `/dev/ttyUSB0`) |
@@ -51,7 +51,7 @@ iottack modbus write-coil --serial <DEVICE> --value <VALUE> [OPTIONS]
 ### Accepted values for `--value`
 
 | Input | Meaning |
-|-------|---------|
+| ----- | ------- |
 | `on`, `1`, `true`, `yes` | Coil ON (0xFF00 on the wire) |
 | `off`, `0`, `false`, `no` | Coil OFF (0x0000 on the wire) |
 

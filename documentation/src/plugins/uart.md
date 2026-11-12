@@ -15,7 +15,7 @@ UART transmits data one bit at a time over two wires:
 The two sides agree on a set of parameters before communication:
 
 | Parameter | Typical IoT value | Notes |
-|-----------|------------------|-------|
+| --------- | ---------------- | ----- |
 | Baud rate | 115200 | Also common: 9600, 57600, 38400, 19200 |
 | Data bits | 8 | Almost always 8 |
 | Parity | None | N - no parity bit |
@@ -69,7 +69,7 @@ UART is extremely high-value for hardware security assessments:
 ## Plugins
 
 | Plugin | Command | Summary |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [uart port-scan](./uart/port-scan.md) | `iottack uart port-scan` | Discover serial ports available on the host |
 | [uart baud-scan](./uart/baud-scan.md) | `iottack uart baud-scan` | Probe common baud rates to find the active configuration |
 | [uart shell-detect](./uart/shell-detect.md) | `iottack uart shell-detect` | Detect interactive shell or login prompt on the UART interface |

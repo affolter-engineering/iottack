@@ -12,7 +12,7 @@ is potentially within the attack surface.
 ## CVE coverage
 
 | CVE | Platform | Impact | CVSS |
-|-----|----------|--------|------|
+| --- | -------- | ------ | ---- |
 | CVE-2017-0781 | Android | RCE via BNEP heap overflow | 8.8 |
 | CVE-2017-0782 | Android | RCE via AVDTP heap overflow | 8.8 |
 | CVE-2017-0783 | Android | Information disclosure via PAN | 6.5 |
@@ -27,7 +27,7 @@ The plugin cannot confirm patch status remotely. It uses observable Bluetooth
 properties to identify devices likely affected by each CVE:
 
 | Signal | Source | Infers |
-|--------|--------|--------|
+| ------ | ------ | ------ |
 | Device name contains "Galaxy", "Pixel", "Huawei", etc. | `Name` property | Android |
 | Device name contains "ubuntu", "raspberry", "debian", etc. | `Name` property | Linux |
 | Bluetooth major class = Computer (0x01) | `Class` property | Linux |
@@ -43,14 +43,14 @@ with Bluetooth Classic enabled.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Scan completed (findings may still indicate exposure) |
 | `fail` | Bluetooth unavailable or no adapter found |
 
 ## Severity
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | High | Platform identified (Android/Linux) **and** matching vulnerable profile present |
 | Medium | Platform identified **or** vulnerable profile present |
 | Low | Generic Bluetooth device with no specific indicators |
@@ -71,7 +71,7 @@ iottack vuln blueborne [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--timeout <SECS>` | `-t` | `15` | Scan duration in seconds |
 | `--adapter <NAME>` | `-a` | first available | Bluetooth adapter to use, e.g. `hci0` |
 | `--output <FILE>` | `-o` | - | Save result to a file |
@@ -98,7 +98,7 @@ Apply all Bluetooth security patches from September 2017 or later. Where
 possible, disable Bluetooth when not in use.
 
 | Platform | Action |
-|----------|--------|
+| -------- | ------ |
 | Android | Apply the September 2017 Android Security Bulletin |
 | Linux | Update kernel ≥ 4.14 and BlueZ ≥ 5.47 |
 | Windows | Apply MS17-013 / KB4038788 |

@@ -17,7 +17,7 @@ for pin connections and the required udev rule.
 ## Plugins
 
 | Plugin | Command | Purpose |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [scan](./scan.md) | `iottack i2c scan` | Probe all 112 valid I2C addresses and report responding devices |
 | [read](./read.md) | `iottack i2c read` | Read bytes from a specific device register |
 

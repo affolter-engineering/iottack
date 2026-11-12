@@ -12,7 +12,7 @@ connection attempt distinguishes three cases:
 ## Related services
 
 | Port | Service |
-|------|---------|
+| ---- | ------- |
 | 5671 | AMQPS — TLS-encrypted AMQP |
 | 5672 | AMQP — plaintext (this plugin) |
 | 15672 | RabbitMQ management HTTP API and web UI |
@@ -23,7 +23,7 @@ the management interface.
 ## Severity mapping
 
 | Finding | Severity |
-|---------|----------|
+| ------- | -------- |
 | AMQP broker detected | Info |
 | Cleartext AMQP on port 5672 | High |
 | Default credentials accepted | Critical |
@@ -39,7 +39,7 @@ iottack amqp scan --host <HOST> [OPTIONS]
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required)* | Target hostname or IP address |
 | `--port <PORT>` | `-p` | `5672` | AMQP port |
 | `--vhost <VHOST>` | `-V` | `/` | Virtual host to authenticate against |
@@ -56,7 +56,7 @@ and closes cleanly on success.
 ### Default credentials probed
 
 | Username | Password |
-|----------|----------|
+| -------- | -------- |
 | `guest` | `guest` |
 | `admin` | `admin` |
 | `admin` | `password` |

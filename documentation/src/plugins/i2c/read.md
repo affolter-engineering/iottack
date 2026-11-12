@@ -29,7 +29,7 @@ Raw bytes are reported as hex, decimal, and printable ASCII.
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--address <HEX>` | `-a` | _(required)_ | 7-bit I2C target address in hex, e.g., `68` or `0x68` |
 | `--register <HEX>` | `-r` | _(none)_ | Register/command byte to write before reading, e.g., `00` or `0x00` |
 | `--length <N>` | `-n` | `1` | Number of bytes to read |

@@ -6,7 +6,7 @@ issues, version disclosure, and missing hardening headers.
 ## Checks performed
 
 | Check | Finding | Severity |
-|-------|---------|----------|
+| ----- | ------- | -------- |
 | `Server:` header with version number | Version disclosure | Medium |
 | `Server:` header without version | Software identity | Info |
 | `X-Powered-By:` header present | Framework/runtime disclosure | Medium |
@@ -30,7 +30,7 @@ iottack http http-banner --host <HOST> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required)* | Target hostname or IP address |
 | `--port <PORT>` | `-p` | `80` | TCP port |
 | `--path <PATH>` | `-u` | `/` | Request path |

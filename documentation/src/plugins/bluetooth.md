@@ -6,7 +6,7 @@ home hubs and wearables. It covers two distinct protocol stacks that share
 the same 2.4 GHz radio band but are otherwise independent:
 
 | Variant | Full name | Typical range | Common IoT use |
-|---------|-----------|--------------|----------------|
+| ------- | --------- | ------------ | -------------- |
 | **BLE** | Bluetooth Low Energy (Bluetooth 4.0+) | 10-100 m | Sensors, beacons, wearables, locks |
 | **BR/EDR** | Basic Rate / Enhanced Data Rate ("Classic") | 10-100 m | Audio, serial-port emulation (SPP), HID |
 
@@ -34,7 +34,7 @@ Bluetooth introduces attack surface at several layers:
 ## Plugins
 
 | Plugin | Command | Summary |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [ble adapter](./ble/ble-adapter.md) | `iottack ble adapter` | List Bluetooth adapters and report their power and discoverability state |
 | [ble scan](./ble/ble-scan.md) | `iottack ble scan` | Discover nearby BLE devices and report advertising data |
 | [ble device](./ble/ble-device.md) | `iottack ble device` | Enumerate GATT services and characteristics of a single BLE device |

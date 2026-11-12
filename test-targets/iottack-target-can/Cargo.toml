@@ -1,0 +1,15 @@
+[package]
+name = "iottack-target-can"
+version = "0.1.0"
+edition = "2024"
+description = "Virtual CAN bus simulator for IoTtack testing"
+license = "MIT"
+
+[[bin]]
+name = "can-simulator"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+socketcan = "3"

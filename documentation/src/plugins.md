@@ -21,6 +21,10 @@ a severity level and optional evidence string.
 | [ble device](./plugins/ble/ble-device.md) | `iottack ble device --address <ADDR>` | Enumerate GATT services and characteristics of a single BLE device |
 | [ble scan](./plugins/ble/ble-scan.md) | `iottack ble scan` | Discover nearby Bluetooth Low Energy devices and report their properties |
 | [ble write](./plugins/ble/ble-write.md) | `iottack ble write --address <ADDR> --characteristic <UUID>` | Write a value to a BLE GATT characteristic or fuzz it |
+| [can dump](./plugins/can/dump.md) | `iottack can dump` | Passively capture CAN frames and report traffic statistics and security-relevant IDs |
+| [can enumerate](./plugins/can/enumerate.md) | `iottack can enumerate` | Discover CAN bus devices via passive heartbeat, OBD-II broadcast, and CANopen node guarding |
+| [can scan](./plugins/can/scan.md) | `iottack can scan` | Passively enumerate all active CAN IDs with frame count, rate, DLC, and payload |
+| [can send](./plugins/can/send.md) | `iottack can send --id <HEX>` | Transmit arbitrary CAN data frames (SFF or EFF) to the bus |
 | [ftdi device](./plugins/hardware/ftdi-device.md) | `iottack ftdi device` | Enumerate FTDI USB adapters and report chip type, chip ID, EEPROM strings and MPSSE capability |
 | [http banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
 | [i2c read](./plugins/i2c/read.md) | `iottack i2c read --address <HEX>` | Read bytes from an I2C device register via an FTDI MPSSE adapter |

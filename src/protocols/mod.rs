@@ -1,6 +1,7 @@
 pub mod amqp;
 pub mod bacnet;
 pub mod ble;
+pub mod can;
 pub mod example;
 pub mod http;
 pub mod modbus;

@@ -29,7 +29,7 @@ For vendor commands (OGF 0x3F): `opcode = 0xFC00 | OCF`
 ## Checks performed
 
 | Check | Finding | Severity |
-|---|---|---|
+| - | - | - |
 | Device responds to HCI_Reset | HCI interface reachable | Medium |
 | OCF 0x001 responsive | Arbitrary memory read | Critical |
 | OCF 0x002 responsive | Arbitrary memory write | Critical |
@@ -45,7 +45,7 @@ iottack vulns bluefi --port /dev/ttyUSB1 [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|---|---|---|---|
+| - | - | - | - |
 | `--port <PORT>` | `-p` | *(required)* | Serial port of the ESP32 in HCI mode |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Serial baud rate |
 | `--timeout-ms <MS>` | `-t` | `200` | Per-command response timeout |

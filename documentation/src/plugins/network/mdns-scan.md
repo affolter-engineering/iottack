@@ -8,7 +8,7 @@ second until the timeout expires. Insecure protocols are flagged at higher
 severity:
 
 | Service type | Label | Severity |
-|---|---|---|
+| - | - | - |
 | `_telnet._tcp.local` | Telnet | High |
 | `_ftp._tcp.local` | FTP | Medium |
 | `_http._tcp.local` | HTTP | Low |
@@ -29,7 +29,7 @@ iottack network mdns-scan [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--timeout-secs <SECS>` | `-t` | `5` | Seconds to listen for responses |
 | `--output <FILE>` | `-o` | - | Save result to a file |
 | `--format <FORMAT>` | `-f` | `text` | `text` or `json` |

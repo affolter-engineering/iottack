@@ -14,14 +14,14 @@ no objects, the connectivity finding is still reported.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Connection accepted (device is reachable and responded) |
 | `fail` | Could not connect |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | High | Unauthenticated connection accepted |
 | High | FC43 MEI identification objects returned |
 | Info | FC43 not supported or returned no objects |
@@ -37,7 +37,7 @@ iottack modbus device-info --serial <DEVICE> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required or --serial)* | Target hostname or IP for Modbus/TCP |
 | `--tcp-port <PORT>` | - | `502` | Modbus/TCP port |
 | `--serial <DEVICE>` | `-s` | *(required or --host)* | Serial device for Modbus RTU (e.g., `/dev/ttyUSB0`) |
@@ -53,7 +53,7 @@ iottack modbus device-info --serial <DEVICE> [OPTIONS]
 FC43 MEI type 14 defines the following object IDs:
 
 | ID | Label |
-|----|-------|
+| -- | ----- |
 | `0x00` | VendorName |
 | `0x01` | ProductCode |
 | `0x02` | MajorMinorRevision |

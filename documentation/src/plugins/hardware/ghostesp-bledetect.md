@@ -23,7 +23,7 @@ The scan is then stopped with `bledetect -s` and findings are reported.
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | Skimmer detected | High | Device type contains "skimmer" |
 | Tracker / AirTag detected | Medium | Device type contains "tracker", "airtag" or "tile" |
 | Beacon detected | Low | Device type contains "beacon" |
@@ -41,7 +41,7 @@ iottack ghostesp bledetect --port <PORT> [OPTIONS]
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PORT>` | `-p` | *(required)* | Serial port, e.g. `/dev/ttyACM0` |
 | `--duration <SECS>` | `-d` | `15` | Scan duration in seconds before querying results |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Serial baud rate |

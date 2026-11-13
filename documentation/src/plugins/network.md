@@ -43,7 +43,7 @@ Common findings on IoT Telnet services:
 ## Plugins
 
 | Plugin | Command | Summary |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [network mdns-scan](./network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network telnet](./network/telnet.md) | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts, and default credentials |
 

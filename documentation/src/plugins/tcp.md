@@ -27,7 +27,7 @@ guaranteeing that data arrives complete and in order.
 IoT devices commonly expose TCP services on well-known and vendor-specific ports:
 
 | Port | Protocol | Risk if exposed |
-|------|----------|----------------|
+| ---- | -------- | -------------- |
 | 22 | SSH | Low (if hardened); High if default credentials |
 | 23 | Telnet | High - cleartext credentials and session data |
 | 80 / 8080 | HTTP | Medium - admin panel, firmware info disclosure |
@@ -54,7 +54,7 @@ IoT devices commonly expose TCP services on well-known and vendor-specific ports
 ## Plugins
 
 | Plugin | Command | Summary |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [tcp banner](./tcp/banner.md) | `iottack tcp banner` | Connect and capture the service banner; identify protocol and flag cleartext services |
 | [tcp shell-detect](./tcp/shell-detect.md) | `iottack tcp shell-detect` | Detect an interactive shell or login prompt on a TCP port |
 | [tcp fuzz](./tcp/fuzz.md) | `iottack tcp fuzz` | Send malformed payloads and report anomalous responses |

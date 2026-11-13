@@ -3,7 +3,7 @@
 Scans `/dev/` for character devices whose names match known UART naming patterns:
 
 | Prefix | Interface |
-|--------|-----------|
+| ------ | --------- |
 | `ttyUSB*` | USB-to-serial (FTDI, CH340, CP210x, ...) |
 | `ttyACM*` | USB CDC ACM (Arduino, modems) |
 | `ttyAMA*` | ARM PL011 UART (Raspberry Pi, ...) |
@@ -25,7 +25,7 @@ iottack uart port-scan [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--verify` | - | off | Try to open each port to confirm accessibility |
 | `--output <FILE>` | `-o` | - | Save result to a file |
 | `--format <FORMAT>` | `-f` | `text` | `text` or `json` |

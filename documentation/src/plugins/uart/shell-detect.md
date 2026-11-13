@@ -7,7 +7,7 @@ attempts to handle devices that need time to produce output.
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | Unauthenticated root shell | Critical | `# ` or `root@` present in output |
 | Login prompt exposed | High | `login:`, `Password:`, etc. present |
 | Interactive prompt | Medium | Other shell patterns matched |
@@ -23,7 +23,7 @@ iottack uart shell-detect --port <PATH> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PATH>` | `-p` | *(required)* | Serial port device, e.g., `/dev/ttyUSB0` |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Baud rate to connect at |
 | `--attempts <N>` | - | `3` | Number of stimulus attempts |

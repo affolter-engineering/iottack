@@ -15,7 +15,7 @@ Probes the five most common FTDI USB product IDs (`0x6001`, `0x6010`, `0x6011`,
 `0x6014`, `0x6015`) and for each adapter found reports:
 
 | Field | Description |
-|-------|-------------|
+| ----- | ----------- |
 | USB | Vendor ID and product ID |
 | Chip | Chip family name |
 | Chip ID | Unique 32-bit identifier burned into the chip (hex) |
@@ -32,7 +32,7 @@ instructions.
 This plugin has no plugin-specific options.
 
 | Flag | Short | Description |
-|------|-------|-------------|
+| ---- | ----- | ----------- |
 | `--output <FILE>` | `-o` | Save result to a file |
 | `--format <FORMAT>` | `-f` | `text` or `json` |
 | `--verbose` | `-v` | Increase log verbosity |

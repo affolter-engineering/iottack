@@ -5,7 +5,7 @@ are used as targets or dummy devices throughout the documentation to demonstrate
 plugins behave against an actual piece of hardware or an actual service.
 
 | Device | Firmware | Notes |
-|--------|----------|-------|
+| ------ | -------- | ----- |
 | [Bluetooth device](./bluetooth-target.md) | CircuitPython | Bluetooth device with a LED |
 | [Generic IoT device](./generic-iot.md) | ESPHome | Wi-Fi target for the network plugins |
 | [UART device](./uart.md) | CircuitPython | Serial target for the UART plugins |

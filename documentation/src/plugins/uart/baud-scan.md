@@ -20,7 +20,7 @@ Baud rates probed (in order):
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PATH>` | `-p` | *(required)* | Serial port device, e.g. `/dev/ttyUSB0` |
 | `--timeout-ms <MS>` | - | `500` | Read timeout per baud rate in milliseconds |
 | `--output <FILE>` | `-o` | - | Save result to a file |

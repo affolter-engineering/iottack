@@ -4,7 +4,7 @@ Writes one or more 16-bit values to Modbus holding registers without
 authentication. Two write modes are available:
 
 | Mode | Function code | Flag |
-|------|--------------|------|
+| ---- | ------------ | ---- |
 | Single register | FC06 — Write Single Register | `--value` |
 | Multiple registers | FC16 — Write Multiple Registers | `--values` |
 
@@ -16,14 +16,14 @@ configuration parameters or device state on industrial equipment.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Write accepted by the device |
 | `fail` | Write rejected, parse error or connection failed |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | Critical | Write succeeded (unauthenticated modification of device state) |
 | Info | Write failed, invalid value or connection failed |
 
@@ -40,7 +40,7 @@ Either `--value` or `--values` must be supplied.
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required or --serial)* | Target hostname or IP for Modbus/TCP |
 | `--tcp-port <PORT>` | - | `502` | Modbus/TCP port |
 | `--serial <DEVICE>` | `-s` | *(required or --host)* | Serial device for Modbus RTU (e.g., `/dev/ttyUSB0`) |

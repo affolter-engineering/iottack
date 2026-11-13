@@ -4,7 +4,7 @@ Scans a configurable address range across all four Modbus data types to discover
 which addresses a device will serve without error:
 
 | Data type | Function code | Default scan |
-|-----------|--------------|-------------|
+| --------- | ------------ | ----------- |
 | Holding registers | FC03 | yes |
 | Input registers | FC04 | yes |
 | Coils | FC01 | yes |
@@ -18,14 +18,14 @@ attacker.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | At least one accessible address found |
 | `fail` | No accessible addresses, or connection failed |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | High | More than 100 accessible addresses of a given type |
 | High | Summary finding when any data is found |
 | Medium | 1-100 accessible addresses of a given type |
@@ -42,7 +42,7 @@ iottack modbus enumerate --serial <DEVICE> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required or --serial)* | Target hostname or IP for Modbus/TCP |
 | `--tcp-port <PORT>` | - | `502` | Modbus/TCP port |
 | `--serial <DEVICE>` | `-s` | *(required or --host)* | Serial device for Modbus RTU (e.g., `/dev/ttyUSB0`) |

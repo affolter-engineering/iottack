@@ -12,14 +12,14 @@ are reported as Info and do not affect the status.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Connection succeeded (findings may include Critical/High/Medium issues) |
 | `fail` | No response received after banner read and all stimulus attempts |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | Critical | `# ` or `root@` present — unauthenticated root shell directly accessible |
 | High | `login:`, `Login:`, `Password:`, `password:` present. Login prompt exposed |
 | Medium | Other shell indicators matched (`$ `, `> `, `bash`, `sh-`, etc.) |
@@ -34,7 +34,7 @@ iottack tcp shell-detect --host <HOST> --port <PORT> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required)* | Target hostname or IP address |
 | `--port <PORT>` | `-p` | *(required)* | Target TCP port |
 | `--timeout-ms <MS>` | - | `3000` | Connect and read timeout in milliseconds |

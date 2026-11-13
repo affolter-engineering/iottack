@@ -32,7 +32,7 @@ already holds port 47808 so I-Am broadcasts cannot be received. Use
 ## Plugins
 
 | Plugin | Command | Purpose |
-| -------| ------- | ------- |
+| ------ | ------- | ------- |
 | [find-devices](./bacnet/find-devices.md) | `iottack bacnet find-devices` | Discover all reachable BACnet/IP devices via Who-Is broadcast |
 | [scan](./bacnet/scan.md) | `iottack bacnet scan` | Enumerate devices and read key Device-object properties |
 | [info](./bacnet/info.md) | `iottack bacnet info` | Read identification and status properties of a single device |

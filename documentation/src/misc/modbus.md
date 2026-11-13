@@ -16,7 +16,7 @@ correct version pinned.
 ## Data layout
 
 | Data type | Function code | Address range | Count | Notes |
-|-----------|--------------|---------------|-------|-------|
+| --------- | ------------ | ------------- | ----- | ----- |
 | Holding registers | FC03 | 0-999 | 1000 | Status, setpoints, counters, config, alarm thresholds |
 | Input registers | FC04 | 0-99 | 100 | Temperature, pressure, voltage, current, uptime |
 | Coils | FC01 | 0-31 | 32 | Alternating ON/OFF pattern |
@@ -108,7 +108,7 @@ iottack modbus write-register --host 127.0.0.1 --tcp-port 5020 \
 ## CLI options
 
 | Option | Default | Description |
-|--------|---------|-------------|
+| ------ | ------- | ----------- |
 | `--host` | `0.0.0.0` | Bind address |
 | `--port` | `5020` | TCP port |
 | `--unit` | `1` | Modbus unit/slave ID |

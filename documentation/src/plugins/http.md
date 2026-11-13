@@ -26,7 +26,7 @@ Content-Type: application/json
 ### Key HTTP methods in IoT assessments
 
 | Method | Typical use | Security relevance |
-|--------|------------|-------------------|
+| ------ | ---------- | ----------------- |
 | `GET` | Read config, status, sensor data | Unauthenticated reads expose data |
 | `POST` | Submit commands, trigger actions | Unauthenticated writes can modify device state |
 | `PUT` | Update config or firmware | OTA endpoints are high-value targets |
@@ -35,7 +35,7 @@ Content-Type: application/json
 ### HTTP versions
 
 | Version | Transport | Notes |
-|---------|-----------|-------|
+| ------- | --------- | ----- |
 | HTTP/1.0 | Plain TCP | No persistent connections; common on embedded devices |
 | HTTP/1.1 | Plain TCP | Keep-alive, chunked transfer; most embedded web servers |
 | HTTPS (TLS) | TLS over TCP | Encrypted; self-signed certificates are common on IoT |
@@ -61,7 +61,7 @@ Content-Type: application/json
 ## Plugins
 
 | Plugin | Command | Summary |
-|--------|---------|---------|
+| ------ | ------- | ------- |
 | [http banner](./http/http-banner.md) | `iottack http banner` | Grab the HTTP banner and check response headers |
 | [http sse](./http/http-sse.md) | `iottack http sse` | Consume a Server-Sent Events stream from a device endpoint |
 

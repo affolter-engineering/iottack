@@ -14,7 +14,7 @@ connection.
 ## Checks performed
 
 | Check | Finding | Severity |
-|-------|---------|----------|
+| ----- | ------- | -------- |
 | HTTP status 401 or 403 | Access denied | Info |
 | HTTP status other than 200 | Unexpected status | Medium |
 | `Content-Type` is not `text/event-stream` | Wrong content type | Medium |
@@ -40,7 +40,7 @@ iottack http http-sse --host <HOST> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required)* | Target hostname or IP address |
 | `--port <PORT>` | `-p` | `80` | TCP port |
 | `--path <PATH>` | `-u` | `/events` | EventSource endpoint path |

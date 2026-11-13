@@ -19,7 +19,7 @@ iottack platform [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--output <FILE>` | `-o` | - | Save result to a file |
 | `--format <FORMAT>` | `-f` | `text` | `text` or `json` |
 | `--verbose` | `-v` | - | Increase log verbosity |

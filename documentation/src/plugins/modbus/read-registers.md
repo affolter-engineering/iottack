@@ -13,14 +13,14 @@ hold non-zero values.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | Registers read successfully |
 | `fail` | Read failed or connection error |
 
 ## Severity classification
 
 | Severity | Condition |
-|----------|-----------|
+| -------- | --------- |
 | High | Registers returned (unauthenticated read succeeded) |
 | Info | Read failed or connection failed |
 
@@ -34,7 +34,7 @@ iottack modbus read-registers --serial <DEVICE> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required or --serial)* | Target hostname or IP for Modbus/TCP |
 | `--tcp-port <PORT>` | - | `502` | Modbus/TCP port |
 | `--serial <DEVICE>` | `-s` | *(required or --host)* | Serial device for Modbus RTU (e.g., `/dev/ttyUSB0`) |

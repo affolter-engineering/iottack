@@ -30,6 +30,8 @@
   - [I2C](./plugins/i2c/intro.md)
     - [i2c scan](./plugins/i2c/scan.md)
     - [i2c read](./plugins/i2c/read.md)
+  - [1-Wire](./plugins/onewire.md)
+    - [onewire scan](./plugins/onewire/scan.md)
   - [Hardware](./plugins/hardware/intro-hardware.md)
     - [ftdi](./plugins/hardware/ftdi.md)
     - [ftdi device](./plugins/hardware/ftdi-device.md)

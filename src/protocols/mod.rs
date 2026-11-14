@@ -6,6 +6,7 @@ pub mod http;
 pub mod modbus;
 pub mod i2c;
 pub mod network;
+pub mod onewire;
 pub mod tcp;
 pub mod telnet;
 pub mod uart;

@@ -34,6 +34,7 @@ a severity level and optional evidence string.
 | [mqtt](./plugins/mqtt.md) | `iottack mqtt` | Work with MQTT |
 | [network mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network telnet](./plugins/network/telnet.md) | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
+| [onewire scan](./plugins/onewire/scan.md) | `iottack onewire scan` | Enumerate 1-Wire device ROM codes via FTDI UART loopback and report family type and security relevance |
 | [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
 | [tcp banner](./plugins/tcp/banner.md) | `iottack tcp banner` | Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext services |
 | [tcp fuzz](./plugins/tcp/fuzz.md) | `iottack tcp fuzz` | Send malformed and custom payloads to a TCP service and report anomalous responses |

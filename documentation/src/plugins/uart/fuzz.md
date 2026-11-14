@@ -11,14 +11,14 @@ set is replaced so only the specified payloads are sent. Named payload sets
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | At least one payload produced an interesting response (Medium severity) |
 | `fail` | A High/Critical pattern matched (crash, shell prompt) **or** no response matched at all |
 
 ## Severity classification
 
 | Severity | Matched patterns |
-|----------|-----------------|
+| -------- | --------------- |
 | Critical | `fault`, `panic`, `exception`, `stack`, `crash`, `abort`, `segfault`, `overflow` |
 | High | `root@`, `# `, `$ `, `login:`, `password:` |
 | Medium | Everything else (`error`, `invalid`, user `--pattern` strings) |
@@ -31,7 +31,7 @@ iottack uart fuzz --port <PATH> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PATH>` | `-p` | *(required)* | Serial port device, e.g. `/dev/ttyUSB0` |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Baud rate |
 | `--timeout-ms <MS>` | - | `500` | Read timeout per payload in milliseconds |
@@ -88,7 +88,7 @@ named sets always **add** to the active payload list — they never replace the
 built-in set (or a wordlist/charset if one is also specified).
 
 | Set name | Contents |
-|----------|----------|
+| -------- | -------- |
 | `digits` | `1234567890` repeated to lengths 10, 64, 256 |
 | `lowercase` | `a–z` repeated to lengths 26, 64, 256 |
 | `uppercase` | `A–Z` repeated to lengths 26, 64, 256 |

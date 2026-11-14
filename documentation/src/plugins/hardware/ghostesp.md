@@ -24,7 +24,7 @@ is confirmed, the plugin runs two commands:
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | GhostESP device detected | High | `ghost>` prompt found on port |
 | GhostESP chip information | Info | `chipinfo` returned output |
 | Enabled peripherals | Info | `devices` returned peripheral list |
@@ -39,7 +39,7 @@ iottack ghostesp device --port <PORT> [OPTIONS]
 ## Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PORT>` | `-p` | *(required)* | Serial port, e.g., `/dev/ttyACM0` |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Serial baud rate |
 | `--timeout-ms <MS>` | `-t` | `5000` | Per-command response timeout in ms |

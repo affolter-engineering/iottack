@@ -16,14 +16,14 @@ avoid session state between payloads.
 ## Status
 
 | Result | Meaning |
-|--------|---------|
+| ------ | ------- |
 | `pass` | At least one payload produced an interesting response (Medium severity) |
 | `fail` | A High/Critical pattern matched (crash, shell prompt) **or** no response matched at all |
 
 ## Severity classification
 
 | Severity | Matched patterns |
-|----------|-----------------|
+| -------- | --------------- |
 | Critical | `fault`, `panic`, `exception`, `stack`, `crash`, `abort`, `segfault`, `overflow` |
 | High | `root@`, `# `, `$ `, `login:`, `password:` |
 | Medium | Everything else (`error`, `invalid`, user `--pattern` strings) |
@@ -37,7 +37,7 @@ iottack tcp fuzz --host <HOST> --port <PORT> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | *(required)* | Target hostname or IP address |
 | `--port <PORT>` | `-p` | *(required)* | Target TCP port |
 | `--timeout-ms <MS>` | - | `3000` | Connect and read timeout in milliseconds |
@@ -100,7 +100,7 @@ character (single byte). When specified, built-in payloads are replaced
 unless a wordlist or charset is also given.
 
 | Set name | Contents |
-|----------|----------|
+| -------- | -------- |
 | `digits` | `0–9`, one payload per digit |
 | `lowercase` | `a–z`, one payload per letter |
 | `uppercase` | `A–Z`, one payload per letter |

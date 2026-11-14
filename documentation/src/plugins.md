@@ -7,35 +7,50 @@ a severity level and optional evidence string.
 | Plugin | Command | Summary |
 | ------ | ------- | ------- |
 | [amqp scan](./plugins/amqp/amqp-scan.md) | `iottack amqp scan` | Detect an AMQP broker and test for default credentials |
+| [bacnet device-properties](./plugins/bacnet/device-properties.md) | `iottack bacnet device-properties --host <HOST>` | Read all standard Device-object properties |
+| [bacnet event-info](./plugins/bacnet/event-info.md) | `iottack bacnet event-info --host <HOST>` | Read event and alarm state of a BACnet device |
+| [bacnet find-devices](./plugins/bacnet/find-devices.md) | `iottack bacnet find-devices` | Discover all reachable BACnet/IP devices via Who-Is broadcast |
+| [bacnet fuzz](./plugins/bacnet/fuzz.md) | `iottack bacnet fuzz --host <HOST>` | Send malformed BACnet PDUs and report anomalous responses |
+| [bacnet info](./plugins/bacnet/info.md) | `iottack bacnet info --host <HOST>` | Read identification and status properties of a single BACnet/IP device |
+| [bacnet network-info](./plugins/bacnet/network-info.md) | `iottack bacnet network-info --host <HOST>` | Read BACnet network configuration of a device |
+| [bacnet object-list](./plugins/bacnet/object-list.md) | `iottack bacnet object-list --host <HOST>` | Enumerate all BACnet objects and read their present values |
+| [bacnet object-properties](./plugins/bacnet/object-properties.md) | `iottack bacnet object-properties --host <HOST> --object <TYPE:ID>` | Read all standard properties of a specific BACnet object |
+| [bacnet scan](./plugins/bacnet/scan.md) | `iottack bacnet scan` | Enumerate BACnet/IP devices and read key Device-object properties |
+| [bacnet services](./plugins/bacnet/services.md) | `iottack bacnet services --host <HOST>` | Read supported BACnet services and object types |
 | [ble adapter](./plugins/ble/ble-adapter.md) | `iottack ble adapter` | List Bluetooth adapters and report their power and discoverability state |
 | [ble device](./plugins/ble/ble-device.md) | `iottack ble device --address <ADDR>` | Enumerate GATT services and characteristics of a single BLE device |
 | [ble scan](./plugins/ble/ble-scan.md) | `iottack ble scan` | Discover nearby Bluetooth Low Energy devices and report their properties |
 | [ble write](./plugins/ble/ble-write.md) | `iottack ble write --address <ADDR> --characteristic <UUID>` | Write a value to a BLE GATT characteristic or fuzz it |
+| [can dump](./plugins/can/dump.md) | `iottack can dump` | Passively capture CAN frames and report traffic statistics and security-relevant IDs |
+| [can enumerate](./plugins/can/enumerate.md) | `iottack can enumerate` | Discover CAN bus devices via passive heartbeat, OBD-II broadcast, and CANopen node guarding |
+| [can scan](./plugins/can/scan.md) | `iottack can scan` | Passively enumerate all active CAN IDs with frame count, rate, DLC, and payload |
+| [can send](./plugins/can/send.md) | `iottack can send --id <HEX>` | Transmit arbitrary CAN data frames (SFF or EFF) to the bus |
+| [ftdi device](./plugins/hardware/ftdi-device.md) | `iottack ftdi device` | Enumerate FTDI USB adapters and report chip type, chip ID, EEPROM strings and MPSSE capability |
 | [http banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
+| [i2c read](./plugins/i2c/read.md) | `iottack i2c read --address <HEX>` | Read bytes from an I2C device register via an FTDI MPSSE adapter |
+| [i2c scan](./plugins/i2c/scan.md) | `iottack i2c scan` | Probe all valid 7-bit I2C addresses via an FTDI MPSSE adapter |
+| [mcp2221 device](./plugins/hardware/mcp2221-device.md) | `iottack mcp2221 device` | Enumerate connected MCP2221/MCP2221A adapters and report USB identity and capabilities |
 | [modbus device-info](./plugins/modbus/device-info.md) | `iottack modbus device-info` | Read Modbus controller device identification (FC43 MEI) |
+| [modbus enumerate](./plugins/modbus/enumerate.md) | `iottack modbus enumerate` | Enumerate Modbus coils, discrete inputs, and registers |
 | [modbus read-coils](./plugins/modbus/read-coils.md) | `iottack modbus read-coils` | Read Modbus coils or discrete inputs |
 | [modbus read-registers](./plugins/modbus/read-registers.md) | `iottack modbus read-registers` | Read Modbus holding or input registers |
 | [modbus write-coil](./plugins/modbus/write-coil.md) | `iottack modbus write-coil` | Write a single Modbus coil (FC05) |
 | [modbus write-register](./plugins/modbus/write-register.md) | `iottack modbus write-register` | Write a value to one or more Modbus holding registers |
-| [ftdi device](./plugins/hardware/ftdi-device.md) | `iottack ftdi device` | Enumerate FTDI USB adapters and report chip type, chip ID, EEPROM strings and MPSSE capability |
-| [mcp2221 device](./plugins/hardware/mcp2221-device.md) | `iottack mcp2221 device` | Enumerate connected MCP2221/MCP2221A adapters and report USB identity and capabilities |
-| [i2c scan](./plugins/i2c/scan.md) | `iottack i2c scan` | Probe all valid 7-bit I2C addresses via an FTDI MPSSE adapter |
-| [i2c read](./plugins/i2c/read.md) | `iottack i2c read --address <HEX>` | Read bytes from an I2C device register via an FTDI MPSSE adapter |
 | [mqtt](./plugins/mqtt.md) | `iottack mqtt` | Work with MQTT |
 | [network mdns-scan](./plugins/network/mdns-scan.md) | `iottack network mdns-scan` | Discover mDNS/DNS-SD services on the local network |
 | [network telnet](./plugins/network/telnet.md) | `iottack network telnet` | Connect to a Telnet service and detect banners, login prompts and default credentials |
+| [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
 | [tcp banner](./plugins/tcp/banner.md) | `iottack tcp banner` | Connect to a TCP service and capture the initial banner, identifying the protocol and flagging cleartext services |
 | [tcp fuzz](./plugins/tcp/fuzz.md) | `iottack tcp fuzz` | Send malformed and custom payloads to a TCP service and report anomalous responses |
 | [tcp shell-detect](./plugins/tcp/shell-detect.md) | `iottack tcp shell-detect` | Detect interactive shell or login prompt on a TCP service |
-| [platform](./plugins/platform/platform.md) | `iottack platform` | Report details about the host/platform environment |
 | [uart baud-scan](./plugins/uart/baud-scan.md) | `iottack uart baud-scan` | Probe common UART baud rates to identify the active configuration |
 | [uart fuzz](./plugins/uart/fuzz.md) | `iottack uart fuzz` | Send malformed and custom payloads to a UART interface and report anomalous responses |
 | [uart port-scan](./plugins/uart/port-scan.md) | `iottack uart port-scan` | Discover serial ports available on this host |
 | [uart shell-detect](./plugins/uart/shell-detect.md) | `iottack uart shell-detect` | Detect interactive shell or login prompt on a UART interface |
 | [uart terminal](./plugins/uart/terminal.md) | `iottack uart terminal` | Open an interactive terminal session over a UART interface |
-| [zigbee sniffer](./plugins/zigbee/sniffer.md) | `iottack zigbee sniffer` | Passively capture IEEE 802.15.4/Zigbee frames via nRF52840 dongle and report MAC-layer security weaknesses |
-| [zigbee capture](./plugins/zigbee/capture.md) | `iottack zigbee capture` | Capture raw IEEE 802.15.4 frames |
 | [vulns bluefi](./plugins/vulnerabilitites/bluefi.md) | `iottack vuln bluefi` | Check ESP for CVE-2025-27840 |
+| [zigbee capture](./plugins/zigbee/capture.md) | `iottack zigbee capture` | Capture raw IEEE 802.15.4 frames |
+| [zigbee sniffer](./plugins/zigbee/sniffer.md) | `iottack zigbee sniffer` | Passively capture IEEE 802.15.4/Zigbee frames via nRF52840 dongle and report MAC-layer security weaknesses |
 
 ## Global options
 

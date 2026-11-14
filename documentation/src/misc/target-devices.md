@@ -5,9 +5,11 @@ are used as targets or dummy devices throughout the documentation to demonstrate
 plugins behave against an actual piece of hardware or an actual service.
 
 | Device | Firmware | Notes |
-|--------|----------|-------|
+| ------ | -------- | ----- |
 | [Bluetooth device](./bluetooth-target.md) | CircuitPython | Bluetooth device with a LED |
 | [Generic IoT device](./generic-iot.md) | ESPHome | Wi-Fi target for the network plugins |
 | [UART device](./uart.md) | CircuitPython | Serial target for the UART plugins |
 | [AMQP server](./amqp.md) | - | Local RabbitMQ server |
 | [TCP simulator](./tcp.md) | Python 3.13+ | Software-only target for all `tcp` plugins |
+| [Modbus simulator](./modbus.md) | Python / pymodbus | Software-only target for all `modbus` plugins |
+| [BACnet/IP simulator](./bacnet.md) | Python / bacpypes3 | Software-only target for BACnet plugins |

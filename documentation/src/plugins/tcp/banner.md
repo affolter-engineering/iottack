@@ -10,7 +10,7 @@ and unauthenticated protocols are flagged with an elevated severity.
 ## Identified protocols
 
 | Protocol | Detection method | Severity |
-|----------|-----------------|----------|
+| -------- | --------------- | -------- |
 | SSH | Banner prefix `SSH-` | Info |
 | FTP | `220 ` + server strings | High |
 | Telnet | IAC option negotiation bytes | High |
@@ -29,7 +29,7 @@ Unrecognized banners that contain version strings are reported as **Medium**
 ## Severity mapping
 
 | Finding | Severity |
-|---------|----------|
+| ------- | -------- |
 | FTP, Telnet, VNC, Redis, MQTT, Modbus/TCP | High |
 | SMTP, POP3, IMAP | Medium |
 | Unknown service with version disclosure | Medium |
@@ -47,7 +47,7 @@ iottack network tcp-banner --host <HOST> --port <PORT> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--host <HOST>` | `-H` | - | Target hostname or IP address |
 | `--net <CIDR>` | `-n` | - | IPv4 CIDR subnet to sweep, e.g., `192.168.1.0/24`. Overrides `--host` |
 | `--port <PORT>` | `-p` | `80` | Single TCP port, used when `--ports`/`--all-ports` are absent |

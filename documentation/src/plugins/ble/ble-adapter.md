@@ -15,7 +15,7 @@ collected:
 Findings are classified as follows:
 
 | Finding | Severity | Condition |
-|---------|----------|-----------|
+| ------- | -------- | --------- |
 | Adapter powered and discoverable | Medium | Adapter is on and broadcasting |
 | Adapter details (powered, not discoverable) | Low | Adapter is on but not broadcasting |
 | Adapter details (not powered) | Info | Adapter is off |
@@ -36,7 +36,7 @@ iottack ble adapter
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--output <FILE>` | `-o` | - | Save result to a file |
 | `--format <FORMAT>` | - | `text` | `text` or `json` |
 | `--verbose` | `-v` | - | Increase log verbosity |

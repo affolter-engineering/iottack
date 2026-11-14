@@ -50,7 +50,7 @@ Select the hardware backend with `--adapter`:
 ## Address hint table
 
 | Address range | Typical devices |
-| ------------- | --------------- |
+| ------------- | -------------- |
 | 0x18-0x19 | LIS3DH/LIS2DH accelerometer |
 | 0x1C-0x1D | MMA8452/FXOS8700 accelerometer |
 | 0x1E-0x1F | HMC5883L/MAG3110 magnetometer |

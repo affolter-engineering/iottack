@@ -13,7 +13,7 @@ Python 3.13 or later. No third-party packages/modules are needed.
 ## Services
 
 | Service | Default port | Simulated vulnerability | Expected finding |
-|---------|-------------|------------------------|-----------------|
+| ------- | ----------- | ---------------------- | --------------- |
 | SSH | 2222 | Version disclosure in banner | Info |
 | FTP | 2121 | `vsftpd 2.3.4`, any password accepted | High |
 | Telnet | 2323 | Login prompt with weak credentials | High |
@@ -98,7 +98,7 @@ iottack tcp fuzz --host 127.0.0.1 --port 7777 --reconnect
 The Telnet service accepts any of these username/password combinations:
 
 | Username | Password |
-|----------|----------|
+| -------- | -------- |
 | `admin` | `admin` |
 | `admin` | `root` |
 | `root` | `root` |

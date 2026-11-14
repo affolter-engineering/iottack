@@ -19,7 +19,7 @@ iottack uart terminal --port <PATH> [OPTIONS]
 ### Options
 
 | Flag | Short | Default | Description |
-|------|-------|---------|-------------|
+| ---- | ----- | ------- | ----------- |
 | `--port <PATH>` | `-p` | *(required)* | Serial port device, e.g. `/dev/ttyUSB0` |
 | `--baud-rate <BAUD>` | `-b` | `115200` | Baud rate |
 | `--timeout-ms <MS>` | - | `50` | Read timeout in milliseconds |

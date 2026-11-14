@@ -14,7 +14,7 @@ setpoints, and configuration data and write directly to outputs or actuators.
 All plugins support two transport modes selected by exclusive flags:
 
 | Mode | Flag | Default port/baud |
-|------|------|-------------------|
+| ---- | ---- | ----------------- |
 | TCP | `--host <IP>` | `502` |
 | RTU serial | `--serial <DEVICE>` | `9600` baud |
 
@@ -24,7 +24,7 @@ Exactly one of `--host` or `--serial` must be supplied. TCP is tried when
 ## Plugins
 
 | Plugin | Command | Function code(s) |
-|--------|---------|-----------------|
+| ------ | ------- | --------------- |
 | [device-info](./device-info.md) | `modbus device-info` | FC03 (probe) & FC43 MEI |
 | [enumerate](./enumerate.md) | `modbus enumerate` | FC01, FC02, FC03, FC04 |
 | [read-registers](./read-registers.md) | `modbus read-registers` | FC03/FC04 |

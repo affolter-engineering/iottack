@@ -5,9 +5,11 @@ with an ACK.
 
 ## Requirements
 
-An FTDI MPSSE adapter (FT232H, FT2232H or FT4232H) connected to the I2C bus.
-See [FTDI adapter wiring](../hardware/ftdi.md#i2c) for the exact pin connections
-and the required udev rule.
+An FTDI MPSSE adapter (FT232H, FT2232H or FT4232H) **or** a Microchip
+MCP2221/MCP2221A USB-to-I2C adapter connected to the I2C bus.
+
+- FTDI wiring: see [FTDI adapter](../hardware/ftdi.md#i2c)
+- MCP2221 wiring: see [MCP2221 adapter](../hardware/mcp2221.md#i2c)
 
 ## Usage
 
@@ -25,14 +27,22 @@ skipped.
 Addresses that respond are reported at **Medium** severity together with a hint
 about common devices that use that address range.
 
+Select the hardware backend with `--adapter`:
+
+| Backend | Hardware | Notes |
+| ------- | -------- | ----- |
+| `ftdi` (default) | FT232H / FT2232H / FT4232H | Configurable channel and clock speed |
+| `mcp2221` | MCP2221 / MCP2221A | Uses the device's configured I2C speed |
+
 ## Options
 
 | Flag | Short | Default | Description |
 | ---- | ----- | ------- | ----------- |
-| `--channel <CHANNEL>` | `-c` | `A` | FTDI channel to use, must be A or B (MPSSE-capable) |
-| `--vid <HEX>` | - | `0403` | USB vendor ID in hex |
-| `--pid <HEX>` | - | auto-detect | USB product ID in hex (6001=FT232R, 6010=FT2232H, 6011=FT4232H, 6014=FT232H). Omit to probe all known PIDs |
-| `--clock-hz <HZ>` | - | `100000` | I2C clock frequency in Hz |
+| `--adapter <TYPE>` | `-A` | `ftdi` | Hardware backend: `ftdi` or `mcp2221` |
+| `--channel <CHANNEL>` | `-c` | `A` | FTDI channel to use, must be A or B (ftdi only) |
+| `--vid <HEX>` | - | `0403` | USB vendor ID in hex (ftdi only) |
+| `--pid <HEX>` | - | auto-detect | USB product ID in hex (ftdi only) |
+| `--clock-hz <HZ>` | - | `100000` | I2C clock frequency in Hz (ftdi only) |
 | `--output <FILE>` | `-o` | - | Save result to a file |
 | `--format <FORMAT>` | `-f` | `text` | `text` or `json` |
 | `--verbose` | `-v` | - | Increase log verbosity |
@@ -57,7 +67,9 @@ about common devices that use that address range.
 | 0x70-0x75 | TCA9548A/PCA9548 I2C mux |
 | 0x76-0x77 | BMP280/BME280/BMP388 pressure sensor |
 
-## Example
+## Examples
+
+### FTDI adapter
 
 ```sh
 $ iottack i2c scan --channel A --clock-hz 400000
@@ -66,8 +78,8 @@ Plugin name:    i2c/scan
 Execution time: 312 ms
 Status:         pass
 
-[INFO] 3 I2C device(s) found on channel A
-  Scanned addresses 0x08-0x77 at 400000 Hz on FTDI 0403:6011 channel A.
+[INFO] 3 I2C device(s) found
+  Scanned addresses 0x08-0x77 at 400000 Hz via FTDI 0403:6011 channel A.
 
 [MEDIUM] I2C device at 0x3c
   Address 0x3c (decimal 60) responded with ACK.
@@ -85,12 +97,30 @@ Status:         pass
   Evidence: "addr=0x76 hint=\"BMP280/BME280/BMP388 pressure sensor\""
 ```
 
+### MCP2221 adapter
+
+```sh
+$ iottack i2c scan --adapter mcp2221
+
+Plugin name:    i2c/scan
+Execution time: 420 ms
+Status:         pass
+
+[INFO] 1 I2C device(s) found
+  Scanned addresses 0x08-0x77 at 100000 Hz via MCP2221 (04d8:00dd).
+
+[MEDIUM] I2C device at 0x76
+  Address 0x76 (decimal 118) responded with ACK.
+  Likely: BMP280/BME280/BMP388 pressure sensor
+  Evidence: "addr=0x76 hint=\"BMP280/BME280/BMP388 pressure sensor\""
+```
+
 ## Troubleshooting
 
 ### No devices found despite wiring being correct
 
 - Confirm pull-up resistors (4.7 kOhm) are present on SCL and SDA.
-- Try a lower clock frequency (`--clock-hz 100000`).
+- Try a lower clock frequency (`--clock-hz 100000`, ftdi only).
 - Verify target power is on.
 
 ### FTDI device not found
@@ -98,11 +128,16 @@ Status:         pass
 - Check `lsusb` shows the adapter (`0403:6011` or similar).
 - Apply the [udev rule](../hardware/ftdi.md#linux-setup-udev) and reconnect.
 
+### MCP2221 not found
+
+- Check `lsusb` shows `04d8:00dd`.
+- Apply the [udev rule](../hardware/mcp2221.md#linux-setup-udev) and reconnect.
+
 ### MPSSE initialization failed
 
 - Channels C and D on the FT4232H do not support MPSSE. Use `--channel A` or `--channel B`.
 
-### All or nearly all addresses respond (ACK sensing broken)
+### All or nearly all addresses respond (FTDI - ACK sensing broken)
 
 If the scan reports a large number of devices (e.g., all 112 addresses), the ACK
 bit cannot be read and every probe falsely appears as ACK. The most common cause

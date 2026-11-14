@@ -40,6 +40,8 @@
     - [ghostesp blescan](./plugins/hardware/ghostesp-blescan.md)
     - [logic-analyser device](./plugins/hardware/logic-analyser-device.md)
     - [logic-analyser capture](./plugins/hardware/logic-analyser-capture.md)
+    - [mcp2221](./plugins/hardware/mcp2221.md)
+    - [mcp2221 device](./plugins/hardware/mcp2221-device.md)
     - [nRF52840](./plugins/hardware/nrf52840.md)
   - [Zigbee](./plugins/zigbee/intro.md)
     - [zigbee sniffer](./plugins/zigbee/sniffer.md)

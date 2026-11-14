@@ -120,7 +120,7 @@ impl Plugin for I2cReadPlugin {
 
         if self.address < 0x08 || self.address > 0x77 {
             return Err(anyhow!(
-                "address 0x{:02x} is reserved; valid 7-bit range is 0x08-0x77",
+                "address 0x{:02x} is reserved, valid 7-bit range is 0x08-0x77",
                 self.address
             ));
         }
@@ -131,7 +131,7 @@ impl Plugin for I2cReadPlugin {
         } else {
             Some(
                 parse_hex_byte(&reg_str).map_err(|_| {
-                    anyhow!("invalid register '{reg_str}'; expected hex like 00 or 0x00")
+                    anyhow!("invalid register '{reg_str}', expected hex like 00 or 0x00")
                 })?,
             )
         };

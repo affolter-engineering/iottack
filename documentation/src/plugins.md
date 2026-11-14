@@ -29,6 +29,7 @@ a severity level and optional evidence string.
 | [http banner](./plugins/http/http-banner.md) | `iottack http banner` | Checks HTTP banner and common settings |
 | [i2c read](./plugins/i2c/read.md) | `iottack i2c read --address <HEX>` | Read bytes from an I2C device register via an FTDI MPSSE adapter |
 | [i2c scan](./plugins/i2c/scan.md) | `iottack i2c scan` | Probe all valid 7-bit I2C addresses via an FTDI MPSSE adapter |
+| [mcp2221 device](./plugins/hardware/mcp2221-device.md) | `iottack mcp2221 device` | Enumerate connected MCP2221/MCP2221A adapters and report USB identity and capabilities |
 | [modbus device-info](./plugins/modbus/device-info.md) | `iottack modbus device-info` | Read Modbus controller device identification (FC43 MEI) |
 | [modbus enumerate](./plugins/modbus/enumerate.md) | `iottack modbus enumerate` | Enumerate Modbus coils, discrete inputs, and registers |
 | [modbus read-coils](./plugins/modbus/read-coils.md) | `iottack modbus read-coils` | Read Modbus coils or discrete inputs |

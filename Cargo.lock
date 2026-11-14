@@ -1691,6 +1691,7 @@ dependencies = [
  "libsigrok-sys",
  "mdns",
  "modbus",
+ "nusb",
  "serde",
  "serde_json",
  "serialport",

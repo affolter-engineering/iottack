@@ -4,14 +4,23 @@ use crate::core::{
 use crate::plugin_meta;
 use crate::hardware::ftdi::{FtdiConfig, FtdiPlugin};
 use crate::hardware::ftdi::config::MpsseMode;
+use crate::hardware::mcp2221::i2c::Mcp2221I2c;
 use anyhow::Result;
 use ftdi_nusb::{
     mpsse::{i2c::I2cBus, MpsseContext},
     types::Interface,
 };
 
-/// Probes all valid 7-bit I2C addresses via an FTDI MPSSE adapter.
+#[derive(Default, Clone, Copy, PartialEq, Eq)]
+enum Adapter {
+    #[default]
+    Ftdi,
+    Mcp2221,
+}
+
+/// Supported I2C adapter types.
 pub struct I2cScanPlugin {
+    adapter: Adapter,
     config: FtdiConfig,
 }
 
@@ -19,6 +28,7 @@ pub struct I2cScanPlugin {
 impl I2cScanPlugin {
     pub fn new() -> Self {
         Self {
+            adapter: Adapter::default(),
             config: FtdiConfig::default(),
         }
     }
@@ -31,24 +41,34 @@ impl Default for I2cScanPlugin {
     }
 }
 
-/// Plugin implementation for `I2cScanPlugin`.
+/// I2C scan plugin using FTDI MPSSE or MCP2221 adapters.
 impl Plugin for I2cScanPlugin {
     fn meta(&self) -> PluginMeta {
         plugin_meta!(
-            summary: "Scan for I2C devices via an FTDI MPSSE adapter",
+            summary: "Scan for I2C devices via FTDI MPSSE or MCP2221 adapter",
             description: "Probes all 112 valid 7-bit I2C addresses (0x08-0x77) by sending a \
-                          zero-byte write and checking for ACK. Requires an FTDI FT232H, \
-                          FT2232H or FT4232H adapter. Only channels A and B support MPSSE \
-                          (I2C/SPI/JTAG); channels C and D are UART-only. Wiring: \
-                          SCL -> AD0, SDA -> AD1 and AD2 shorted together (add 4.7 kΩ pull-ups \
-                          to VCC). On Linux, add a udev rule: \
-                          SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0403\", MODE=\"0666\"",
+                          zero-byte write and checking for ACK. Use --adapter to select the \
+                          hardware backend. \
+                          ftdi (default): requires FT232H/FT2232H/FT4232H. Use --channel, \
+                          --vid/--pid and --clock-hz to configure. Wiring: \
+                          SCL -> AD0, SDA -> AD1 and AD2 shorted (4.7 kOhm pull-ups to VCC). \
+                          mcp2221: requires Microchip MCP2221/MCP2221A (04d8:00dd). Uses the \
+                          device's configured I2C speed. Wiring: SCL and SDA pins with \
+                          4.7 kOhm pull-ups to VCC.",
             needs_root: false,
             args: &[
                 CliArg {
+                    name: "adapter",
+                    short: Some('A'),
+                    help: "Hardware adapter to use: ftdi (default) or mcp2221",
+                    value_name: "TYPE",
+                    default: Some("ftdi"),
+                    is_flag: false,
+                },
+                CliArg {
                     name: "channel",
                     short: Some('c'),
-                    help: "FTDI channel to use: A or B (MPSSE-capable channels only)",
+                    help: "FTDI channel to use: A or B (MPSSE-capable channels only, FTDI adapter)",
                     value_name: "CHANNEL",
                     default: Some("A"),
                     is_flag: false,
@@ -56,7 +76,7 @@ impl Plugin for I2cScanPlugin {
                 CliArg {
                     name: "vid",
                     short: None,
-                    help: "USB vendor ID in hex (default: 0403)",
+                    help: "USB vendor ID in HEX (default: 0403, FTDI adapter)",
                     value_name: "HEX",
                     default: Some("0403"),
                     is_flag: false,
@@ -64,7 +84,7 @@ impl Plugin for I2cScanPlugin {
                 CliArg {
                     name: "pid",
                     short: None,
-                    help: "USB product ID in hex (6001=FT232R, 6010=FT2232H, 6011=FT4232H, 6014=FT232H). Omit to auto-detect",
+                    help: "USB product ID in HEX (FDTI adapter, omit to auto-detect)",
                     value_name: "HEX",
                     default: None,
                     is_flag: false,
@@ -72,7 +92,7 @@ impl Plugin for I2cScanPlugin {
                 CliArg {
                     name: "clock_hz",
                     short: None,
-                    help: "I2C clock frequency in Hz (100000 = 100 kHz, 400000 = 400 kHz)",
+                    help: "I2C clock frequency in Hz (100000 = 100 kHz, 400000 = 400 kHz, FTDI adapter)",
                     value_name: "HZ",
                     default: Some("100000"),
                     is_flag: false,
@@ -83,23 +103,34 @@ impl Plugin for I2cScanPlugin {
 
     /// Initialize the plugin with the given configuration.
     fn initialize(&mut self, config: &PluginConfig) -> Result<()> {
-        self.config = FtdiConfig::from_plugin_config(config, MpsseMode::I2c)?;
+        self.adapter = match config.get_or("adapter", "ftdi").to_lowercase().as_str() {
+            "mcp2221" => Adapter::Mcp2221,
+            _ => Adapter::Ftdi,
+        };
+        if self.adapter == Adapter::Ftdi {
+            self.config = FtdiConfig::from_plugin_config(config, MpsseMode::I2c)?;
+        }
         Ok(())
     }
 
     /// Execute the plugin's main logic.
     fn execute(&mut self) -> Result<PluginResult> {
-        let rt = tokio::runtime::Builder::new_multi_thread()
-            .enable_all()
-            .build()
-            .map_err(|e| anyhow::anyhow!("tokio runtime: {e}"))?;
-        rt.block_on(self.scan())
+        match self.adapter {
+            Adapter::Ftdi => {
+                let rt = tokio::runtime::Builder::new_multi_thread()
+                    .enable_all()
+                    .build()
+                    .map_err(|e| anyhow::anyhow!("tokio runtime: {e}"))?;
+                rt.block_on(self.scan_ftdi())
+            }
+            Adapter::Mcp2221 => self.scan_mcp2221(),
+        }
     }
 }
 
-/// I2C scan logic for the plugin. Probes all valid 7-bit I2C addresses on the bus.
+/// I2C scan plugin implementation for FTDI and MCP2221 adapters.
 impl I2cScanPlugin {
-    async fn scan(&self) -> Result<PluginResult> {
+    async fn scan_ftdi(&self) -> Result<PluginResult> {
         let mut result = PluginResult::new(self.meta().name);
 
         let channel = match self.config.interface {
@@ -135,7 +166,7 @@ impl I2cScanPlugin {
                     Severity::Info,
                     "MPSSE initialisation failed",
                     format!(
-                        "Failed to initialise MPSSE on channel {channel} at {} Hz: {e}",
+                        "Failed to initialize MPSSE on channel {channel} at {} Hz: {e}",
                         self.config.clock_hz
                     ),
                 ));
@@ -147,7 +178,6 @@ impl I2cScanPlugin {
         let mut session = ctx.session(&mut dev)?;
         let i2c = I2cBus::new(&mut session).await?;
 
-        // 7-bit I2C address space: 0x00-0x07 and 0x78-0x7F are reserved.
         let mut found: Vec<u8> = Vec::new();
         for addr in 0x08u8..=0x77 {
             match i2c.write(&mut session, addr, &[]).await {
@@ -161,46 +191,85 @@ impl I2cScanPlugin {
             }
         }
 
-        if found.is_empty() {
-            result.add(PluginFinding::new(
-                Severity::Info,
-                "No I2C devices found",
-                format!(
-                    "No devices responded on channel {channel} (scanned 0x08-0x77 at {} Hz). \
-                     Check wiring, pull-up resistors (4.7 kΩ to VCC) and target power.",
-                    self.config.clock_hz
-                ),
-            ));
-        } else {
-            result.add(PluginFinding::new(
-                Severity::Info,
-                format!("{} I2C device(s) found on channel {channel}", found.len()),
-                format!(
-                    "Scanned addresses 0x08-0x77 at {} Hz on FTDI {:04x}:{:04x} channel {channel}.",
-                    self.config.clock_hz, self.config.vid, actual_pid,
-                ),
-            ));
-            for addr in &found {
-                let hint = i2c_device_hint(*addr);
-                result.add(
-                    PluginFinding::new(
-                        Severity::Medium,
-                        format!("I2C device at 0x{addr:02x}"),
-                        format!(
-                            "Address 0x{addr:02x} (decimal {addr}) responded with ACK.\n  Likely: {hint}"
-                        ),
-                    )
-                    .with_evidence(format!("addr=0x{addr:02x} hint=\"{hint}\"")),
-                );
+        report_findings(&mut result, &found, &format!("FTDI {:04x}:{:04x} channel {channel}", self.config.vid, actual_pid), self.config.clock_hz);
+        result.finish(PluginStatus::Pass);
+        Ok(result)
+    }
+
+    /// Scan for I2C devices using an MCP2221 adapter.
+    fn scan_mcp2221(&self) -> Result<PluginResult> {
+        let mut result = PluginResult::new(self.meta().name);
+
+        let mut i2c = match Mcp2221I2c::open() {
+            Ok(d) => d,
+            Err(e) => {
+                result.add(PluginFinding::new(
+                    Severity::Info,
+                    "MCP2221 not found",
+                    e.to_string(),
+                ));
+                result.finish(PluginStatus::Pass);
+                return Ok(result);
+            }
+        };
+
+        let mut found: Vec<u8> = Vec::new();
+        for addr in 0x08u8..=0x77 {
+            match i2c.probe(addr) {
+                Ok(true) => {
+                    tracing::debug!(addr = format!("0x{addr:02x}"), "I2C ACK");
+                    found.push(addr);
+                }
+                Ok(false) => {
+                    tracing::trace!(addr = format!("0x{addr:02x}"), "no ACK");
+                }
+                Err(e) => {
+                    tracing::warn!(addr = format!("0x{addr:02x}"), "probe error: {e}");
+                }
             }
         }
 
+        report_findings(&mut result, &found, "MCP2221 (04d8:00dd)", 100_000);
         result.finish(PluginStatus::Pass);
         Ok(result)
     }
 }
 
-/// Provide a human-readable hint for the likely type of I2C device at the given address.
+/// Reports the findings of an I2C scan to the given `PluginResult`.
+fn report_findings(result: &mut PluginResult, found: &[u8], adapter_label: &str, clock_hz: u32) {
+    if found.is_empty() {
+        result.add(PluginFinding::new(
+            Severity::Info,
+            "No I2C devices found",
+            format!(
+                "No devices responded on {adapter_label} (scanned 0x08-0x77 at {clock_hz} Hz). \
+                 Check wiring, pull-up resistors (4.7 kOhm to VCC) and target power."
+            ),
+        ));
+        return;
+    }
+
+    result.add(PluginFinding::new(
+        Severity::Info,
+        format!("{} I2C device(s) found", found.len()),
+        format!("Scanned addresses 0x08-0x77 at {clock_hz} Hz via {adapter_label}."),
+    ));
+
+    for addr in found {
+        let hint = i2c_device_hint(*addr);
+        result.add(
+            PluginFinding::new(
+                Severity::Medium,
+                format!("I2C device at 0x{addr:02x}"),
+                format!(
+                    "Address 0x{addr:02x} (decimal {addr}) responded with ACK.\n  Likely: {hint}"
+                ),
+            )
+            .with_evidence(format!("addr=0x{addr:02x} hint=\"{hint}\"")),
+        );
+    }
+}
+
 fn i2c_device_hint(addr: u8) -> &'static str {
     match addr {
         0x18 | 0x19 => "LIS3DH/LIS2DH accelerometer",
@@ -226,7 +295,6 @@ fn i2c_device_hint(addr: u8) -> &'static str {
     }
 }
 
-/// Implement the `FtdiPlugin` trait for the I2C scan plugin.
 impl FtdiPlugin for I2cScanPlugin {
     fn ftdi_config(&self) -> &FtdiConfig {
         &self.config
